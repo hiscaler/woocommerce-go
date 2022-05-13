@@ -28,6 +28,14 @@ const (
 	HashAlgorithm = "HMAC-SHA256"
 )
 
+// https://woocommerce.github.io/woocommerce-rest-api-docs/?php#request-response-format
+const (
+	BadRequestError     = 400 // 错误的请求
+	UnauthorizedError   = 401 // 身份验证或权限错误
+	NotFoundError       = 404 // 访问资源不存在
+	InternalServerError = 500 // 服务器内部错误
+)
+
 var ErrNotFound = errors.New("WooCommerce: not found")
 
 type queryDefaultValues struct {
@@ -114,16 +122,14 @@ func NewClient(config config.Config) *WooCommerce {
 		OnAfterResponse(func(client *resty.Client, response *resty.Response) (err error) {
 			if response.IsSuccess() {
 				r := struct {
-					Result    string `json:"result"`
-					ErrorCode string `json:"ErrorCode"`
-					Message   string `json:"message"`
+					Code    string `json:"code"`
+					Message string `json:"message"`
+					Data    struct {
+						Status int `json:"status"`
+					} `json:"data"`
 				}{}
 				if err = jsoniter.Unmarshal(response.Body(), &r); err == nil {
-					code := r.ErrorCode
-					if code == "" {
-						code = r.Result
-					}
-					err = ErrorWrap(code, r.Message)
+					err = ErrorWrap(r.Data.Status, r.Message)
 				}
 			}
 			if err != nil {
@@ -141,13 +147,25 @@ func NewClient(config config.Config) *WooCommerce {
 }
 
 // ErrorWrap 错误包装
-func ErrorWrap(code string, message string) error {
-	if code == "" || code == "OK" {
+func ErrorWrap(code int, message string) error {
+	if code == http.StatusOK {
 		return nil
 	}
 
 	message = strings.TrimSpace(message)
 	if message == "" {
+		switch code {
+		case BadRequestError:
+			message = "错误的请求"
+		case UnauthorizedError:
+			message = "身份验证或权限错误"
+		case NotFoundError:
+			message = "访问资源不存在"
+		case InternalServerError:
+			message = "服务器内部错误"
+		default:
+			message = "未知错误"
+		}
 	}
-	return fmt.Errorf("%s: %s", code, message)
+	return fmt.Errorf("%d: %s", code, message)
 }
