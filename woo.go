@@ -17,7 +17,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -107,17 +106,7 @@ func NewClient(config config.Config) *WooCommerce {
 				sha1Nonce := fmt.Sprintf("%x", sha1.Sum(nonce))
 				params.Add("oauth_nonce", sha1Nonce)
 				params.Add("oauth_signature_method", HashAlgorithm)
-				var keys []string
-				for k, _ := range params {
-					keys = append(keys, k)
-				}
-				sort.Strings(keys)
-				var paramStrs []string
-				for _, key := range keys {
-					paramStrs = append(paramStrs, fmt.Sprintf("%s=%s", key, params.Get(key)))
-				}
-				paramStr := strings.Join(paramStrs, "&")
-				params.Add("oauth_signature", oauthSignature(config, request.Method, request.URL, paramStr))
+				params.Add("oauth_signature", oauthSignature(config, request.Method, request.URL, params.Encode()))
 			}
 			request.SetQueryParamsFromValues(params)
 			return nil
