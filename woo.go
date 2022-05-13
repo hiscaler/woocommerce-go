@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
+	"crypto/tls"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -12,6 +13,8 @@ import (
 	"github.com/hiscaler/woocommerce-go/config"
 	jsoniter "github.com/json-iterator/go"
 	"log"
+	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"sort"
@@ -68,21 +71,30 @@ func NewClient(config config.Config) *WooCommerce {
 	if config.Version == "" {
 		config.Version = "v3"
 	}
+	if config.Timeout < 2 {
+		config.Timeout = 2
+	}
 
 	storeURL := strings.Trim(config.URL, "/") + "/wp-json/wc/" + config.Version
 	client := resty.New().
 		SetDebug(config.Debug).
-		SetBaseURL(config.URL).
+		SetBaseURL(storeURL).
 		SetHeaders(map[string]string{
 			"Content-Type": "application/json",
 			"Accept":       "application/json",
 			"User-Agent":   UserAgent,
 		}).
 		SetAllowGetMethodPayload(true).
-		SetTimeout(10 * time.Second).
+		SetTimeout(config.Timeout * time.Second).
+		SetTransport(&http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: !config.VerifySSL},
+			DialContext: (&net.Dialer{
+				Timeout: config.Timeout * time.Second,
+			}).DialContext,
+		}).
 		OnBeforeRequest(func(client *resty.Client, request *resty.Request) error {
 			params := url.Values{}
-			if strings.HasPrefix(storeURL, "https") {
+			if strings.HasPrefix(config.URL, "https") {
 				// basicAuth
 				params.Add("consumer_key", config.ConsumerKey)
 				params.Add("consumer_secret", config.ConsumerSecret)

@@ -1,6 +1,7 @@
 package product
 
 import (
+	"fmt"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -43,9 +44,7 @@ func (s service) Products(params ProductsQueryParams) (items []product.Product, 
 		return
 	}
 
-	res := struct {
-		Data []product.Product `json:"data"`
-	}{}
+	var res []product.Product
 	qp := make(map[string]string, 0)
 	resp, err := s.woo.Client.R().
 		SetQueryParams(qp).
@@ -56,7 +55,22 @@ func (s service) Products(params ProductsQueryParams) (items []product.Product, 
 
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res.Data
+			items = res
+		}
+	}
+	return
+}
+
+func (s service) Product(id int) (item product.Product, err error) {
+	var res product.Product
+	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/products/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
+			item = res
 		}
 	}
 	return

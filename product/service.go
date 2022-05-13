@@ -10,7 +10,8 @@ type service struct {
 }
 
 type Service interface {
-	Products(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) // 仓库列表
+	Products(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) // 商品列表
+	Product(id int) (item product.Product, err error)                                          // 商品详情
 }
 
 func NewService(client *woocommerce.WooCommerce) Service {
