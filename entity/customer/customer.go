@@ -1,7 +1,7 @@
 package customer
 
 import (
-	"github.com/shop-aio/shop-group/internal/entity"
+	"github.com/hiscaler/woocommerce-go/entity"
 	"time"
 )
 
