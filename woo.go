@@ -55,7 +55,7 @@ func oauthSignature(config config.Config, method, endpoint, params string) strin
 }
 
 func NewClient(config config.Config) *WooCommerce {
-	logger := log.New(os.Stdout, "[ ShipOut ] ", log.LstdFlags|log.Llongfile)
+	logger := log.New(os.Stdout, "[ WooCommerce ] ", log.LstdFlags|log.Llongfile)
 	wooInstance := &WooCommerce{
 		Debug:  config.Debug,
 		Logger: logger,
@@ -69,7 +69,7 @@ func NewClient(config config.Config) *WooCommerce {
 		config.Version = "v3"
 	}
 
-	storeURL := config.URL + "/wp-json/wc/" + config.Version
+	storeURL := strings.Trim(config.URL, "/") + "/wp-json/wc/" + config.Version
 	client := resty.New().
 		SetDebug(config.Debug).
 		SetBaseURL(config.URL).
