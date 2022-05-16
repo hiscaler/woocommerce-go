@@ -1,6 +1,7 @@
 package product
 
 import (
+	"fmt"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -39,6 +40,21 @@ func (s service) Tags(params TagsQueryParams) (items []product.Tag, isLastPage b
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			items = res
+		}
+	}
+	return
+}
+
+func (s service) Tag(id int) (item product.Tag, err error) {
+	var res product.Tag
+	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/products/tags/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
+			item = res
 		}
 	}
 	return
