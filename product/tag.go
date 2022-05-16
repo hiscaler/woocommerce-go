@@ -78,7 +78,7 @@ func (m UpsertTagRequest) Validate() error {
 	)
 }
 
-func (s service) CreateTag(req UpsertTagRequest) (tag product.Tag, err error) {
+func (s service) CreateTag(req UpsertTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -89,12 +89,12 @@ func (s service) CreateTag(req UpsertTagRequest) (tag product.Tag, err error) {
 	}
 
 	if resp.IsSuccess() {
-		err = jsoniter.Unmarshal(resp.Body(), &tag)
+		err = jsoniter.Unmarshal(resp.Body(), &item)
 	}
 	return
 }
 
-func (s service) UpdateTag(id int, req UpsertTagRequest) (tag product.Tag, err error) {
+func (s service) UpdateTag(id int, req UpsertTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -105,19 +105,19 @@ func (s service) UpdateTag(id int, req UpsertTagRequest) (tag product.Tag, err e
 	}
 
 	if resp.IsSuccess() {
-		err = jsoniter.Unmarshal(resp.Body(), &tag)
+		err = jsoniter.Unmarshal(resp.Body(), &item)
 	}
 	return
 }
 
-func (s service) DeleteTag(id int) (tag product.Tag, err error) {
+func (s service) DeleteTag(id int) (item product.Tag, err error) {
 	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		err = jsoniter.Unmarshal(resp.Body(), &tag)
+		err = jsoniter.Unmarshal(resp.Body(), &item)
 	}
 	return
 }
@@ -147,7 +147,7 @@ type BatchTagsResult struct {
 	Delete []product.Tag `json:"delete"`
 }
 
-func (s service) BatchTags(req CUDTagsRequest) (res, BatchTagsResult, err error) {
+func (s service) BatchTags(req CUDTagsRequest) (res BatchTagsResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
