@@ -63,13 +63,13 @@ func (s service) Tag(id int) (item product.Tag, err error) {
 
 // 新增商品标签
 
-type CreateProductTagRequest struct {
+type UpsertProductTagRequest struct {
 	Name        string `json:"name"`
 	Slug        string `json:"slug,omitempty"`
 	Description string `json:"description,omitempty"`
 }
 
-func (m CreateProductTagRequest) Validate() error {
+func (m UpsertProductTagRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
 			validation.Required.Error("标签名称不能为空"),
@@ -77,12 +77,40 @@ func (m CreateProductTagRequest) Validate() error {
 	)
 }
 
-func (s service) CreateTag(req CreateProductTagRequest) (tag product.Tag, err error) {
+func (s service) CreateTag(req UpsertProductTagRequest) (tag product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
 	resp, err := s.woo.Client.R().SetBody(req).Post("/products/tags")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &tag)
+	}
+	return
+}
+
+func (s service) UpdateTag(id int, req UpsertProductTagRequest) (tag product.Tag, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.woo.Client.R().SetBody(req).Put(fmt.Sprintf("/products/tags/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &tag)
+	}
+	return
+}
+
+func (s service) DeleteTag(id int) (tag product.Tag, err error) {
+	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
 	}

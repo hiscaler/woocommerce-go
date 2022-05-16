@@ -14,7 +14,9 @@ type Service interface {
 	Product(id int) (item product.Product, err error)                                          // 商品详情
 	Tags(params TagsQueryParams) (items []product.Tag, isLastPage bool, err error)             // 商品标签列表
 	Tag(id int) (item product.Tag, err error)                                                  // 商品标签
-	CreateTag(req CreateProductTagRequest) (tag product.Tag, err error)                        // 新增商品标签
+	CreateTag(req UpsertProductTagRequest) (tag product.Tag, err error)                        // 新增商品标签
+	UpdateTag(id int, req UpsertProductTagRequest) (tag product.Tag, err error)                // 更新商品标签
+	DeleteTag(id int) (tag product.Tag, err error)                                             // 删除商品标签
 }
 
 func NewService(client *woocommerce.WooCommerce) Service {
