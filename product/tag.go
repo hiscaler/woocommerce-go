@@ -1,6 +1,7 @@
 package product
 
 import (
+	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity/product"
@@ -117,6 +118,44 @@ func (s service) DeleteTag(id int) (tag product.Tag, err error) {
 
 	if resp.IsSuccess() {
 		err = jsoniter.Unmarshal(resp.Body(), &tag)
+	}
+	return
+}
+
+// CUDTags batch tag create,update and delete operation
+type CUDTags struct {
+	Create []UpsertProductTagRequest `json:"create"`
+	Update []UpsertProductTagRequest `json:"update"`
+	Delete []int                     `json:"delete"`
+}
+
+func (m CUDTags) Validate() error {
+	return nil
+}
+
+type BatchTagsResult struct {
+	Create []product.Tag `json:"create"`
+	Update []product.Tag `json:"update"`
+	Delete []product.Tag `json:"delete"`
+}
+
+func (s service) BatchTags(req CUDTags) (res, BatchTagsResult, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	if len(req.Create) == 0 && len(req.Update) == 0 && len(req.Delete) == 0 {
+		err = errors.New("无效的请求数据")
+		return
+	}
+
+	resp, err := s.woo.Client.R().SetBody(req).Post("products/tags/batch")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &res)
 	}
 	return
 }
