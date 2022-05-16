@@ -12,6 +12,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/hiscaler/woocommerce-go/config"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go/extra"
 	"log"
 	"net"
 	"net/http"
@@ -37,6 +38,10 @@ const (
 )
 
 var ErrNotFound = errors.New("WooCommerce: not found")
+
+func init() {
+	extra.RegisterFuzzyDecoders()
+}
 
 type queryDefaultValues struct {
 	Page     int `json:"page"`     // 当前页
