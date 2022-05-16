@@ -9,12 +9,12 @@ https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 
 ## 接口
 
-### 商品
+### Products
 
 - Products(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error)      // 商品列表
 - Product(id int) (item product.Product, err error)                                               // 商品详情
 
-### 商品标签
+### Product Tags
 
 - Tags(params TagsQueryParams) (items []product.Tag, isLastPage bool, err error)                  // 商品标签列表
 - Tag(id int) (item product.Tag, err error)                                                       // 商品标签
@@ -23,7 +23,7 @@ https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 - DeleteTag(id int) (item product.Tag, err error)                                                 // 删除商品标签
 - BatchTags(req CUDTagsRequest) (res BatchTagsResult, err error)                                  // 批量操作商品标签
 
-### 商品分类
+### Product Categories
 
 - Categories(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) // 商品分类列表
 - Category(id int) (item product.Category, err error)                                             // 商品分类
@@ -31,3 +31,8 @@ https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 - UpdateCategory(id int, req UpdateCategoryRequest) (item product.Category, err error)            // 更新商品分类
 - DeleteCategory(id int) (item product.Category, err error)                                       // 删除商品标签
 - BatchCategories(req CUDCategoriesRequest) (res BatchCategoriesResult, err error)                // 批量操作商品分类
+
+### Orders
+
+- Orders(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) // List all orders
+- Order(id int) (item order.Order, err error)                                        // Retrieve an order
