@@ -2,6 +2,7 @@ package product
 
 import (
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -56,6 +57,38 @@ func (s service) Tag(id int) (item product.Tag, err error) {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			item = res
 		}
+	}
+	return
+}
+
+// 新增商品标签
+
+type CreateProductTagRequest struct {
+	Name        string `json:"name"`
+	Slug        string `json:"slug,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+func (m CreateProductTagRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Name,
+			validation.Required.Error("标签名称不能为空"),
+		),
+	)
+}
+
+func (s service) CreateTag(req CreateProductTagRequest) (tag product.Tag, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.woo.Client.R().SetBody(req).Post("/products/tags")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &tag)
 	}
 	return
 }
