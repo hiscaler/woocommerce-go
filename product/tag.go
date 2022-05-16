@@ -70,6 +70,9 @@ type UpsertTagRequest struct {
 	Description string `json:"description,omitempty"`
 }
 
+type CreateTagRequest = UpsertTagRequest
+type UpdateTagRequest = UpsertTagRequest
+
 func (m UpsertTagRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
@@ -78,7 +81,7 @@ func (m UpsertTagRequest) Validate() error {
 	)
 }
 
-func (s service) CreateTag(req UpsertTagRequest) (item product.Tag, err error) {
+func (s service) CreateTag(req CreateTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -94,7 +97,7 @@ func (s service) CreateTag(req UpsertTagRequest) (item product.Tag, err error) {
 	return
 }
 
-func (s service) UpdateTag(id int, req UpsertTagRequest) (item product.Tag, err error) {
+func (s service) UpdateTag(id int, req UpdateTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}

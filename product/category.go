@@ -74,6 +74,9 @@ type UpsertCategoryRequest struct {
 	MenuOrder   int            `json:"menu_order"`
 }
 
+type CreateCategoryRequest = UpsertCategoryRequest
+type UpdateCategoryRequest = UpsertCategoryRequest
+
 func (m UpsertCategoryRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
@@ -82,7 +85,7 @@ func (m UpsertCategoryRequest) Validate() error {
 	)
 }
 
-func (s service) CreateCategory(req UpsertCategoryRequest) (item product.Category, err error) {
+func (s service) CreateCategory(req CreateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -98,7 +101,7 @@ func (s service) CreateCategory(req UpsertCategoryRequest) (item product.Categor
 	return
 }
 
-func (s service) UpdateCategory(id int, req UpsertCategoryRequest) (item product.Category, err error) {
+func (s service) UpdateCategory(id int, req UpdateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
