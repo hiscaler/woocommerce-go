@@ -38,3 +38,7 @@ categories
 
 - Orders(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) // List all orders
 - Order(id int) (item order.Order, err error)                                        // Retrieve an order
+
+### System Status
+
+- SystemStatus() (item systemstatus.SystemStatus, err error) // List all system status items
