@@ -32,7 +32,7 @@ categories
 - CreateCategory(req CreateCategoryRequest) (item product.Category, err error)                    // Create a product category
 - UpdateCategory(id int, req UpdateCategoryRequest) (item product.Category, err error)            // Update a product category
 - DeleteCategory(id int) (item product.Category, err error)                                       // Delete a product category
-- BatchCategories(req CUDCategoriesRequest) (res BatchCategoriesResult, err error)                // Batch update product
+- BatchCategories(req CUDCategoriesRequest) (res BatchCategoriesResult, err error)                // Batch update product categories
 
 ### Orders
 
