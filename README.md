@@ -46,3 +46,7 @@ categories
 ### Settings
 
 - Groups() (items []Group, err error) // List all settings groups
+
+### Tax Rates
+
+- TaxRates(params TaxRatesQueryParams) (items []TaxRate, isLastPage bool, err error) // List all tax rates
