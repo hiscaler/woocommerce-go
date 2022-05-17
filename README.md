@@ -62,3 +62,9 @@ categories
 - OrderNote(orderId, noteId int) (item order.Note, err error)                                            // Retrieve an order note
 - CreateOrderNote(orderId int, req CreateOrderNoteRequest) (item order.Note, err error)                  // Create an order note
 - DeleteOrderNote(orderId, noteId int, force bool) (item order.Note, err error)                          // Delete an order note
+
+### Tax Classes
+
+- TaxClasses() (items []TaxClass, err error)                           // List all tax classes
+- CreateTaxClass(req CreateTaxClassRequest) (item TaxClass, err error) // Create a tax class
+- DeleteTaxClass(slug string) (item TaxClass, err error)               // Delete a tax class
