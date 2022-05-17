@@ -38,6 +38,7 @@ func (m CreateTaxClassRequest) Validate() error {
 	)
 }
 
+// CreateTaxClass Create a tax class
 func (s service) CreateTaxClass(req CreateTaxClassRequest) (item TaxClass, err error) {
 	if err = req.Validate(); err != nil {
 		return
@@ -54,7 +55,7 @@ func (s service) CreateTaxClass(req CreateTaxClassRequest) (item TaxClass, err e
 	return
 }
 
-// DeleteTaxClass Delete tax classes
+// DeleteTaxClass Delete a tax classes
 func (s service) DeleteTaxClass(slug string) (item TaxClass, err error) {
 	slug = strings.TrimSpace(slug)
 	if slug == "" {
