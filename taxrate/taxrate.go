@@ -1,6 +1,9 @@
 package taxrate
 
-import jsoniter "github.com/json-iterator/go"
+import (
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	jsoniter "github.com/json-iterator/go"
+)
 
 // TaxRate tax rate properites
 type TaxRate struct {
@@ -21,10 +24,18 @@ type TaxRate struct {
 }
 
 type TaxRatesQueryParams struct {
+	Context string `url:"context"`
+	Order   string `url:"order,omitempty"`
+	Offset  int    `url:"offset,omitempty"`
+	OrderBy string `url:"orderby,omitempty"`
+	Class   string `url:"class,omitempty"`
 }
 
 func (m TaxRatesQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Context, validation.In("view", "edit").Error("错误的请求范围")),
+		validation.Field(&m.Order, validation.When(m.Order != "", validation.In("asc", "desc").Error("错误的排序方式"))),
+	)
 }
 
 func (s service) TaxRates(params TaxRatesQueryParams) (items []TaxRate, isLastPage bool, err error) {
