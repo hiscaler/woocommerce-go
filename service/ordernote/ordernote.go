@@ -7,6 +7,7 @@ import (
 	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/order"
 	jsoniter "github.com/json-iterator/go"
+	"strconv"
 )
 
 type OrderNotesQueryParams struct {
@@ -42,6 +43,52 @@ func (s service) OrderNotes(orderId int, params OrderNotesQueryParams) (items []
 
 func (s service) OrderNote(orderId, noteId int) (item order.Note, err error) {
 	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/orders/%d/notes/%d", orderId, noteId))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
+
+// Create order note
+
+type CreateOrderNoteRequest struct {
+	Note string `json:"note"`
+}
+
+func (m CreateOrderNoteRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Note, validation.Required.Error("内容不能为空")),
+	)
+}
+
+func (s service) CreateOrderNote(orderId int, req CreateOrderNoteRequest) (item order.Note, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.woo.Client.R().
+		SetBody(req).
+		Post(fmt.Sprintf("/orders/%d/notes", orderId))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
+
+func (s service) DeleteOrderNote(orderId, noteId int, force bool) (item order.Note, err error) {
+	resp, err := s.woo.Client.R().
+		SetBody(map[string]string{
+			"force": strconv.FormatBool(force),
+		}).
+		Delete(fmt.Sprintf("/orders/%d/notes/%d", orderId, noteId))
 	if err != nil {
 		return
 	}
