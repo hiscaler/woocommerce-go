@@ -3,6 +3,7 @@ package customer
 import (
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/customer"
@@ -11,16 +12,17 @@ import (
 
 type CustomersQueryParams struct {
 	woocommerce.Query
-	Search  string `url:"search"`
-	Exclude []int  `url:"exclude"`
-	Include []int  `url:"include"`
-	Email   string `url:"email"`
-	Role    string `url:"role"`
+	Search  string `url:"search,omitempty"`
+	Exclude []int  `url:"exclude,omitempty"`
+	Include []int  `url:"include,omitempty"`
+	Email   string `url:"email,omitempty"`
+	Role    string `url:"role,omitempty"`
 }
 
 func (m CustomersQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "registered_date").Error("无效的排序字段"))),
+		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("无效的邮箱"))),
 		validation.Field(&m.Role, validation.When(m.Role != "", validation.In("all", "administrator", "editor", "author", "contributor", "subscriber", "shop_manager").Error("无效的角色"))),
 	)
 }
