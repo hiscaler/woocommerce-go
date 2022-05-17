@@ -27,6 +27,7 @@ func TestMain(m *testing.M) {
 	wooService = NewService(wooInstance)
 	m.Run()
 }
+
 func TestService_Orders(t *testing.T) {
 	params := OrdersQueryParams{}
 	orders, _, err := wooService.Orders(params)
@@ -34,5 +35,14 @@ func TestService_Orders(t *testing.T) {
 		t.Errorf("wooService.Orders error: %s", err.Error())
 	} else {
 		t.Logf("orders = %#v", orders)
+	}
+}
+
+func TestService_Order(t *testing.T) {
+	order, err := wooService.Order(849)
+	if err != nil {
+		t.Errorf("wooService.Order error: %s", err.Error())
+	} else {
+		t.Logf("order = %#v", order)
 	}
 }
