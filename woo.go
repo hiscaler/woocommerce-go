@@ -56,15 +56,14 @@ type WooCommerce struct {
 }
 
 // OAuth 签名
-func oauthSignature(config config.Config, method, endpoint, params string) string {
-	signingKey := config.ConsumerKey
+func oauthSignature(config config.Config, method, endpoint string, params url.Values) string {
+	consumerSecret := config.ConsumerSecret
 	if config.Version != "v1" && config.Version != "v2" {
-		signingKey = signingKey + "&"
+		consumerSecret = consumerSecret + "&"
 	}
-
-	a := strings.Join([]string{method, url.QueryEscape(endpoint), url.QueryEscape(params)}, "&")
-	mac := hmac.New(sha256.New, []byte(signingKey))
-	mac.Write([]byte(a))
+	s := method + "&" + url.QueryEscape(endpoint) + "&" + url.QueryEscape(params.Encode())
+	mac := hmac.New(sha256.New, []byte(consumerSecret))
+	mac.Write([]byte(s))
 	signatureBytes := mac.Sum(nil)
 	return base64.StdEncoding.EncodeToString(signatureBytes)
 }
@@ -82,6 +81,8 @@ func NewClient(config config.Config) *WooCommerce {
 	// Add default value
 	if config.Version == "" {
 		config.Version = "v3"
+	} else {
+		config.Version = strings.ToLower(config.Version)
 	}
 	if config.Timeout < 2 {
 		config.Timeout = 2
@@ -92,9 +93,9 @@ func NewClient(config config.Config) *WooCommerce {
 		SetDebug(config.Debug).
 		SetBaseURL(storeURL).
 		SetHeaders(map[string]string{
-			"Content-Type": "application/text",
+			"Content-Type": "application/json",
 			"Accept":       "application/json",
-			// "User-Agent":   UserAgent,
+			"User-Agent":   UserAgent,
 		}).
 		SetAllowGetMethodPayload(true).
 		SetTimeout(config.Timeout * time.Second).
@@ -124,7 +125,8 @@ func NewClient(config config.Config) *WooCommerce {
 				sha1Nonce := fmt.Sprintf("%x", sha1.Sum(nonce))
 				params.Add("oauth_nonce", sha1Nonce)
 				params.Add("oauth_signature_method", HashAlgorithm)
-				params.Add("oauth_signature", oauthSignature(config, request.Method, request.URL, params.Encode()))
+				endpoint := client.BaseURL + request.URL
+				params.Add("oauth_signature", oauthSignature(config, request.Method, endpoint, params))
 			}
 			request.SetQueryParamsFromValues(params)
 			return nil
