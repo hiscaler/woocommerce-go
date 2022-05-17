@@ -50,3 +50,8 @@ categories
 ### Tax Rates
 
 - TaxRates(params TaxRatesQueryParams) (items []TaxRate, isLastPage bool, err error) // List all tax rates
+
+### Customers
+
+- Customers(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) // List all customers
+- Customer(id int) (item customer.Customer, err error)                                           // Retrieve a customer
