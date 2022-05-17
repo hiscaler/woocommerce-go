@@ -2,7 +2,6 @@ package order
 
 import (
 	"github.com/hiscaler/woocommerce-go/entity"
-	"time"
 )
 
 type LineItem struct {
@@ -58,10 +57,10 @@ type Order struct {
 	Status             string                `json:"status"`
 	Currency           string                `json:"currency"`
 	CurrencySymbol     string                `json:"currency_symbol"`
-	DateCreated        time.Time             `json:"date_created"`
-	DateCreatedGMT     time.Time             `json:"date_created_gmt"`
-	DateModified       time.Time             `json:"date_modified"`
-	DateModifiedGMT    time.Time             `json:"date_modified_gmt"`
+	DateCreated        string                `json:"date_created"`
+	DateCreatedGMT     string                `json:"date_created_gmt"`
+	DateModified       string                `json:"date_modified"`
+	DateModifiedGMT    string                `json:"date_modified_gmt"`
 	DiscountTotal      string                `json:"discount_total"`
 	DiscountTax        string                `json:"discount_tax"`
 	ShippingTotal      string                `json:"shipping_total"`
@@ -79,10 +78,10 @@ type Order struct {
 	PaymentMethod      string                `json:"payment_method"`
 	PaymentMethodTitle string                `json:"payment_method_title"`
 	TransactionId      string                `json:"transaction_id"`
-	DatePaid           time.Time             `json:"date_paid"`
-	DatePaidGMT        time.Time             `json:"date_paid_gmt"`
-	DateCompleted      time.Time             `json:"date_completed"`
-	DateCompletedGMT   time.Time             `json:"date_completed_gmt"`
+	DatePaid           string                `json:"date_paid"`
+	DatePaidGMT        string                `json:"date_paid_gmt"`
+	DateCompleted      string                `json:"date_completed"`
+	DateCompletedGMT   string                `json:"date_completed_gmt"`
 	CartHash           string                `json:"cart_hash"`
 	MetaData           []entity.MetaData     `json:"meta_data"`
 	LineItems          []LineItem            `json:"line_items"`
