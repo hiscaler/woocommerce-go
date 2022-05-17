@@ -23,7 +23,7 @@ type CategoriesQueryParams struct {
 
 func (m CategoriesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的排序字段"))),
 	)
 }
 

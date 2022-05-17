@@ -33,7 +33,7 @@ type TaxRatesQueryParams struct {
 
 func (m TaxRatesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "order", "priority").Error("无效的的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "order", "priority").Error("无效的排序字段"))),
 	)
 }
 
