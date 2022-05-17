@@ -2,21 +2,20 @@ package order
 
 import (
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
+	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/order"
 	jsoniter "github.com/json-iterator/go"
 )
 
 type OrdersQueryParams struct {
-	Context       string   `url:"context,omitempty"`
+	woocommerce.Query
 	Search        string   `url:"search"`
 	After         string   `url:"after"`
 	Before        string   `url:"before"`
 	Exclude       []int    `url:"exclude"`
 	Include       []int    `url:"include"`
-	Offset        int      `url:"offset"`
-	Order         string   `url:"order,omitempty"`
-	OrderBy       string   `url:"orderby,omitempty"`
 	Parent        []int    `url:"parent"`
 	ParentExclude []int    `url:"parent_exclude"`
 	Status        []string `url:"status,omitempty"`
@@ -26,7 +25,10 @@ type OrdersQueryParams struct {
 }
 
 func (m OrdersQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序字段"))),
+		validation.Field(&m.Status, validation.When(m.OrderBy != "", validation.In("any", "pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed ", "trash").Error("无效的状态"))),
+	)
 }
 
 func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) {
