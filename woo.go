@@ -125,14 +125,18 @@ func NewClient(config config.Config) *WooCommerce {
 				sha1Nonce := fmt.Sprintf("%x", sha1.Sum(nonce))
 				params.Add("oauth_nonce", sha1Nonce)
 				params.Add("oauth_signature_method", HashAlgorithm)
-				endpoint := client.BaseURL + request.URL
-				params.Add("oauth_signature", oauthSignature(config, request.Method, endpoint, params))
+				for k, vs := range request.QueryParam {
+					for _, v := range vs {
+						params.Add(k, v)
+					}
+				}
+				params.Add("oauth_signature", oauthSignature(config, request.Method, client.BaseURL+request.URL, params))
 			}
 			request.SetQueryParamsFromValues(params)
 			return nil
 		}).
 		OnAfterResponse(func(client *resty.Client, response *resty.Response) (err error) {
-			if response.IsSuccess() {
+			if response.IsError() {
 				r := struct {
 					Code    string `json:"code"`
 					Message string `json:"message"`
