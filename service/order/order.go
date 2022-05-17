@@ -16,7 +16,7 @@ type OrdersQueryParams struct {
 	Include       []int    `url:"include"`
 	Offset        int      `url:"offset"`
 	Order         string   `url:"order,omitempty"`
-	OrderBy       string   `url:"Orderby,omitempty"`
+	OrderBy       string   `url:"orderby,omitempty"`
 	Parent        []int    `url:"parent"`
 	ParentExclude []int    `url:"parent_exclude"`
 	Status        []string `url:"status,omitempty"`
