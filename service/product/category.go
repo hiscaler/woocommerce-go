@@ -16,7 +16,7 @@ type CategoriesQueryParams struct {
 	Exclude   []string `url:"exclude,omitempty"`
 	Include   []string `url:"include,omitempty"`
 	HideEmpty bool     `url:"hide_empty,omitempty"`
-	Parent    int      `url:"parent"`
+	Parent    int      `url:"parent,omitempty"`
 	Product   int      `url:"product,omitempty"`
 	Slug      string   `url:"slug,omitempty"`
 }

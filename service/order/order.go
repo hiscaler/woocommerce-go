@@ -11,16 +11,16 @@ import (
 
 type OrdersQueryParams struct {
 	woocommerce.Query
-	Search        string   `url:"search"`
-	After         string   `url:"after"`
-	Before        string   `url:"before"`
-	Exclude       []int    `url:"exclude"`
-	Include       []int    `url:"include"`
-	Parent        []int    `url:"parent"`
-	ParentExclude []int    `url:"parent_exclude"`
-	Status        []string `url:"status,omitempty"`
-	Customer      int      `url:"customer"`
-	Product       int      `url:"product"`
+	Search        string   `url:"search,omitempty"`
+	After         string   `url:"after,omitempty"`
+	Before        string   `url:"before,omitempty"`
+	Exclude       []int    `url:"exclude,omitempty"`
+	Include       []int    `url:"include,omitempty"`
+	Parent        []int    `url:"parent,omitempty"`
+	ParentExclude []int    `url:"parent_exclude,omitempty"`
+	Status        []string `url:"status,omitempty,omitempty"`
+	Customer      int      `url:"customer,omitempty"`
+	Product       int      `url:"product,omitempty"`
 	DecimalPoint  int      `url:"dp,omitempty"`
 }
 

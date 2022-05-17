@@ -27,8 +27,7 @@ type TaxRate struct {
 
 type TaxRatesQueryParams struct {
 	woocommerce.Query
-	OrderBy string `url:"orderby,omitempty"`
-	Class   string `url:"class,omitempty"`
+	Class string `url:"class,omitempty"`
 }
 
 func (m TaxRatesQueryParams) Validate() error {
