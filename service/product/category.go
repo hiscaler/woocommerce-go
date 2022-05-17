@@ -4,25 +4,27 @@ import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/google/go-querystring/query"
+	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
 
 type CategoriesQueryParams struct {
-	Context   string   `json:"context,omitempty"`
-	Search    string   `json:"search,omitempty"`
-	Exclude   []string `json:"exclude,omitempty"`
-	Include   []string `json:"include,omitempty"`
-	Order     string   `json:"order,omitempty"`
-	OrderBy   string   `json:"orderby,omitempty"`
-	HideEmpty bool     `json:"hide_empty,omitempty"`
-	Parent    int      `json:"parent"`
-	Product   int      `json:"product,omitempty"`
-	Slug      string   `json:"slug,omitempty"`
+	woocommerce.Query
+	Search    string   `url:"search,omitempty"`
+	Exclude   []string `url:"exclude,omitempty"`
+	Include   []string `url:"include,omitempty"`
+	HideEmpty bool     `url:"hide_empty,omitempty"`
+	Parent    int      `url:"parent"`
+	Product   int      `url:"product,omitempty"`
+	Slug      string   `url:"slug,omitempty"`
 }
 
 func (m CategoriesQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的的排序字段"))),
+	)
 }
 
 func (s service) Categories(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) {
@@ -31,10 +33,9 @@ func (s service) Categories(params CategoriesQueryParams) (items []product.Categ
 	}
 
 	var res []product.Category
-	qp := make(map[string]string, 0)
-	resp, err := s.woo.Client.R().
-		SetQueryParams(qp).
-		Get("/products/categories")
+	params.TidyVars()
+	urlValues, _ := query.Values(params)
+	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/products/categories")
 	if err != nil {
 		return
 	}
