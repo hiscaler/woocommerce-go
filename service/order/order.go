@@ -2,26 +2,27 @@ package order
 
 import (
 	"fmt"
+	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity/order"
 	jsoniter "github.com/json-iterator/go"
 )
 
 type OrdersQueryParams struct {
-	Context       string   `json:"context,omitempty"`
-	Search        string   `json:"search"`
-	After         string   `json:"after"`
-	Before        string   `json:"before"`
-	Exclude       []int    `json:"exclude"`
-	Include       []int    `json:"include"`
-	Offset        int      `json:"offset"`
-	Order         string   `json:"order,omitempty"`
-	OrderBy       string   `json:"Orderby,omitempty"`
-	Parent        []int    `json:"parent"`
-	ParentExclude []int    `json:"parent_exclude"`
-	Status        []string `json:"status,omitempty"`
-	Customer      int      `json:"customer"`
-	Product       int      `json:"product"`
-	DecimalPoint  int      `json:"dp,omitempty"`
+	Context       string   `url:"context,omitempty"`
+	Search        string   `url:"search"`
+	After         string   `url:"after"`
+	Before        string   `url:"before"`
+	Exclude       []int    `url:"exclude"`
+	Include       []int    `url:"include"`
+	Offset        int      `url:"offset"`
+	Order         string   `url:"order,omitempty"`
+	OrderBy       string   `url:"Orderby,omitempty"`
+	Parent        []int    `url:"parent"`
+	ParentExclude []int    `url:"parent_exclude"`
+	Status        []string `url:"status,omitempty"`
+	Customer      int      `url:"customer"`
+	Product       int      `url:"product"`
+	DecimalPoint  int      `url:"dp,omitempty"`
 }
 
 func (m OrdersQueryParams) Validate() error {
@@ -33,11 +34,9 @@ func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPa
 		return
 	}
 
+	urlValues, _ := query.Values(params)
 	var res []order.Order
-	qp := make(map[string]string, 0)
-	resp, err := s.woo.Client.R().
-		SetQueryParams(qp).
-		Get("/orders")
+	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/orders")
 	if err != nil {
 		return
 	}
