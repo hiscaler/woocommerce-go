@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-resty/resty/v2"
+	"github.com/hiscaler/gox/inx"
 	"github.com/hiscaler/woocommerce-go/config"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/json-iterator/go/extra"
@@ -83,6 +84,9 @@ func NewClient(config config.Config) *WooCommerce {
 		config.Version = "v3"
 	} else {
 		config.Version = strings.ToLower(config.Version)
+		if !inx.StringIn(config.Version, "v1", "v1", "v3") {
+			config.Version = "v3"
+		}
 	}
 	if config.Timeout < 2 {
 		config.Timeout = 2

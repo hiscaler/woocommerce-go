@@ -10,6 +10,7 @@ require (
 )
 
 require (
+	github.com/hiscaler/gox v0.0.0-20220516003824-75d46ed966ba // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	golang.org/x/net v0.0.0-20211029224645-99673261e6eb // indirect
