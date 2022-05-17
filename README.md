@@ -42,3 +42,7 @@ categories
 ### System Status
 
 - SystemStatus() (item systemstatus.SystemStatus, err error) // List all system status items
+
+### Settings
+
+- Groups() (items []Group, err error) // List all settings groups
