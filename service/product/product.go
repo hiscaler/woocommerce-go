@@ -2,41 +2,45 @@ package product
 
 import (
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/google/go-querystring/query"
+	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
 
 type ProductsQueryParams struct {
-	Context       string   `json:"context,omitempty"`
-	Search        string   `json:"search,omitempty"`
-	After         string   `json:"after,omitempty"`
-	Before        string   `json:"before,omitempty"`
-	Exclude       []string `json:"exclude,omitempty"`
-	Include       []string `json:"include,omitempty"`
-	Offset        int      `json:"offset,omitempty"`
-	Order         string   `json:"order,omitempty"`
-	OrderBy       string   `json:"orderby,omitempty"`
-	Parent        []string `json:"parent,omitempty"`
-	ParentExclude []string `json:"parent_exclude,omitempty"`
-	Slug          string   `json:"slug,omitempty"`
-	Status        string   `json:"status,omitempty"`
-	Type          string   `json:"type,omitempty"`
-	SKU           string   `json:"sku,omitempty"`
-	Featured      bool     `json:"featured,omitempty"`
-	Category      string   `json:"category,omitempty"`
-	Tag           string   `json:"tag,omitempty"`
-	ShippingClass string   `json:"shipping_class,omitempty"`
-	Attribute     string   `json:"attribute,omitempty"`
-	AttributeTerm string   `json:"attribute_term,omitempty"`
-	TaxClass      string   `json:"tax_class,omitempty"`
-	OnSale        bool     `json:"on_sale,omitempty"`
-	MinPrice      string   `json:"min_price,omitempty"`
-	MaxPrice      string   `json:"max_price,omitempty"`
-	StockStatus   string   `json:"stock_status,omitempty"`
+	woocommerce.Query
+	Search        string   `url:"search,omitempty"`
+	After         string   `url:"after,omitempty"`
+	Before        string   `url:"before,omitempty"`
+	Exclude       []string `url:"exclude,omitempty"`
+	Include       []string `url:"include,omitempty"`
+	Parent        []string `url:"parent,omitempty"`
+	ParentExclude []string `url:"parent_exclude,omitempty"`
+	Slug          string   `url:"slug,omitempty"`
+	Status        string   `url:"status,omitempty"`
+	Type          string   `url:"type,omitempty"`
+	SKU           string   `url:"sku,omitempty"`
+	Featured      bool     `url:"featured,omitempty"`
+	Category      string   `url:"category,omitempty"`
+	Tag           string   `url:"tag,omitempty"`
+	ShippingClass string   `url:"shipping_class,omitempty"`
+	Attribute     string   `url:"attribute,omitempty"`
+	AttributeTerm string   `url:"attribute_term,omitempty"`
+	TaxClass      string   `url:"tax_class,omitempty"`
+	OnSale        bool     `url:"on_sale,omitempty"`
+	MinPrice      string   `url:"min_price,omitempty"`
+	MaxPrice      string   `url:"max_price,omitempty"`
+	StockStatus   string   `url:"stock_status,omitempty"`
 }
 
 func (m ProductsQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "title", "slug", "price", "popularity", "rating").Error("无效的排序字段"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("无效的状态"))),
+		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("simple", "grouped", "external", "variable").Error("无效的状态"))),
+	)
 }
 
 func (s service) Products(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) {
@@ -45,10 +49,9 @@ func (s service) Products(params ProductsQueryParams) (items []product.Product, 
 	}
 
 	var res []product.Product
-	qp := make(map[string]string, 0)
-	resp, err := s.woo.Client.R().
-		SetQueryParams(qp).
-		Get("/products")
+	params.TidyVars()
+	urlValues, _ := query.Values(params)
+	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/products")
 	if err != nil {
 		return
 	}
