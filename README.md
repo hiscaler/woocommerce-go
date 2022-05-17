@@ -54,4 +54,9 @@ categories
 ### Customers
 
 - Customers(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) // List all customers
-- Customer(id int) (item customer.Customer, err error)                                           // Retrieve a customer
+- Customer(id int) (item customer.Customer, err error)
+
+### Order Notes
+
+- OrderNotes(orderId int, params OrderNotesQueryParams) (items []order.Note, isLastPage bool, err error) // List all order notes
+- OrderNote(orderId, noteId int) (item order.Note, err error)                                            // Retrieve an order note
