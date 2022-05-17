@@ -2,6 +2,8 @@ package taxrate
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/google/go-querystring/query"
+	"github.com/hiscaler/woocommerce-go"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -24,9 +26,7 @@ type TaxRate struct {
 }
 
 type TaxRatesQueryParams struct {
-	Context string `url:"context"`
-	Order   string `url:"order,omitempty"`
-	Offset  int    `url:"offset,omitempty"`
+	woocommerce.Query
 	OrderBy string `url:"orderby,omitempty"`
 	Class   string `url:"class,omitempty"`
 }
@@ -34,7 +34,7 @@ type TaxRatesQueryParams struct {
 func (m TaxRatesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Context, validation.In("view", "edit").Error("错误的请求范围")),
-		validation.Field(&m.Order, validation.When(m.Order != "", validation.In("asc", "desc").Error("错误的排序方式"))),
+		validation.Field(&m.OrderBy, validation.When(m.Order != "", validation.In("id", "order", "priority").Error("无效的的排序字段"))),
 	)
 }
 
@@ -44,10 +44,9 @@ func (s service) TaxRates(params TaxRatesQueryParams) (items []TaxRate, isLastPa
 	}
 
 	var res []TaxRate
-	qp := make(map[string]string, 0)
-	resp, err := s.woo.Client.R().
-		SetQueryParams(qp).
-		Get("/taxes")
+	params.TidyVars()
+	urlValues, _ := query.Values(params)
+	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/taxes")
 	if err != nil {
 		return
 	}
