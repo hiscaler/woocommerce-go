@@ -55,6 +55,7 @@ func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPa
 		return
 	}
 
+	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	var res []order.Order
 	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/orders")
@@ -66,6 +67,8 @@ func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPa
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			items = res
 		}
+	} else {
+		err = woocommerce.ErrorWrap(resp.StatusCode(), "")
 	}
 	return
 }
@@ -81,6 +84,8 @@ func (s service) Order(id int) (item order.Order, err error) {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			item = res
 		}
+	} else {
+		err = woocommerce.ErrorWrap(resp.StatusCode(), "")
 	}
 	return
 }

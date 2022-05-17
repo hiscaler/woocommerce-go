@@ -4,6 +4,7 @@
   "version": "v3",
   "consumer_key": "",
   "consumer_secret": "",
+  "use_auth_in_query": false,
   "timeout": 10,
   "verify_ssl": false,
   "enable_cache": false

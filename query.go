@@ -13,9 +13,9 @@ const (
 )
 
 type Query struct {
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
-	Offset  int    `json:"offset,omitempty"`
+	Page    int    `url:"page,omitempty"`
+	PerPage int    `url:"per_page,omitempty"`
+	Offset  int    `url:"offset,omitempty"`
 	Order   string `url:"order,omitempty"`
 	OrderBy string `url:"order_by,omitempty"`
 	Context string `url:"context,omitempty"`

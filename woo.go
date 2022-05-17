@@ -92,9 +92,9 @@ func NewClient(config config.Config) *WooCommerce {
 		SetDebug(config.Debug).
 		SetBaseURL(storeURL).
 		SetHeaders(map[string]string{
-			"Content-Type": "application/json",
+			"Content-Type": "application/text",
 			"Accept":       "application/json",
-			"User-Agent":   UserAgent,
+			// "User-Agent":   UserAgent,
 		}).
 		SetAllowGetMethodPayload(true).
 		SetTimeout(config.Timeout * time.Second).
@@ -108,8 +108,13 @@ func NewClient(config config.Config) *WooCommerce {
 			params := url.Values{}
 			if strings.HasPrefix(config.URL, "https") {
 				// basicAuth
-				params.Add("consumer_key", config.ConsumerKey)
-				params.Add("consumer_secret", config.ConsumerSecret)
+				if config.UseAuthInQuery {
+					params.Add("consumer_key", config.ConsumerKey)
+					params.Add("consumer_secret", config.ConsumerSecret)
+				} else {
+					client.SetAuthScheme("Basic").
+						SetAuthToken(fmt.Sprintf("%s %s", config.ConsumerKey, config.ConsumerSecret))
+				}
 			} else {
 				// oAuth
 				params.Add("oauth_consumer_key", config.ConsumerKey)
