@@ -27,7 +27,7 @@ type OrdersQueryParams struct {
 func (m OrdersQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序字段"))),
-		validation.Field(&m.Status, validation.When(m.OrderBy != "", validation.In("any", "pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed ", "trash").Error("无效的状态"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed ", "trash").Error("无效的状态"))),
 	)
 }
 
