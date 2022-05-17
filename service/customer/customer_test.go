@@ -30,19 +30,36 @@ func TestMain(m *testing.M) {
 
 func TestService_Customers(t *testing.T) {
 	params := CustomersQueryParams{}
-	orders, _, err := wooService.Customers(params)
+	customers, _, err := wooService.Customers(params)
 	if err != nil {
 		t.Errorf("wooService.Customers error: %s", err.Error())
 	} else {
-		t.Logf("orders = %#v", orders)
+		t.Logf("customers = %#v", customers)
 	}
 }
 
 func TestService_Customer(t *testing.T) {
-	order, err := wooService.Customer(1)
+	customer, err := wooService.Customer(1)
 	if err != nil {
 		t.Errorf("wooService.Customer error: %s", err.Error())
 	} else {
-		t.Logf("order = %#v", order)
+		t.Logf("customer = %#v", customer)
+	}
+}
+
+func TestService_CreateCustomer(t *testing.T) {
+	req := CreateCustomerRequest{
+		Email:     "abc@example.com",
+		FirstName: "zhang",
+		LastName:  "san",
+		Username:  "zhangsan",
+		Password:  "123",
+		MetaData:  nil,
+	}
+	customer, err := wooService.CreateCustomer(req)
+	if err != nil {
+		t.Errorf("wooService.CreateCustomer error: %s", err.Error())
+	} else {
+		t.Logf("customer = %#v", customer)
 	}
 }
