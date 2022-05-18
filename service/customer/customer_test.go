@@ -127,3 +127,43 @@ func TestService_UpdateCustomer(t *testing.T) {
 		}
 	}
 }
+
+func TestService_DeleteCustomer(t *testing.T) {
+	username := randx.Letter(6, false)
+	req := CreateCustomerRequest{
+		Email:     username + "@example.com",
+		FirstName: "zhang",
+		LastName:  "san",
+		Username:  username,
+		Password:  "123",
+		MetaData:  nil,
+		Billing: &entity.Billing{
+			FirstName: "billfn-" + username,
+			LastName:  "billln-" + username,
+			Company:   "xx company",
+			Address1:  "China HN",
+			Address2:  "",
+			City:      "CS",
+			State:     "",
+			Postcode:  "410000",
+			Country:   "China",
+			Email:     "john@example.com",
+			Phone:     "1",
+		},
+	}
+	customer, err := wooService.CreateCustomer(req)
+	if err != nil {
+		t.Errorf("wooService.CreateCustomer error: %s", err.Error())
+	} else {
+		_, err = wooService.DeleteCustomer(customer.ID)
+		if err != nil {
+			// todo 501: Customers do not support trashing.
+			t.Errorf("wooService.DeleteCustomer error: %s", err.Error())
+		} else {
+			_, err = wooService.Customer(customer.ID)
+			if err == nil {
+				t.Errorf("wooService.Customer %d is exists, not deleted.", customer.ID)
+			}
+		}
+	}
+}

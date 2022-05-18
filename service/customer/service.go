@@ -14,6 +14,7 @@ type Service interface {
 	Customer(id int) (item customer.Customer, err error)                                           // Retrieve a customer
 	CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error)                  // Create a customer
 	UpdateCustomer(id int, req UpdateCustomerRequest) (item customer.Customer, err error)          // Update a customer
+	DeleteCustomer(id int) (item customer.Customer, err error)                                     // Delete a customer
 }
 
 func NewService(client *woocommerce.WooCommerce) Service {

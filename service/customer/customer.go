@@ -132,3 +132,16 @@ func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item custome
 	}
 	return
 }
+
+// DeleteCustomer Delete a customer
+func (s service) DeleteCustomer(id int) (item customer.Customer, err error) {
+	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/customers/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
