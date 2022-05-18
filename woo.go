@@ -69,6 +69,10 @@ type services struct {
 	ProductCategory ProductCategoryService
 	Customer        CustomerService
 	Order           orderService
+	OrderNote       orderNoteService
+	Setting         settingService
+	TaxClass        taxClassService
+	System          systemService
 }
 
 // OAuth 签名
@@ -189,6 +193,10 @@ func NewClient(config config.Config) *WooCommerce {
 		ProductCategory: (ProductCategoryService)(xService),
 		Customer:        (CustomerService)(xService),
 		Order:           (orderService)(xService),
+		OrderNote:       (orderNoteService)(xService),
+		Setting:         (settingService)(xService),
+		TaxClass:        (taxClassService)(xService),
+		System:          (systemService)(xService),
 	}
 	return wooInstance
 }
