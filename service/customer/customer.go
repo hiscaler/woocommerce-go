@@ -68,8 +68,8 @@ type CreateCustomerRequest struct {
 	LastName  string            `json:"last_name,omitempty"`
 	Username  string            `json:"username,omitempty"`
 	Password  string            `json:"password,omitempty"`
-	Billing   entity.Billing    `json:"billing,omitempty"`
-	Shipping  entity.Shipping   `json:"shipping,omitempty"`
+	Billing   *entity.Billing   `json:"billing,omitempty"`
+	Shipping  *entity.Shipping  `json:"shipping,omitempty"`
 	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
 }
 
@@ -80,6 +80,7 @@ func (m CreateCustomerRequest) Validate() error {
 		validation.Field(&m.LastName, validation.Required.Error("名不能为空")),
 		validation.Field(&m.Username, validation.Required.Error("登录帐号不能为空")),
 		validation.Field(&m.Password, validation.Required.Error("登录密码不能为空")),
+		validation.Field(&m.Billing),
 	)
 }
 

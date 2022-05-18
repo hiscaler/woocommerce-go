@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/config"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 	"os"
 	"testing"
@@ -39,7 +40,7 @@ func TestService_Customers(t *testing.T) {
 }
 
 func TestService_Customer(t *testing.T) {
-	customer, err := wooService.Customer(1)
+	customer, err := wooService.Customer(4)
 	if err != nil {
 		t.Errorf("wooService.Customer error: %s", err.Error())
 	} else {
@@ -49,12 +50,25 @@ func TestService_Customer(t *testing.T) {
 
 func TestService_CreateCustomer(t *testing.T) {
 	req := CreateCustomerRequest{
-		Email:     "abc@example.com",
+		Email:     "lisi2@example.com",
 		FirstName: "zhang",
 		LastName:  "san",
-		Username:  "zhangsan",
+		Username:  "lisi2",
 		Password:  "123",
 		MetaData:  nil,
+		Billing: &entity.Billing{
+			FirstName: "zhangsan",
+			LastName:  "wife",
+			Company:   "xx company",
+			Address1:  "China HN",
+			Address2:  "",
+			City:      "CS",
+			State:     "",
+			Postcode:  "410000",
+			Country:   "China",
+			Email:     "john@example.com",
+			Phone:     "1",
+		},
 	}
 	customer, err := wooService.CreateCustomer(req)
 	if err != nil {
