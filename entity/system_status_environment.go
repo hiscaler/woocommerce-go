@@ -1,7 +1,7 @@
-package systemstatus
+package entity
 
-// Environment System status - Environment properties
-type Environment struct {
+// SystemStatusEnvironment System status environment properties
+type SystemStatusEnvironment struct {
 	HomeURL                string `json:"home_url"`
 	SiteURL                string `json:"site_url"`
 	WCVersion              string `json:"wc_version"`

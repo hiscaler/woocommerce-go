@@ -2,7 +2,7 @@ package systemstatus
 
 import (
 	"github.com/hiscaler/woocommerce-go"
-	"github.com/hiscaler/woocommerce-go/entity/systemstatus"
+	"github.com/hiscaler/woocommerce-go/entity"
 )
 
 type service struct {
@@ -10,7 +10,7 @@ type service struct {
 }
 
 type Service interface {
-	SystemStatus() (item systemstatus.SystemStatus, err error) // List all system status items
+	SystemStatus() (item entity.SystemStatus, err error) // List all system status items
 }
 
 func NewService(client *woocommerce.WooCommerce) Service {

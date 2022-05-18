@@ -1,13 +1,13 @@
 package woocommerce
 
 import (
-	"github.com/hiscaler/woocommerce-go/entity/systemstatus"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
 
 type systemService service
 
-func (s systemService) Status() (item systemstatus.SystemStatus, err error) {
+func (s systemService) Status() (item entity.SystemStatus, err error) {
 	resp, err := s.httpClient.R().Get("/system_status")
 	if err != nil {
 		return

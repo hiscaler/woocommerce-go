@@ -1,7 +1,7 @@
-package systemstatus
+package entity
 
-// Setting System status - Settings properties
-type Setting struct {
+// SystemStatusSetting System status setting properties
+type SystemStatusSetting struct {
 	APIEnabled         bool     `json:"api_enabled"`
 	ForceSSL           bool     `json:"force_ssl"`
 	Currency           string   `json:"currency"`

@@ -1,7 +1,7 @@
-package systemstatus
+package entity
 
-// Theme System status - Theme properties
-type Theme struct {
+// SystemStatusTheme System status theme properties
+type SystemStatusTheme struct {
 	Name                  string   `json:"name"`
 	Version               string   `json:"version"`
 	VersionLatest         string   `json:"version_latest"`
