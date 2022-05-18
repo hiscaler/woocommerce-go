@@ -13,7 +13,7 @@ type productService service
 // Products
 
 type ProductsQueryParams struct {
-	QueryParams
+	queryParams
 	Search        string   `url:"search,omitempty"`
 	After         string   `url:"after,omitempty"`
 	Before        string   `url:"before,omitempty"`

@@ -12,7 +12,7 @@ import (
 type orderNoteService service
 
 type OrderNotesQueryParams struct {
-	QueryParams
+	queryParams
 	Type string `url:"type"`
 }
 

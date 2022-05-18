@@ -10,7 +10,7 @@ import (
 type taxRateService service
 
 type TaxRatesQueryParams struct {
-	QueryParams
+	queryParams
 	Class string `url:"class,omitempty"`
 }
 

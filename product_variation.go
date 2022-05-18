@@ -12,7 +12,7 @@ type productVariationService service
 // Product variations
 
 type ProductVariationsQueryParams struct {
-	QueryParams
+	queryParams
 	Search string `json:"search,omitempty"`
 }
 

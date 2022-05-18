@@ -12,7 +12,7 @@ const (
 	EditContext = "edit"
 )
 
-type QueryParams struct {
+type queryParams struct {
 	Page    int    `url:"page,omitempty"`
 	PerPage int    `url:"per_page,omitempty"`
 	Offset  int    `url:"offset,omitempty"`
@@ -21,7 +21,7 @@ type QueryParams struct {
 	Context string `url:"context,omitempty"`
 }
 
-func (q *QueryParams) TidyVars() *QueryParams {
+func (q *queryParams) TidyVars() *queryParams {
 	if q.Page <= 0 {
 		q.Page = 1
 	}
