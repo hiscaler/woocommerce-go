@@ -60,8 +60,8 @@ func (s service) Customer(id int) (item customer.Customer, err error) {
 	return
 }
 
-// UpsertCustomerRequest Create and update customer request
-type UpsertCustomerRequest struct {
+// CreateCustomerRequest Create customer request
+type CreateCustomerRequest struct {
 	Email     string            `json:"email,omitempty"`
 	FirstName string            `json:"first_name,omitempty"`
 	LastName  string            `json:"last_name,omitempty"`
@@ -72,9 +72,7 @@ type UpsertCustomerRequest struct {
 	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
 }
 
-// Create customer request
-
-func (m UpsertCustomerRequest) Validate() error {
+func (m CreateCustomerRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Email, validation.Required.Error("邮箱不能为空"), is.EmailFormat.Error("无效的邮箱")),
 		validation.Field(&m.FirstName, validation.Required.Error("姓不能为空")),
@@ -84,8 +82,6 @@ func (m UpsertCustomerRequest) Validate() error {
 		validation.Field(&m.Billing),
 	)
 }
-
-type CreateCustomerRequest = UpsertCustomerRequest
 
 func (s service) CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
@@ -105,7 +101,21 @@ func (s service) CreateCustomer(req CreateCustomerRequest) (item customer.Custom
 
 // Update customer
 
-type UpdateCustomerRequest = UpsertCustomerRequest
+type UpdateCustomerRequest struct {
+	Email     string            `json:"email,omitempty"`
+	FirstName string            `json:"first_name,omitempty"`
+	LastName  string            `json:"last_name,omitempty"`
+	Billing   *entity.Billing   `json:"billing,omitempty"`
+	Shipping  *entity.Shipping  `json:"shipping,omitempty"`
+	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
+}
+
+func (m UpdateCustomerRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("无效的邮箱"))),
+		validation.Field(&m.Billing),
+	)
+}
 
 func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
