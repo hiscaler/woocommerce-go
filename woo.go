@@ -71,6 +71,7 @@ type services struct {
 	Customer         customerService
 	Order            orderService
 	OrderNote        orderNoteService
+	OrderRefund      orderRefundService
 	Setting          settingService
 	TaxClass         taxClassService
 	System           systemService
@@ -198,6 +199,7 @@ func NewClient(config config.Config) *WooCommerce {
 		Customer:         (customerService)(xService),
 		Order:            (orderService)(xService),
 		OrderNote:        (orderNoteService)(xService),
+		OrderRefund:      (orderRefundService)(xService),
 		Setting:          (settingService)(xService),
 		TaxClass:         (taxClassService)(xService),
 		System:           (systemService)(xService),
