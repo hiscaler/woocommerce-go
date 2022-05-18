@@ -5,6 +5,7 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/hiscaler/gox/jsonx"
 	"github.com/hiscaler/gox/randx"
+	"github.com/hiscaler/woocommerce-go/entity"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
@@ -21,11 +22,12 @@ func TestCouponService_All(t *testing.T) {
 }
 
 func TestCouponService_One(t *testing.T) {
-	item, err := wooClient.Services.Coupon.One(4)
+	couponId := 4
+	item, err := wooClient.Services.Coupon.One(couponId)
 	if err != nil {
 		t.Errorf("wooClient.Services.Coupon.One error: %s", err.Error())
 	} else {
-		t.Logf("item = %s", jsonx.ToPrettyJson(item))
+		assert.Equal(t, couponId, item.ID, "coupon id")
 	}
 }
 
@@ -57,7 +59,7 @@ func TestCouponService_CreateUpdateDelete(t *testing.T) {
 		ExcludeSaleItems: false,
 		MinimumAmount:    2,
 	}
-	var oldItem, newItem Coupon
+	var oldItem, newItem entity.Coupon
 	var err error
 	oldItem, err = wooClient.Services.Coupon.Create(req)
 	if err != nil {

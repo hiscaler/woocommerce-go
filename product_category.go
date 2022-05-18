@@ -67,10 +67,10 @@ func (s productCategoryService) One(id int) (item entity.ProductCategory, err er
 // 新增商品标签
 
 type UpsertCategoryRequest struct {
-	Name        string         `json:"name"`
-	Slug        string         `json:"slug"`
-	Parent      int            `json:"parent"`
-	Description string         `json:"description"`
+	Name        string               `json:"name"`
+	Slug        string               `json:"slug"`
+	Parent      int                  `json:"parent"`
+	Description string               `json:"description"`
 	Display     string               `json:"display,omitempty"`
 	Image       *entity.ProductImage `json:"image,omitempty"`
 	MenuOrder   int                  `json:"menu_order"`

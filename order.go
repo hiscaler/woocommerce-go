@@ -67,6 +67,7 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLas
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			items = res
+			isLastPage = len(items) < params.PerPage
 		}
 	} else {
 		err = ErrorWrap(resp.StatusCode(), "")
@@ -75,16 +76,13 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLas
 }
 
 func (s orderService) One(id int) (item entity.Order, err error) {
-	var res entity.Order
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/orders/%d", id))
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			item = res
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &item)
 	} else {
 		err = ErrorWrap(resp.StatusCode(), "")
 	}

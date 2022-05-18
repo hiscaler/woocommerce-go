@@ -6,14 +6,13 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
-	"strconv"
 )
 
 type orderNoteService service
 
 type OrderNotesQueryParams struct {
 	queryParams
-	Type string `url:"type"`
+	Type string `url:"type,omitempty"`
 }
 
 func (m OrderNotesQueryParams) Validate() error {
@@ -84,11 +83,9 @@ func (s orderNoteService) Create(orderId int, req CreateOrderNoteRequest) (item 
 	return
 }
 
-func (s service) Delete(orderId, noteId int, force bool) (item entity.OrderNote, err error) {
+func (s orderNoteService) Delete(orderId, noteId int, force bool) (item entity.OrderNote, err error) {
 	resp, err := s.httpClient.R().
-		SetBody(map[string]string{
-			"force": strconv.FormatBool(force),
-		}).
+		SetBody(map[string]bool{"force": force}).
 		Delete(fmt.Sprintf("/orders/%d/notes/%d", orderId, noteId))
 	if err != nil {
 		return

@@ -13,36 +13,6 @@ import (
 
 type couponService service
 
-type Coupon struct {
-	ID                        int               `json:"id"`
-	Code                      string            `json:"code"`
-	Amount                    float64           `json:"amount"`
-	DateCreated               string            `json:"date_created"`
-	DateCreatedGMT            string            `json:"date_created_gmt"`
-	DateModified              string            `json:"date_modified"`
-	DateModifiedGMT           string            `json:"date_modified_gmt"`
-	DiscountType              string            `json:"discount_type"`
-	Description               string            `json:"description"`
-	DateExpires               string            `json:"date_expires"`
-	DateExpiresGMT            string            `json:"date_expires_gmt"`
-	UsageCount                int               `json:"usage_count"`
-	IndividualUse             bool              `json:"individual_use"`
-	ProductIDs                []int             `json:"product_ids"`
-	ExcludedProductIDs        []int             `json:"excluded_product_ids"`
-	UsageLimit                int               `json:"usage_limit"`
-	UsageLimitPerUser         int               `json:"usage_limit_per_user"`
-	LimitUsageToXItems        int               `json:"limit_usage_to_x_items"`
-	FreeShipping              bool              `json:"free_shipping"`
-	ProductCategories         []int             `json:"product_categories"`
-	ExcludedProductCategories []int             `json:"excluded_product_categories"`
-	ExcludeSaleItems          bool              `json:"exclude_sale_items"`
-	MinimumAmount             float64           `json:"minimum_amount"`
-	MaximumAmount             float64           `json:"maximum_amount"`
-	EmailRestrictions         []string          `json:"email_restrictions"`
-	UsedBy                    []int             `json:"used_by"`
-	MetaData                  []entity.MetaData `json:"meta_data"`
-}
-
 type CouponsQueryParams struct {
 	queryParams
 	Search  string   `url:"search,omitempty"`
@@ -60,12 +30,11 @@ func (m CouponsQueryParams) Validate() error {
 }
 
 // All List all coupons
-func (s couponService) All(params CouponsQueryParams) (items []Coupon, isLastPage bool, err error) {
+func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
-	var res []Coupon
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/coupons")
@@ -74,8 +43,7 @@ func (s couponService) All(params CouponsQueryParams) (items []Coupon, isLastPag
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
 			isLastPage = len(items) < params.PerPage
 		}
 	}
@@ -83,7 +51,7 @@ func (s couponService) All(params CouponsQueryParams) (items []Coupon, isLastPag
 }
 
 // One Retrieve a coupon
-func (s couponService) One(id int) (item Coupon, err error) {
+func (s couponService) One(id int) (item entity.Coupon, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/coupons/%d", id))
 	if err != nil {
 		return
@@ -118,7 +86,7 @@ func (m CreateCouponRequest) Validate() error {
 }
 
 // Create Create a coupon
-func (s couponService) Create(req CreateCouponRequest) (item Coupon, err error) {
+func (s couponService) Create(req CreateCouponRequest) (item entity.Coupon, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -155,7 +123,7 @@ func (m UpdateCouponRequest) Validate() error {
 }
 
 // Update Update a coupon
-func (s couponService) Update(id int, req UpdateCouponRequest) (item Coupon, err error) {
+func (s couponService) Update(id int, req UpdateCouponRequest) (item entity.Coupon, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -173,7 +141,7 @@ func (s couponService) Update(id int, req UpdateCouponRequest) (item Coupon, err
 
 // Delete a coupon
 
-func (s couponService) Delete(id int, force bool) (item Coupon, err error) {
+func (s couponService) Delete(id int, force bool) (item entity.Coupon, err error) {
 	resp, err := s.httpClient.R().
 		SetBody(map[string]bool{"force": force}).
 		Delete(fmt.Sprintf("/coupons/%d", id))
@@ -209,9 +177,9 @@ func (m BatchCouponRequest) Validate() error {
 }
 
 type BatchCouponResult struct {
-	Create []Coupon `json:"create,omitempty"`
-	Update []Coupon `json:"update,omitempty"`
-	Delete []Coupon `json:"delete,omitempty"`
+	Create []entity.Coupon `json:"create,omitempty"`
+	Update []entity.Coupon `json:"update,omitempty"`
+	Delete []entity.Coupon `json:"delete,omitempty"`
 }
 
 // Batch Batch create/update/delete coupons
