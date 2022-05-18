@@ -2,7 +2,7 @@ package woocommerce
 
 import (
 	"errors"
-	"fmt"
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/hiscaler/gox/jsonx"
 	"github.com/hiscaler/gox/randx"
 	"github.com/stretchr/testify/assert"
@@ -48,7 +48,7 @@ func TestCouponService_Create(t *testing.T) {
 }
 
 func TestCouponService_CreateUpdateDelete(t *testing.T) {
-	code := strings.ToLower(randx.Letter(8, false))
+	code := gofakeit.LetterN(8)
 	req := CreateCouponRequest{
 		Code:             code,
 		DiscountType:     "percent",
@@ -117,8 +117,9 @@ func TestCouponService_Batch(t *testing.T) {
 	createRequests := make([]BatchCreateCouponRequest, n)
 	codes := make([]string, n)
 	for i := 0; i < n; i++ {
+		code := gofakeit.LetterN(8)
 		req := BatchCreateCouponRequest{
-			Code:             fmt.Sprintf("%s-%d", codePrefix, i),
+			Code:             code,
 			DiscountType:     "percent",
 			Amount:           float64(i),
 			IndividualUse:    false,
