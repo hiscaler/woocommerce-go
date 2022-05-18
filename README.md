@@ -7,7 +7,65 @@ WooCommerce SDK for golang
 
 https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 
-## APIs
+## Usage
+
+### Step 1. Create a new client
+
+```go
+// Read you config
+b, err := os.ReadFile("./config/config_test.json")
+if err != nil {
+    panic(fmt.Sprintf("Read config error: %s", err.Error()))
+}
+var c config.Config
+err = jsoniter.Unmarshal(b, &c)
+if err != nil {
+    panic(fmt.Sprintf("Parse config file error: %s", err.Error()))
+}
+
+wooClient := NewClient(c)
+```
+
+Now you get a wooCommerce client object, If you want operate data, please refer second step. 
+
+### Step 2. Call special service method
+```go
+// Product Query
+params := ProductsQueryParams{}
+wooClient.Services.Product.All(params)
+```
+
+10 records are returned by default.
+
+In most cases, you can filter by condition, example:
+
+```go
+params.SKU = "NO123"
+wooClient.Services.Product.All(params)
+```
+
+The first ten eligible records are returned in this case
+
+And you can retrieve one data use One() method.
+
+```go
+product, err := wooClient.Services.Product.One(1)
+```
+
+**Note**: If the error type is ErrNotFound, it indicates that the corresponding data is not found. If the error type is other error, an error may occur in the call.  So you should judge the results to further process your business logic.
+
+
+## Services
+
+### Coupons
+
+- All
+- One
+- Create
+- Delete
+- Batch
+
+## APIs（Will be discarded）
 
 ### Products
 
@@ -57,6 +115,7 @@ categories
 - Customer(id int) (item customer.Customer, err error)                                           // Retrieve a customer
 - CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error)                                     // Create a customer
 - UpdateCustomer(req UpdateCustomerRequest) (item customer.Customer, err error)                  // Update a customer
+
 ### Order Notes
 
 - OrderNotes(orderId int, params OrderNotesQueryParams) (items []order.Note, isLastPage bool, err error) // List all order notes
