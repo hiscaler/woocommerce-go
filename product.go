@@ -13,7 +13,7 @@ type ProductService service
 // Products
 
 type ProductsQueryParams struct {
-	Query
+	QueryParams
 	Search        string   `url:"search,omitempty"`
 	After         string   `url:"after,omitempty"`
 	Before        string   `url:"before,omitempty"`
@@ -87,7 +87,7 @@ func (s ProductService) One(id int) (item product.Product, err error) {
 // Product variations
 
 type ProductVariationsQueryParams struct {
-	Query
+	QueryParams
 	Search string `json:"search,omitempty"`
 }
 

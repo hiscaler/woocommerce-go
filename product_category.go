@@ -12,7 +12,7 @@ import (
 type ProductCategoryService service
 
 type CategoriesQueryParams struct {
-	Query
+	QueryParams
 	Search    string   `url:"search,omitempty"`
 	Exclude   []string `url:"exclude,omitempty"`
 	Include   []string `url:"include,omitempty"`
