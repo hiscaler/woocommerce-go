@@ -9,7 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type ProductCategoryService service
+type productCategoryService service
 
 type CategoriesQueryParams struct {
 	QueryParams
@@ -28,7 +28,7 @@ func (m CategoriesQueryParams) Validate() error {
 	)
 }
 
-func (s ProductCategoryService) All(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) {
+func (s productCategoryService) All(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -49,7 +49,7 @@ func (s ProductCategoryService) All(params CategoriesQueryParams) (items []produ
 	return
 }
 
-func (s ProductCategoryService) One(id int) (item product.Category, err error) {
+func (s productCategoryService) One(id int) (item product.Category, err error) {
 	var res product.Category
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
@@ -87,7 +87,7 @@ func (m UpsertCategoryRequest) Validate() error {
 	)
 }
 
-func (s ProductCategoryService) Create(req CreateCategoryRequest) (item product.Category, err error) {
+func (s productCategoryService) Create(req CreateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -103,7 +103,7 @@ func (s ProductCategoryService) Create(req CreateCategoryRequest) (item product.
 	return
 }
 
-func (s ProductCategoryService) Update(id int, req UpdateCategoryRequest) (item product.Category, err error) {
+func (s productCategoryService) Update(id int, req UpdateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -119,7 +119,7 @@ func (s ProductCategoryService) Update(id int, req UpdateCategoryRequest) (item 
 	return
 }
 
-func (s ProductCategoryService) Delete(id int) (item product.Category, err error) {
+func (s productCategoryService) Delete(id int) (item product.Category, err error) {
 	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
 		return
@@ -156,7 +156,7 @@ type BatchCategoriesResult struct {
 	Delete []product.Tag `json:"delete"`
 }
 
-func (s ProductCategoryService) Batch(req CUDCategoriesRequest) (res BatchCategoriesResult, err error) {
+func (s productCategoryService) Batch(req CUDCategoriesRequest) (res BatchCategoriesResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}

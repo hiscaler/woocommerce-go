@@ -8,7 +8,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type ProductService service
+type productService service
 
 // Products
 
@@ -47,7 +47,7 @@ func (m ProductsQueryParams) Validate() error {
 }
 
 // All List all products
-func (s ProductService) All(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) {
+func (s productService) All(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -69,7 +69,7 @@ func (s ProductService) All(params ProductsQueryParams) (items []product.Product
 }
 
 // One Retrieve a product
-func (s ProductService) One(id int) (item product.Product, err error) {
+func (s productService) One(id int) (item product.Product, err error) {
 	var res product.Product
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/products/%d", id))
 	if err != nil {
@@ -80,41 +80,6 @@ func (s ProductService) One(id int) (item product.Product, err error) {
 		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
 			item = res
 		}
-	}
-	return
-}
-
-// Product variations
-
-type ProductVariationsQueryParams struct {
-	QueryParams
-	Search string `json:"search,omitempty"`
-}
-
-func (m ProductVariationsQueryParams) Validate() error {
-	return nil
-}
-
-// Variations List all product variations
-func (s ProductService) Variations(productId int, params ProductVariationsQueryParams) (items []product.Variation, isLastPage bool, err error) {
-	if err = params.Validate(); err != nil {
-		return
-	}
-
-	params.TidyVars()
-	urlValues, _ := query.Values(params)
-	var res []product.Variation
-	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/products/%d/variations", productId))
-	if err != nil {
-		return
-	}
-
-	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
-		}
-	} else {
-		err = ErrorWrap(resp.StatusCode(), "")
 	}
 	return
 }

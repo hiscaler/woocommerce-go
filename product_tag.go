@@ -9,7 +9,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type ProductTagService service
+type productTagService service
 
 type ProductTagsQueryParams struct {
 	QueryParams
@@ -27,7 +27,7 @@ func (m ProductTagsQueryParams) Validate() error {
 	)
 }
 
-func (s ProductTagService) All(params ProductTagsQueryParams) (items []product.Tag, isLastPage bool, err error) {
+func (s productTagService) All(params ProductTagsQueryParams) (items []product.Tag, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -48,7 +48,7 @@ func (s ProductTagService) All(params ProductTagsQueryParams) (items []product.T
 	return
 }
 
-func (s ProductTagService) One(id int) (item product.Tag, err error) {
+func (s productTagService) One(id int) (item product.Tag, err error) {
 	var res product.Tag
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
@@ -82,7 +82,7 @@ func (m UpsertTagRequest) Validate() error {
 	)
 }
 
-func (s ProductTagService) Create(req CreateTagRequest) (item product.Tag, err error) {
+func (s productTagService) Create(req CreateTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -98,7 +98,7 @@ func (s ProductTagService) Create(req CreateTagRequest) (item product.Tag, err e
 	return
 }
 
-func (s ProductTagService) Update(id int, req UpdateTagRequest) (item product.Tag, err error) {
+func (s productTagService) Update(id int, req UpdateTagRequest) (item product.Tag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -114,7 +114,7 @@ func (s ProductTagService) Update(id int, req UpdateTagRequest) (item product.Ta
 	return
 }
 
-func (s ProductTagService) Delete(id int) (item product.Tag, err error) {
+func (s productTagService) Delete(id int) (item product.Tag, err error) {
 	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
@@ -151,7 +151,7 @@ type BatchTagsResult struct {
 	Delete []product.Tag `json:"delete"`
 }
 
-func (s ProductTagService) Batch(req CUDTagsRequest) (res BatchTagsResult, err error) {
+func (s productTagService) Batch(req CUDTagsRequest) (res BatchTagsResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}

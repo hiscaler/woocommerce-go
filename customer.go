@@ -10,7 +10,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type CustomerService service
+type customerService service
 
 type CustomersQueryParams struct {
 	QueryParams
@@ -29,7 +29,7 @@ func (m CustomersQueryParams) Validate() error {
 	)
 }
 
-func (s CustomerService) All(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) {
+func (s customerService) All(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -50,7 +50,7 @@ func (s CustomerService) All(params CustomersQueryParams) (items []customer.Cust
 	return
 }
 
-func (s CustomerService) One(id int) (item customer.Customer, err error) {
+func (s customerService) One(id int) (item customer.Customer, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
@@ -85,7 +85,7 @@ func (m CreateCustomerRequest) Validate() error {
 	)
 }
 
-func (s CustomerService) Create(req CreateCustomerRequest) (item customer.Customer, err error) {
+func (s customerService) Create(req CreateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -119,7 +119,7 @@ func (m UpdateCustomerRequest) Validate() error {
 	)
 }
 
-func (s CustomerService) Update(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
+func (s customerService) Update(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -136,7 +136,7 @@ func (s CustomerService) Update(id int, req UpdateCustomerRequest) (item custome
 }
 
 // Delete Delete a customer
-func (s CustomerService) Delete(id int) (item customer.Customer, err error) {
+func (s customerService) Delete(id int) (item customer.Customer, err error) {
 	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
