@@ -1,17 +1,18 @@
-package order
+package woocommerce
 
 import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/order"
 	jsoniter "github.com/json-iterator/go"
 )
 
+type orderService service
+
 type OrdersQueryParams struct {
-	woocommerce.QueryParams
+	QueryParams
 	Search        string   `url:"search,omitempty"`
 	After         string   `url:"after,omitempty"`
 	Before        string   `url:"before,omitempty"`
@@ -50,7 +51,7 @@ func (m OrdersQueryParams) Validate() error {
 	)
 }
 
-func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) {
+func (s orderService) All(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -58,7 +59,7 @@ func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPa
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	var res []order.Order
-	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/orders")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/orders")
 	if err != nil {
 		return
 	}
@@ -68,14 +69,14 @@ func (s service) Orders(params OrdersQueryParams) (items []order.Order, isLastPa
 			items = res
 		}
 	} else {
-		err = woocommerce.ErrorWrap(resp.StatusCode(), "")
+		err = ErrorWrap(resp.StatusCode(), "")
 	}
 	return
 }
 
-func (s service) Order(id int) (item order.Order, err error) {
+func (s orderService) One(id int) (item order.Order, err error) {
 	var res order.Order
-	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/orders/%d", id))
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/orders/%d", id))
 	if err != nil {
 		return
 	}
@@ -85,7 +86,7 @@ func (s service) Order(id int) (item order.Order, err error) {
 			item = res
 		}
 	} else {
-		err = woocommerce.ErrorWrap(resp.StatusCode(), "")
+		err = ErrorWrap(resp.StatusCode(), "")
 	}
 	return
 }

@@ -1,17 +1,18 @@
-package product
+package woocommerce
 
 import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity/product"
 	jsoniter "github.com/json-iterator/go"
 )
 
+type ProductCategoryService service
+
 type CategoriesQueryParams struct {
-	woocommerce.QueryParams
+	Query
 	Search    string   `url:"search,omitempty"`
 	Exclude   []string `url:"exclude,omitempty"`
 	Include   []string `url:"include,omitempty"`
@@ -27,7 +28,7 @@ func (m CategoriesQueryParams) Validate() error {
 	)
 }
 
-func (s service) Categories(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) {
+func (s ProductCategoryService) All(params CategoriesQueryParams) (items []product.Category, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -35,7 +36,7 @@ func (s service) Categories(params CategoriesQueryParams) (items []product.Categ
 	var res []product.Category
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/products/categories")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products/categories")
 	if err != nil {
 		return
 	}
@@ -48,9 +49,9 @@ func (s service) Categories(params CategoriesQueryParams) (items []product.Categ
 	return
 }
 
-func (s service) Category(id int) (item product.Category, err error) {
+func (s ProductCategoryService) One(id int) (item product.Category, err error) {
 	var res product.Category
-	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/products/categories/%d", id))
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
 		return
 	}
@@ -86,12 +87,12 @@ func (m UpsertCategoryRequest) Validate() error {
 	)
 }
 
-func (s service) CreateCategory(req CreateCategoryRequest) (item product.Category, err error) {
+func (s ProductCategoryService) Create(req CreateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.woo.Client.R().SetBody(req).Post("/products/categories")
+	resp, err := s.httpClient.R().SetBody(req).Post("/products/categories")
 	if err != nil {
 		return
 	}
@@ -102,12 +103,12 @@ func (s service) CreateCategory(req CreateCategoryRequest) (item product.Categor
 	return
 }
 
-func (s service) UpdateCategory(id int, req UpdateCategoryRequest) (item product.Category, err error) {
+func (s ProductCategoryService) Update(id int, req UpdateCategoryRequest) (item product.Category, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.woo.Client.R().SetBody(req).Put(fmt.Sprintf("/products/categories/%d", id))
+	resp, err := s.httpClient.R().SetBody(req).Put(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
 		return
 	}
@@ -118,8 +119,8 @@ func (s service) UpdateCategory(id int, req UpdateCategoryRequest) (item product
 	return
 }
 
-func (s service) DeleteCategory(id int) (item product.Category, err error) {
-	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/products/categories/%d", id))
+func (s ProductCategoryService) Delete(id int) (item product.Category, err error) {
+	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
 		return
 	}
@@ -155,12 +156,12 @@ type BatchCategoriesResult struct {
 	Delete []product.Tag `json:"delete"`
 }
 
-func (s service) BatchCategories(req CUDCategoriesRequest) (res BatchCategoriesResult, err error) {
+func (s ProductCategoryService) Batch(req CUDCategoriesRequest) (res BatchCategoriesResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.woo.Client.R().SetBody(req).Post("products/categories/batch")
+	resp, err := s.httpClient.R().SetBody(req).Post("products/categories/batch")
 	if err != nil {
 		return
 	}

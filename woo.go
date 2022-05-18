@@ -64,8 +64,11 @@ type service struct {
 }
 
 type services struct {
-	Product    ProductService
-	ProductTag ProductTagService
+	Product         ProductService
+	ProductTag      ProductTagService
+	ProductCategory ProductCategoryService
+	Customer        CustomerService
+	Order           orderService
 }
 
 // OAuth 签名
@@ -181,8 +184,11 @@ func NewClient(config config.Config) *WooCommerce {
 		httpClient: client,
 	}
 	wooInstance.Services = services{
-		Product:    (ProductService)(xService),
-		ProductTag: (ProductTagService)(xService),
+		Product:         (ProductService)(xService),
+		ProductTag:      (ProductTagService)(xService),
+		ProductCategory: (ProductCategoryService)(xService),
+		Customer:        (CustomerService)(xService),
+		Order:           (orderService)(xService),
 	}
 	return wooInstance
 }

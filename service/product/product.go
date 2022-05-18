@@ -10,7 +10,7 @@ import (
 )
 
 type ProductsQueryParams struct {
-	woocommerce.Query
+	woocommerce.QueryParams
 	Search        string   `url:"search,omitempty"`
 	After         string   `url:"after,omitempty"`
 	Before        string   `url:"before,omitempty"`

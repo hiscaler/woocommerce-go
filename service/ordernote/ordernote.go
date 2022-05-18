@@ -11,7 +11,7 @@ import (
 )
 
 type OrderNotesQueryParams struct {
-	woocommerce.Query
+	woocommerce.QueryParams
 	Type string `url:"type"`
 }
 
