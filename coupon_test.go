@@ -112,7 +112,6 @@ func TestCouponService_CreateUpdateDelete(t *testing.T) {
 }
 
 func TestCouponService_Batch(t *testing.T) {
-	codePrefix := strings.ToLower(randx.Letter(8, false))
 	n := 3
 	createRequests := make([]BatchCreateCouponRequest, n)
 	codes := make([]string, n)

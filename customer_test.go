@@ -164,3 +164,13 @@ func TestCustomerService_Batch(t *testing.T) {
 	}
 	assert.Equal(t, emails, returnEmails, "check emails is equal")
 }
+
+func TestCustomerService_Downloads(t *testing.T) {
+	// todo
+	items, err := wooClient.Services.Customer.Downloads(0)
+	if err != nil {
+		t.Fatalf("wooClient.Services.Customer.Downloads() error: %s", err.Error())
+	} else {
+		t.Logf("items = %s", jsonx.ToPrettyJson(items))
+	}
+}

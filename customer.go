@@ -199,3 +199,16 @@ func (s customerService) Batch(req BatchCustomerRequest) (res BatchCustomerResul
 	}
 	return
 }
+
+// Downloads retrieve a customer downloads
+func (s customerService) Downloads(customerId int) (items []entity.CustomerDownload, err error) {
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/customers/%d/downloads", customerId))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+	}
+	return
+}
