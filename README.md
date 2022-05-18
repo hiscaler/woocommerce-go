@@ -85,3 +85,24 @@ product, err := wooClient.Services.Product.One(1)
 - One
 - Create
 - Delete
+
+### Products 
+
+- All
+- One
+
+### Product Categories
+
+- All
+- One
+- Create
+- Delete
+- Batch
+
+### Product Tags
+
+- All
+- One
+- Create
+- Delete
+- Batch
