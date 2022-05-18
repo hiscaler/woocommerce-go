@@ -14,9 +14,9 @@ import (
 type couponService service
 
 type Coupon struct {
-	ID                        string            `json:"id"`
+	ID                        int               `json:"id"`
 	Code                      string            `json:"code"`
-	Amount                    string            `json:"amount"`
+	Amount                    float64           `json:"amount"`
 	DateCreated               string            `json:"date_created"`
 	DateCreatedGMT            string            `json:"date_created_gmt"`
 	DateModified              string            `json:"date_modified"`
@@ -36,8 +36,8 @@ type Coupon struct {
 	ProductCategories         []int             `json:"product_categories"`
 	ExcludedProductCategories []int             `json:"excluded_product_categories"`
 	ExcludeSaleItems          bool              `json:"exclude_sale_items"`
-	MinimumAmount             string            `json:"minimum_amount"`
-	MaximumAmount             string            `json:"maximum_amount"`
+	MinimumAmount             float64           `json:"minimum_amount"`
+	MaximumAmount             float64           `json:"maximum_amount"`
 	EmailRestrictions         []string          `json:"email_restrictions"`
 	UsedBy                    []int             `json:"used_by"`
 	MetaData                  []entity.MetaData `json:"meta_data"`
@@ -98,16 +98,23 @@ func (s couponService) One(id int) (item Coupon, err error) {
 // Create
 
 type CreateCouponRequest struct {
-	Code             string `json:"code"`
-	DiscountType     string `json:"discount_type"`
-	Amount           string `json:"amount"`
-	IndividualUse    bool   `json:"individual_use"`
-	ExcludeSaleItems bool   `json:"exclude_sale_items"`
-	MinimumAmount    string `json:"minimum_amount"`
+	Code             string  `json:"code"`
+	DiscountType     string  `json:"discount_type"`
+	Amount           float64 `json:"amount,string"`
+	IndividualUse    bool    `json:"individual_use"`
+	ExcludeSaleItems bool    `json:"exclude_sale_items"`
+	MinimumAmount    float64 `json:"minimum_amount,string"`
 }
 
 func (m CreateCouponRequest) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.DiscountType, validation.In("percent", "fixed_cart", "fixed_product").Error("无效的折扣类型")),
+		validation.Field(&m.Amount,
+			validation.Min(0.0).Error("金额不能小于 {{.threshold}}"),
+			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("折扣比例不能大于 {{.threshold}}")),
+		),
+		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("最小金额不能小于 {{.threshold}}")),
+	)
 }
 
 // Create Create a coupon
@@ -116,7 +123,7 @@ func (s couponService) Create(req CreateCouponRequest) (item Coupon, err error) 
 		return
 	}
 
-	resp, err := s.httpClient.R().Post("/coupons")
+	resp, err := s.httpClient.R().SetBody(req).Post("/coupons")
 	if err != nil {
 		return
 	}
@@ -127,7 +134,25 @@ func (s couponService) Create(req CreateCouponRequest) (item Coupon, err error) 
 	return
 }
 
-type UpdateCouponRequest = CreateCouponRequest
+type UpdateCouponRequest struct {
+	Code             string  `json:"code,omitempty"`
+	DiscountType     string  `json:"discount_type,omitempty"`
+	Amount           float64 `json:"amount,omitempty,string"`
+	IndividualUse    bool    `json:"individual_use,omitempty"`
+	ExcludeSaleItems bool    `json:"exclude_sale_items,omitempty"`
+	MinimumAmount    float64 `json:"minimum_amount,omitempty,string"`
+}
+
+func (m UpdateCouponRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.DiscountType, validation.When(m.DiscountType != "", validation.In("percent", "fixed_cart", "fixed_product").Error("无效的折扣类型"))),
+		validation.Field(&m.Amount,
+			validation.Min(0.0).Error("金额不能小于 {{.threshold}}"),
+			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("折扣比例不能大于 {{.threshold}}")),
+		),
+		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("最小金额不能小于 {{.threshold}}")),
+	)
+}
 
 // Update Update a coupon
 func (s couponService) Update(id int, req UpdateCouponRequest) (item Coupon, err error) {
@@ -135,7 +160,7 @@ func (s couponService) Update(id int, req UpdateCouponRequest) (item Coupon, err
 		return
 	}
 
-	resp, err := s.httpClient.R().Put(fmt.Sprintf("/coupons/%d", id))
+	resp, err := s.httpClient.R().SetBody(req).Put(fmt.Sprintf("/coupons/%d", id))
 	if err != nil {
 		return
 	}
@@ -146,9 +171,12 @@ func (s couponService) Update(id int, req UpdateCouponRequest) (item Coupon, err
 	return
 }
 
-// Delete Delete a coupon
-func (s couponService) Delete(id int) (item Coupon, err error) {
-	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/coupons/%d", id))
+// Delete a coupon
+
+func (s couponService) Delete(id int, force bool) (item Coupon, err error) {
+	resp, err := s.httpClient.R().
+		SetBody(map[string]bool{"force": force}).
+		Delete(fmt.Sprintf("/coupons/%d", id))
 	if err != nil {
 		return
 	}
@@ -161,10 +189,10 @@ func (s couponService) Delete(id int) (item Coupon, err error) {
 
 // Batch update coupons
 
-type BatchCreateCouponRequest = CreateTagRequest
+type BatchCreateCouponRequest = CreateCouponRequest
 type BatchUpdateCouponRequest struct {
 	ID string `json:"id"`
-	CreateTagRequest
+	BatchCreateCouponRequest
 }
 
 type BatchCouponRequest struct {
@@ -181,9 +209,9 @@ func (m BatchCouponRequest) Validate() error {
 }
 
 type BatchCouponResult struct {
-	Create []Coupon `json:"create"`
-	Update []Coupon `json:"update"`
-	Delete []Coupon `json:"delete"`
+	Create []Coupon `json:"create,omitempty"`
+	Update []Coupon `json:"update,omitempty"`
+	Delete []Coupon `json:"delete,omitempty"`
 }
 
 // Batch Batch create/update/delete coupons

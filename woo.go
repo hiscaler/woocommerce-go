@@ -211,6 +211,10 @@ func ErrorWrap(code int, message string) error {
 		return nil
 	}
 
+	if code == NotFoundError {
+		return ErrNotFound
+	}
+
 	message = strings.TrimSpace(message)
 	if message == "" {
 		switch code {
