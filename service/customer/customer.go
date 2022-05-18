@@ -60,9 +60,8 @@ func (s service) Customer(id int) (item customer.Customer, err error) {
 	return
 }
 
-// Create customer request
-
-type CreateCustomerRequest struct {
+// UpsertCustomerRequest Create and update customer request
+type UpsertCustomerRequest struct {
 	Email     string            `json:"email,omitempty"`
 	FirstName string            `json:"first_name,omitempty"`
 	LastName  string            `json:"last_name,omitempty"`
@@ -73,7 +72,9 @@ type CreateCustomerRequest struct {
 	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
 }
 
-func (m CreateCustomerRequest) Validate() error {
+// Create customer request
+
+func (m UpsertCustomerRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Email, validation.Required.Error("邮箱不能为空"), is.EmailFormat.Error("无效的邮箱")),
 		validation.Field(&m.FirstName, validation.Required.Error("姓不能为空")),
@@ -84,12 +85,34 @@ func (m CreateCustomerRequest) Validate() error {
 	)
 }
 
+type CreateCustomerRequest = UpsertCustomerRequest
+
 func (s service) CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
 	resp, err := s.woo.Client.R().SetBody(req).Post("/customers")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
+
+// Update customer
+
+type UpdateCustomerRequest = UpsertCustomerRequest
+
+func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.woo.Client.R().SetBody(req).Put(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
 	}

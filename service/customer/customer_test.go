@@ -2,10 +2,13 @@ package customer
 
 import (
 	"fmt"
+	"github.com/hiscaler/gox/jsonx"
+	"github.com/hiscaler/gox/randx"
 	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/config"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -75,5 +78,52 @@ func TestService_CreateCustomer(t *testing.T) {
 		t.Errorf("wooService.CreateCustomer error: %s", err.Error())
 	} else {
 		t.Logf("customer = %#v", customer)
+	}
+}
+
+func TestService_UpdateCustomer(t *testing.T) {
+	oldUsername := randx.Letter(6, false)
+	req := CreateCustomerRequest{
+		Email:     oldUsername + "@example.com",
+		FirstName: "zhang",
+		LastName:  "san",
+		Username:  oldUsername,
+		Password:  "123",
+		MetaData:  nil,
+		Billing: &entity.Billing{
+			FirstName: "billfn-" + oldUsername,
+			LastName:  "billln-" + oldUsername,
+			Company:   "xx company",
+			Address1:  "China HN",
+			Address2:  "",
+			City:      "CS",
+			State:     "",
+			Postcode:  "410000",
+			Country:   "China",
+			Email:     "john@example.com",
+			Phone:     "1",
+		},
+	}
+	customer, err := wooService.CreateCustomer(req)
+	if err != nil {
+		t.Errorf("wooService.CreateCustomer error: %s", err.Error())
+	} else {
+		newUsername := randx.Letter(6, false)
+		updateReq := UpdateCustomerRequest{
+			Email: newUsername + "@example.com",
+			Billing: &entity.Billing{
+				FirstName: "billfn-" + newUsername,
+				LastName:  "billln-" + newUsername,
+			},
+		}
+		customer, err = wooService.UpdateCustomer(customer.ID, updateReq)
+		if err != nil {
+			t.Errorf("wooService.UpdateCustomer error: %s", err.Error())
+		} else {
+			t.Log(jsonx.ToPrettyJson(customer))
+			assert.Equal(t, newUsername+"@example.com", customer.Email, "email")
+			assert.Equal(t, "billfn-"+newUsername, customer.Billing.FirstName, "billing first name")
+			assert.Equal(t, "billln-"+newUsername, customer.Billing.LastName, "billing last name")
+		}
 	}
 }

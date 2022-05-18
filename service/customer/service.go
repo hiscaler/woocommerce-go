@@ -12,7 +12,8 @@ type service struct {
 type Service interface {
 	Customers(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) // List all customers
 	Customer(id int) (item customer.Customer, err error)                                           // Retrieve a customer
-	CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error)                                     // Create a customer
+	CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error)                  // Create a customer
+	UpdateCustomer(id int, req UpdateCustomerRequest) (item customer.Customer, err error)          // Update a customer
 }
 
 func NewService(client *woocommerce.WooCommerce) Service {
