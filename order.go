@@ -51,6 +51,7 @@ func (m OrdersQueryParams) Validate() error {
 	)
 }
 
+// All list all orders
 func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
@@ -75,8 +76,95 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLas
 	return
 }
 
+// One retrieve an order
 func (s orderService) One(id int) (item entity.Order, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/orders/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	} else {
+		err = ErrorWrap(resp.StatusCode(), "")
+	}
+	return
+}
+
+// Create order
+
+type CreateOrderRequest struct {
+	Status             string                `json:"status"`
+	Currency           string                `json:"currency"`
+	CurrencySymbol     string                `json:"currency_symbol"`
+	PricesIncludeTax   bool                  `json:"prices_include_tax"`
+	CustomerId         int                   `json:"customer_id"`
+	CustomerNote       string                `json:"customer_note"`
+	Billing            entity.Billing        `json:"billing"`
+	Shipping           entity.Shipping       `json:"shipping"`
+	PaymentMethod      string                `json:"payment_method"`
+	PaymentMethodTitle string                `json:"payment_method_title"`
+	TransactionId      string                `json:"transaction_id"`
+	MetaData           []entity.MetaData     `json:"meta_data"`
+	LineItems          []entity.LineItem     `json:"line_items"`
+	TaxLines           []entity.TaxLine      `json:"tax_lines"`
+	ShippingLines      []entity.ShippingLine `json:"shipping_lines"`
+	FeeLines           []entity.FeeLine      `json:"fee_lines"`
+	CouponLines        []entity.CouponLine   `json:"coupon_lines"`
+	SetPaid            bool                  `json:"set_paid"`
+}
+
+func (m CreateOrderRequest) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed", "trash").Error("无效的状态"))),
+	)
+}
+
+func (s orderService) Create(req CreateOrderRequest) (item entity.Order, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.httpClient.R().SetBody(req).Post("/orders")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	} else {
+		err = ErrorWrap(resp.StatusCode(), "")
+	}
+	return
+}
+
+// Update order
+
+type UpdateOrderRequest = CreateOrderRequest
+
+func (s orderService) Update(id int, req UpdateOrderRequest) (item entity.Order, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.httpClient.R().SetBody(req).Put(fmt.Sprintf("/orders/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	} else {
+		err = ErrorWrap(resp.StatusCode(), "")
+	}
+	return
+}
+
+// Delete delete an order
+func (s orderService) Delete(id int, force bool) (item entity.Order, err error) {
+	resp, err := s.httpClient.R().
+		SetBody(map[string]bool{"force": force}).
+		Delete(fmt.Sprintf("/orders/%d", id))
 	if err != nil {
 		return
 	}
