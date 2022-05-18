@@ -1,6 +1,7 @@
 package woocommerce
 
 import (
+	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -9,6 +10,8 @@ import (
 	"github.com/hiscaler/woocommerce-go/entity/customer"
 	jsoniter "github.com/json-iterator/go"
 )
+
+// https://woocommerce.github.io/woocommerce-rest-api-docs/?php#customers
 
 type customerService service
 
@@ -29,6 +32,7 @@ func (m CustomersQueryParams) Validate() error {
 	)
 }
 
+// All List all customers
 func (s customerService) All(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
@@ -50,6 +54,7 @@ func (s customerService) All(params CustomersQueryParams) (items []customer.Cust
 	return
 }
 
+// One Retrieve a customer
 func (s customerService) One(id int) (item customer.Customer, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
@@ -85,6 +90,7 @@ func (m CreateCustomerRequest) Validate() error {
 	)
 }
 
+// Create create a customer
 func (s customerService) Create(req CreateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
@@ -119,6 +125,7 @@ func (m UpdateCustomerRequest) Validate() error {
 	)
 }
 
+// Update update a customer
 func (s customerService) Update(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
@@ -144,6 +151,51 @@ func (s customerService) Delete(id int) (item customer.Customer, err error) {
 
 	if resp.IsSuccess() {
 		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
+
+// Batch update customers
+
+type BatchCreateCustomerRequest = CreateCustomerRequest
+
+type BatchUpdateCustomerRequest struct {
+	ID string `json:"id"`
+	BatchCreateCustomerRequest
+}
+
+type BatchCustomerRequest struct {
+	Create []BatchCreateCustomerRequest `json:"create,omitempty"`
+	Update []BatchUpdateCustomerRequest `json:"update,omitempty"`
+	Delete []int                        `json:"delete,omitempty"`
+}
+
+func (m BatchCustomerRequest) Validate() error {
+	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
+		return errors.New("无效的请求数据")
+	}
+	return nil
+}
+
+type BatchCustomerResult struct {
+	Create []customer.Customer `json:"create"`
+	Update []customer.Customer `json:"update"`
+	Delete []customer.Customer `json:"delete"`
+}
+
+// Batch Batch create/update/delete customers
+func (s customerService) Batch(req BatchCustomerRequest) (res BatchCustomerResult, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+
+	resp, err := s.httpClient.R().SetBody(req).Post("/customers/batch")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &res)
 	}
 	return
 }

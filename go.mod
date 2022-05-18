@@ -3,6 +3,7 @@ module github.com/hiscaler/woocommerce-go
 go 1.17
 
 require (
+	github.com/brianvoe/gofakeit/v6 v6.16.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/go-querystring v1.1.0
