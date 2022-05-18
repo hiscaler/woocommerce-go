@@ -4,7 +4,7 @@ import (
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go/entity/product"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -47,12 +47,12 @@ func (m ProductsQueryParams) Validate() error {
 }
 
 // All List all products
-func (s productService) All(params ProductsQueryParams) (items []product.Product, isLastPage bool, err error) {
+func (s productService) All(params ProductsQueryParams) (items []entity.Product, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
-	var res []product.Product
+	var res []entity.Product
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products")
@@ -69,8 +69,8 @@ func (s productService) All(params ProductsQueryParams) (items []product.Product
 }
 
 // One Retrieve a product
-func (s productService) One(id int) (item product.Product, err error) {
-	var res product.Product
+func (s productService) One(id int) (item entity.Product, err error) {
+	var res entity.Product
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/products/%d", id))
 	if err != nil {
 		return

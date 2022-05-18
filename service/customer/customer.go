@@ -7,7 +7,6 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go"
 	"github.com/hiscaler/woocommerce-go/entity"
-	"github.com/hiscaler/woocommerce-go/entity/customer"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -28,13 +27,13 @@ func (m CustomersQueryParams) Validate() error {
 	)
 }
 
-func (s service) Customers(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) {
+func (s service) Customers(params CustomersQueryParams) (items []entity.Customer, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	urlValues, _ := query.Values(params)
-	var res []customer.Customer
+	var res []entity.Customer
 	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/customers")
 	if err != nil {
 		return
@@ -48,7 +47,7 @@ func (s service) Customers(params CustomersQueryParams) (items []customer.Custom
 	return
 }
 
-func (s service) Customer(id int) (item customer.Customer, err error) {
+func (s service) Customer(id int) (item entity.Customer, err error) {
 	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
@@ -83,7 +82,7 @@ func (m CreateCustomerRequest) Validate() error {
 	)
 }
 
-func (s service) CreateCustomer(req CreateCustomerRequest) (item customer.Customer, err error) {
+func (s service) CreateCustomer(req CreateCustomerRequest) (item entity.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -117,7 +116,7 @@ func (m UpdateCustomerRequest) Validate() error {
 	)
 }
 
-func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
+func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item entity.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -134,7 +133,7 @@ func (s service) UpdateCustomer(id int, req UpdateCustomerRequest) (item custome
 }
 
 // DeleteCustomer Delete a customer
-func (s service) DeleteCustomer(id int) (item customer.Customer, err error) {
+func (s service) DeleteCustomer(id int) (item entity.Customer, err error) {
 	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return

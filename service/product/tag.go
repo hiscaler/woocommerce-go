@@ -6,7 +6,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go"
-	"github.com/hiscaler/woocommerce-go/entity/product"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -26,12 +26,12 @@ func (m TagsQueryParams) Validate() error {
 	)
 }
 
-func (s service) Tags(params TagsQueryParams) (items []product.Tag, isLastPage bool, err error) {
+func (s service) Tags(params TagsQueryParams) (items []entity.ProductTag, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
-	var res []product.Tag
+	var res []entity.ProductTag
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get("/products/tags")
@@ -47,8 +47,8 @@ func (s service) Tags(params TagsQueryParams) (items []product.Tag, isLastPage b
 	return
 }
 
-func (s service) Tag(id int) (item product.Tag, err error) {
-	var res product.Tag
+func (s service) Tag(id int) (item entity.ProductTag, err error) {
+	var res entity.ProductTag
 	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
@@ -81,7 +81,7 @@ func (m UpsertTagRequest) Validate() error {
 	)
 }
 
-func (s service) CreateTag(req CreateTagRequest) (item product.Tag, err error) {
+func (s service) CreateTag(req CreateTagRequest) (item entity.ProductTag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -97,7 +97,7 @@ func (s service) CreateTag(req CreateTagRequest) (item product.Tag, err error) {
 	return
 }
 
-func (s service) UpdateTag(id int, req UpdateTagRequest) (item product.Tag, err error) {
+func (s service) UpdateTag(id int, req UpdateTagRequest) (item entity.ProductTag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -113,7 +113,7 @@ func (s service) UpdateTag(id int, req UpdateTagRequest) (item product.Tag, err 
 	return
 }
 
-func (s service) DeleteTag(id int) (item product.Tag, err error) {
+func (s service) DeleteTag(id int) (item entity.ProductTag, err error) {
 	resp, err := s.woo.Client.R().Delete(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
@@ -145,9 +145,9 @@ func (m CUDTagsRequest) Validate() error {
 }
 
 type BatchTagsResult struct {
-	Create []product.Tag `json:"create"`
-	Update []product.Tag `json:"update"`
-	Delete []product.Tag `json:"delete"`
+	Create []entity.ProductTag `json:"create"`
+	Update []entity.ProductTag `json:"update"`
+	Delete []entity.ProductTag `json:"delete"`
 }
 
 func (s service) BatchTags(req CUDTagsRequest) (res BatchTagsResult, err error) {

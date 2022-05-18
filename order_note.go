@@ -4,7 +4,7 @@ import (
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go/entity/order"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 	"strconv"
 )
@@ -22,13 +22,13 @@ func (m OrderNotesQueryParams) Validate() error {
 	)
 }
 
-func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items []order.Note, isLastPage bool, err error) {
+func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items []entity.OrderNote, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	urlValues, _ := query.Values(params)
-	var res []order.Note
+	var res []entity.OrderNote
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/orders/%d/notes", orderId))
 	if err != nil {
 		return
@@ -42,7 +42,7 @@ func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items 
 	return
 }
 
-func (s orderNoteService) One(orderId, noteId int) (item order.Note, err error) {
+func (s orderNoteService) One(orderId, noteId int) (item entity.OrderNote, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/orders/%d/notes/%d", orderId, noteId))
 	if err != nil {
 		return
@@ -66,7 +66,7 @@ func (m CreateOrderNoteRequest) Validate() error {
 	)
 }
 
-func (s orderNoteService) Create(orderId int, req CreateOrderNoteRequest) (item order.Note, err error) {
+func (s orderNoteService) Create(orderId int, req CreateOrderNoteRequest) (item entity.OrderNote, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -84,7 +84,7 @@ func (s orderNoteService) Create(orderId int, req CreateOrderNoteRequest) (item 
 	return
 }
 
-func (s service) Delete(orderId, noteId int, force bool) (item order.Note, err error) {
+func (s service) Delete(orderId, noteId int, force bool) (item entity.OrderNote, err error) {
 	resp, err := s.httpClient.R().
 		SetBody(map[string]string{
 			"force": strconv.FormatBool(force),

@@ -1,10 +1,10 @@
-package product
+package entity
 
-type Term struct {
-	Id          int    `json:"id"`
+// ProductTag product tag properties
+type ProductTag struct {
+	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Slug        string `json:"slug"`
 	Description string `json:"description"`
-	MenuOrder   int    `json:"menu_order"`
 	Count       int    `json:"count"`
 }

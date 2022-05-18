@@ -21,6 +21,6 @@ func TestProductTagService_One(t *testing.T) {
 	if err != nil {
 		t.Errorf("wooClient.Services.ProductTag.One: %s", err.Error())
 	} else {
-		assert.Equal(t, 51, item.Id, "one")
+		assert.Equal(t, 51, item.ID, "one")
 	}
 }

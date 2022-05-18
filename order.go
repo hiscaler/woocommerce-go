@@ -5,7 +5,7 @@ import (
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go/entity/order"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -51,14 +51,14 @@ func (m OrdersQueryParams) Validate() error {
 	)
 }
 
-func (s orderService) All(params OrdersQueryParams) (items []order.Order, isLastPage bool, err error) {
+func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []order.Order
+	var res []entity.Order
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/orders")
 	if err != nil {
 		return
@@ -74,8 +74,8 @@ func (s orderService) All(params OrdersQueryParams) (items []order.Order, isLast
 	return
 }
 
-func (s orderService) One(id int) (item order.Order, err error) {
-	var res order.Order
+func (s orderService) One(id int) (item entity.Order, err error) {
+	var res entity.Order
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/orders/%d", id))
 	if err != nil {
 		return

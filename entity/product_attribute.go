@@ -1,7 +1,8 @@
-package product
+package entity
 
-type Attribute struct {
-	Id        int      `json:"id"`
+// ProductAttribute product attribute properties
+type ProductAttribute struct {
+	ID        int      `json:"id"`
 	Name      string   `json:"name"`
 	Position  int      `json:"position"`
 	Visible   bool     `json:"visible"`

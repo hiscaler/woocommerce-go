@@ -5,7 +5,6 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/hiscaler/gox/jsonx"
 	"github.com/hiscaler/woocommerce-go/entity"
-	customer2 "github.com/hiscaler/woocommerce-go/entity/customer"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -64,7 +63,7 @@ func TestCustomerService_Create(t *testing.T) {
 func TestCustomerService_CreateUpdateDelete(t *testing.T) {
 	gofakeit.Seed(0)
 	// Create
-	var oldItem, newItem customer2.Customer
+	var oldItem, newItem entity.Customer
 	var err error
 	address := gofakeit.Address()
 	req := CreateCustomerRequest{

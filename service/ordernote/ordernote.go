@@ -5,7 +5,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go"
-	"github.com/hiscaler/woocommerce-go/entity/order"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 	"strconv"
 )
@@ -21,13 +21,13 @@ func (m OrderNotesQueryParams) Validate() error {
 	)
 }
 
-func (s service) OrderNotes(orderId int, params OrderNotesQueryParams) (items []order.Note, isLastPage bool, err error) {
+func (s service) OrderNotes(orderId int, params OrderNotesQueryParams) (items []entity.OrderNote, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	urlValues, _ := query.Values(params)
-	var res []order.Note
+	var res []entity.OrderNote
 	resp, err := s.woo.Client.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/orders/%d/notes", orderId))
 	if err != nil {
 		return
@@ -41,7 +41,7 @@ func (s service) OrderNotes(orderId int, params OrderNotesQueryParams) (items []
 	return
 }
 
-func (s service) OrderNote(orderId, noteId int) (item order.Note, err error) {
+func (s service) OrderNote(orderId, noteId int) (item entity.OrderNote, err error) {
 	resp, err := s.woo.Client.R().Get(fmt.Sprintf("/orders/%d/notes/%d", orderId, noteId))
 	if err != nil {
 		return
@@ -65,7 +65,7 @@ func (m CreateOrderNoteRequest) Validate() error {
 	)
 }
 
-func (s service) CreateOrderNote(orderId int, req CreateOrderNoteRequest) (item order.Note, err error) {
+func (s service) CreateOrderNote(orderId int, req CreateOrderNoteRequest) (item entity.OrderNote, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -83,7 +83,7 @@ func (s service) CreateOrderNote(orderId int, req CreateOrderNoteRequest) (item 
 	return
 }
 
-func (s service) DeleteOrderNote(orderId, noteId int, force bool) (item order.Note, err error) {
+func (s service) DeleteOrderNote(orderId, noteId int, force bool) (item entity.OrderNote, err error) {
 	resp, err := s.woo.Client.R().
 		SetBody(map[string]string{
 			"force": strconv.FormatBool(force),

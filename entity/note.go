@@ -1,10 +1,11 @@
-package order
+package entity
 
 import (
 	"time"
 )
 
-type Note struct {
+// OrderNote order note properties
+type OrderNote struct {
 	ID             int       `json:"id"`
 	Author         string    `json:"author"`
 	DateCreated    time.Time `json:"date_created"`

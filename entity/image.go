@@ -1,7 +1,8 @@
-package product
+package entity
 
-type Image struct {
-	Id              int    `json:"id"`
+// ProductImage product iamge properties
+type ProductImage struct {
+	ID              int    `json:"id"`
 	DateCreated     string `json:"date_created"`
 	DateCreatedGMT  string `json:"date_created_gmt"`
 	DateModified    string `json:"date_modified"`

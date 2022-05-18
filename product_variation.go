@@ -3,7 +3,7 @@ package woocommerce
 import (
 	"fmt"
 	"github.com/google/go-querystring/query"
-	"github.com/hiscaler/woocommerce-go/entity/product"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -21,14 +21,14 @@ func (m ProductVariationsQueryParams) Validate() error {
 }
 
 // All List all product variations
-func (s productVariationService) All(productId int, params ProductVariationsQueryParams) (items []product.Variation, isLastPage bool, err error) {
+func (s productVariationService) All(productId int, params ProductVariationsQueryParams) (items []entity.ProductVariation, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []product.Variation
+	var res []entity.ProductVariation
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/products/%d/variations", productId))
 	if err != nil {
 		return

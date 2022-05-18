@@ -7,7 +7,6 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
-	"github.com/hiscaler/woocommerce-go/entity/customer"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -33,14 +32,14 @@ func (m CustomersQueryParams) Validate() error {
 }
 
 // All List all customers
-func (s customerService) All(params CustomersQueryParams) (items []customer.Customer, isLastPage bool, err error) {
+func (s customerService) All(params CustomersQueryParams) (items []entity.Customer, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []customer.Customer
+	var res []entity.Customer
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/customers")
 	if err != nil {
 		return
@@ -55,7 +54,7 @@ func (s customerService) All(params CustomersQueryParams) (items []customer.Cust
 }
 
 // One Retrieve a customer
-func (s customerService) One(id int) (item customer.Customer, err error) {
+func (s customerService) One(id int) (item entity.Customer, err error) {
 	resp, err := s.httpClient.R().Get(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
@@ -91,7 +90,7 @@ func (m CreateCustomerRequest) Validate() error {
 }
 
 // Create create a customer
-func (s customerService) Create(req CreateCustomerRequest) (item customer.Customer, err error) {
+func (s customerService) Create(req CreateCustomerRequest) (item entity.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -126,7 +125,7 @@ func (m UpdateCustomerRequest) Validate() error {
 }
 
 // Update update a customer
-func (s customerService) Update(id int, req UpdateCustomerRequest) (item customer.Customer, err error) {
+func (s customerService) Update(id int, req UpdateCustomerRequest) (item entity.Customer, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -143,7 +142,7 @@ func (s customerService) Update(id int, req UpdateCustomerRequest) (item custome
 }
 
 // Delete Delete a customer
-func (s customerService) Delete(id int) (item customer.Customer, err error) {
+func (s customerService) Delete(id int) (item entity.Customer, err error) {
 	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
@@ -178,9 +177,9 @@ func (m BatchCustomerRequest) Validate() error {
 }
 
 type BatchCustomerResult struct {
-	Create []customer.Customer `json:"create"`
-	Update []customer.Customer `json:"update"`
-	Delete []customer.Customer `json:"delete"`
+	Create []entity.Customer `json:"create"`
+	Update []entity.Customer `json:"update"`
+	Delete []entity.Customer `json:"delete"`
 }
 
 // Batch Batch create/update/delete customers
