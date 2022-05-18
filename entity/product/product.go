@@ -1,7 +1,5 @@
 package product
 
-import "time"
-
 type Dimensions struct {
 	Length string `json:"length"`
 	Width  string `json:"width"`
@@ -13,10 +11,10 @@ type Product struct {
 	Name              string             `json:"name"`
 	Slug              string             `json:"slug"`
 	Permalink         string             `json:"permalink"`
-	DateCreated       time.Time          `json:"date_created"`
-	DateCreatedGMT    time.Time          `json:"date_created_gmt"`
-	DateModified      time.Time          `json:"date_modified"`
-	DateModifiedGMT   time.Time          `json:"date_modified_gmt"`
+	DateCreated       string             `json:"date_created"`
+	DateCreatedGMT    string             `json:"date_created_gmt"`
+	DateModified      string             `json:"date_modified"`
+	DateModifiedGMT   string             `json:"date_modified_gmt"`
 	Type              string             `json:"type"`
 	Status            string             `json:"status"`
 	Featured          bool               `json:"featured"`
@@ -27,10 +25,10 @@ type Product struct {
 	Price             string             `json:"price"`
 	RegularPrice      string             `json:"regular_price"`
 	SalePrice         string             `json:"sale_price"`
-	DateOnSaleFrom    time.Time          `json:"date_on_sale_from"`
-	DateOnSaleFromGMT time.Time          `json:"date_on_sale_from_gmt"`
-	DateOnSaleTo      time.Time          `json:"date_on_sale_to"`
-	DateOnSaleToGMT   time.Time          `json:"date_on_sale_to_gmt"`
+	DateOnSaleFrom    string             `json:"date_on_sale_from"`
+	DateOnSaleFromGMT string             `json:"date_on_sale_from_gmt"`
+	DateOnSaleTo      string             `json:"date_on_sale_to"`
+	DateOnSaleToGMT   string             `json:"date_on_sale_to_gmt"`
 	PriceHtml         string             `json:"price_html"`
 	OnSale            bool               `json:"on_sale"`
 	Purchasable       bool               `json:"purchasable"`

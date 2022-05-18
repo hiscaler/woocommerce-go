@@ -50,10 +50,21 @@ type queryDefaultValues struct {
 }
 
 type WooCommerce struct {
-	Debug              bool               // 是否调试模式
-	Client             *resty.Client      // HTTP 客户端
-	Logger             *log.Logger        // 日志
-	QueryDefaultValues queryDefaultValues // 查询默认值
+	Debug              bool               // Is debug mode
+	Client             *resty.Client      // HTTP client
+	Logger             *log.Logger        // Log
+	QueryDefaultValues queryDefaultValues // Query default values
+	Services           services           // WooCommerce API services
+}
+
+type service struct {
+	debug      bool          // Is debug mode
+	logger     *log.Logger   // Log
+	httpClient *resty.Client // HTTP client
+}
+
+type services struct {
+	Product ProductService
 }
 
 // OAuth 签名
@@ -163,6 +174,13 @@ func NewClient(config config.Config) *WooCommerce {
 	client.JSONMarshal = jsoniter.Marshal
 	client.JSONUnmarshal = jsoniter.Unmarshal
 	wooInstance.Client = client
+	wooInstance.Services = services{
+		Product: ProductService{
+			debug:      config.Debug,
+			logger:     logger,
+			httpClient: client,
+		},
+	}
 	return wooInstance
 }
 
