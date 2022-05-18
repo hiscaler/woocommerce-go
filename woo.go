@@ -175,17 +175,14 @@ func NewClient(config config.Config) *WooCommerce {
 	client.JSONMarshal = jsoniter.Marshal
 	client.JSONUnmarshal = jsoniter.Unmarshal
 	wooInstance.Client = client
+	xService := service{
+		debug:      config.Debug,
+		logger:     logger,
+		httpClient: client,
+	}
 	wooInstance.Services = services{
-		Product: ProductService{
-			debug:      config.Debug,
-			logger:     logger,
-			httpClient: client,
-		},
-		ProductTag: ProductTagService{
-			debug:      config.Debug,
-			logger:     logger,
-			httpClient: client,
-		},
+		Product:    (ProductService)(xService),
+		ProductTag: (ProductTagService)(xService),
 	}
 	return wooInstance
 }
