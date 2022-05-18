@@ -142,8 +142,14 @@ func (s customerService) Update(id int, req UpdateCustomerRequest) (item entity.
 }
 
 // Delete Delete a customer
-func (s customerService) Delete(id int) (item entity.Customer, err error) {
-	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/customers/%d", id))
+
+type customerDeleteParams struct {
+	Force    bool  `json:"force,omitempty"`
+	Reassign []int `json:"reassign,omitempty"`
+}
+
+func (s customerService) Delete(id int, params customerDeleteParams) (item entity.Customer, err error) {
+	resp, err := s.httpClient.R().SetBody(params).Delete(fmt.Sprintf("/customers/%d", id))
 	if err != nil {
 		return
 	}

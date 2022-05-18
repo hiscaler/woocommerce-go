@@ -87,7 +87,7 @@ func TestCustomerService_CreateUpdateDelete(t *testing.T) {
 			Phone:     gofakeit.Phone(),
 		},
 	}
-	newItem, err = wooClient.Services.Customer.Create(req)
+	oldItem, err = wooClient.Services.Customer.Create(req)
 	if err != nil {
 		t.Fatalf("wooClient.Services.Customer.Create error: %s", err.Error())
 	}
@@ -119,7 +119,7 @@ func TestCustomerService_CreateUpdateDelete(t *testing.T) {
 	}
 
 	// Delete
-	_, err = wooClient.Services.Customer.Delete(oldItem.ID)
+	_, err = wooClient.Services.Customer.Delete(oldItem.ID, customerDeleteParams{Force: true})
 	if err != nil {
 		t.Fatalf("wooClient.Services.Customer.Delete(%d) error: %s", oldItem.ID, err.Error())
 	}
