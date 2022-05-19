@@ -65,16 +65,16 @@ func (s productTagService) One(id int) (item entity.ProductTag, err error) {
 
 // 新增商品标签
 
-type UpsertTagRequest struct {
+type UpsertProductTagRequest struct {
 	Name        string `json:"name"`
 	Slug        string `json:"slug,omitempty"`
 	Description string `json:"description,omitempty"`
 }
 
-type CreateTagRequest = UpsertTagRequest
-type UpdateTagRequest = UpsertTagRequest
+type CreateProductTagRequest = UpsertProductTagRequest
+type UpdateProductTagRequest = UpsertProductTagRequest
 
-func (m UpsertTagRequest) Validate() error {
+func (m UpsertProductTagRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
 			validation.Required.Error("标签名称不能为空"),
@@ -82,7 +82,7 @@ func (m UpsertTagRequest) Validate() error {
 	)
 }
 
-func (s productTagService) Create(req CreateTagRequest) (item entity.ProductTag, err error) {
+func (s productTagService) Create(req CreateProductTagRequest) (item entity.ProductTag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -98,7 +98,7 @@ func (s productTagService) Create(req CreateTagRequest) (item entity.ProductTag,
 	return
 }
 
-func (s productTagService) Update(id int, req UpdateTagRequest) (item entity.ProductTag, err error) {
+func (s productTagService) Update(id int, req UpdateProductTagRequest) (item entity.ProductTag, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -114,8 +114,10 @@ func (s productTagService) Update(id int, req UpdateTagRequest) (item entity.Pro
 	return
 }
 
-func (s productTagService) Delete(id int) (item entity.ProductTag, err error) {
-	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/products/tags/%d", id))
+func (s productTagService) Delete(id int, force bool) (item entity.ProductTag, err error) {
+	resp, err := s.httpClient.R().
+		SetBody(map[string]bool{"force": force}).
+		Delete(fmt.Sprintf("/products/tags/%d", id))
 	if err != nil {
 		return
 	}
@@ -130,12 +132,12 @@ func (s productTagService) Delete(id int) (item entity.ProductTag, err error) {
 
 type CUDTagsUpdateRequest struct {
 	ID int `json:"id"`
-	UpsertTagRequest
+	UpsertProductTagRequest
 }
 type CUDTagsRequest struct {
-	Create []UpsertTagRequest     `json:"create"`
-	Update []CUDTagsUpdateRequest `json:"update"`
-	Delete []int                  `json:"delete"`
+	Create []UpsertProductTagRequest `json:"create"`
+	Update []CUDTagsUpdateRequest    `json:"update"`
+	Delete []int                     `json:"delete"`
 }
 
 func (m CUDTagsRequest) Validate() error {
