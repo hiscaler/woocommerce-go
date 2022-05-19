@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -10,16 +11,25 @@ import (
 
 type productAttributeTermService service
 
-type ProductAttributeTermsQueryParaTermms struct {
+type ProductAttributeTermsQueryParaTerms struct {
 	queryParams
+	Search    string   `url:"search,omitempty"`
+	Exclude   []string `url:"exclude,omitempty"`
+	Include   []string `url:"include,omitempty"`
+	HideEmpty bool     `url:"hide_empty,omitempty"`
+	Parent    int      `url:"parent,omitempty"`
+	Product   int      `url:"product,omitempty"`
+	Slug      string   `url:"slug,omitempty"`
 }
 
-func (m ProductAttributeTermsQueryParaTermms) Validate() error {
-	return nil
+func (m ProductAttributeTermsQueryParaTerms) Validate() error {
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的排序类型"))),
+	)
 }
 
 // All List all product attribute terms
-func (s productAttributeTermService) All(attributeId int, params ProductAttributeTermsQueryParaTermms) (items []entity.ProductAttributeTerm, isLastPage bool, err error) {
+func (s productAttributeTermService) All(attributeId int, params ProductAttributeTermsQueryParaTerms) (items []entity.ProductAttributeTerm, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
