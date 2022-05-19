@@ -62,3 +62,29 @@ func TestProductTagService_CreateUpdateDelete(t *testing.T) {
 		t.Fatalf("%d is not deleted, error: %s", tagId, err.Error())
 	}
 }
+
+func TestProductTagService_Batch(t *testing.T) {
+	n := 3
+	createRequests := make([]BatchProductTagsCreateItem, n)
+	names := make([]string, n)
+	for i := 0; i < n; i++ {
+		req := BatchProductTagsCreateItem{
+			Name: gofakeit.Word(),
+		}
+		createRequests[i] = req
+		names[i] = req.Name
+	}
+	batchReq := BatchProductTagsRequest{
+		Create: createRequests,
+	}
+	result, err := wooClient.Services.ProductTag.Batch(batchReq)
+	if err != nil {
+		t.Fatalf("wooClient.Services.ProductTag.Batch() error: %s", err.Error())
+	}
+	assert.Equal(t, n, len(result.Create), "Batch create return len")
+	returnNames := make([]string, 0)
+	for _, d := range result.Create {
+		returnNames = append(returnNames, d.Name)
+	}
+	assert.Equal(t, names, returnNames, "check names is equal")
+}

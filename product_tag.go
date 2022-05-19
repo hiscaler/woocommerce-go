@@ -130,30 +130,32 @@ func (s productTagService) Delete(id int, force bool) (item entity.ProductTag, e
 
 // Batch tag create,update and delete operation
 
-type CUDTagsUpdateRequest struct {
+type BatchProductTagsCreateItem = UpsertProductTagRequest
+
+type BatchProductTagsUpdateItem struct {
 	ID int `json:"id"`
 	UpsertProductTagRequest
 }
-type CUDTagsRequest struct {
-	Create []UpsertProductTagRequest `json:"create"`
-	Update []CUDTagsUpdateRequest    `json:"update"`
-	Delete []int                     `json:"delete"`
+type BatchProductTagsRequest struct {
+	Create []BatchProductTagsCreateItem `json:"create,omitempty"`
+	Update []BatchProductTagsUpdateItem `json:"update,omitempty"`
+	Delete []int                        `json:"delete,omitempty"`
 }
 
-func (m CUDTagsRequest) Validate() error {
+func (m BatchProductTagsRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
 		return errors.New("无效的请求数据")
 	}
 	return nil
 }
 
-type BatchTagsResult struct {
+type BatchProductTagsResult struct {
 	Create []entity.ProductTag `json:"create"`
 	Update []entity.ProductTag `json:"update"`
 	Delete []entity.ProductTag `json:"delete"`
 }
 
-func (s productTagService) Batch(req CUDTagsRequest) (res BatchTagsResult, err error) {
+func (s productTagService) Batch(req BatchProductTagsRequest) (res BatchProductTagsResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
