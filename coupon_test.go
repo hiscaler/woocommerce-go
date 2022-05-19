@@ -118,7 +118,7 @@ func TestCouponService_Batch(t *testing.T) {
 	createRequests := make([]BatchCreateCouponRequest, n)
 	codes := make([]string, n)
 	for i := 0; i < n; i++ {
-		code := gofakeit.LetterN(8)
+		code := strings.ToLower(gofakeit.LetterN(8))
 		req := BatchCreateCouponRequest{
 			Code:             code,
 			DiscountType:     "percent",
