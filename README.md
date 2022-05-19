@@ -97,6 +97,9 @@ product, err := wooClient.Services.Product.One(1)
 
 - All
 - One
+- Create
+- Update
+- Delete
 
 ### Product Categories
 
