@@ -67,10 +67,20 @@ type Product struct {
 	Categories        []ProductCategory         `json:"categories"`
 	Tags              []ProductTag              `json:"tags"`
 	Images            []ProductImage            `json:"images"`
-	Attributes        []ProductAttribute        `json:"attributes"`
+	Attributes        []ProductAttributeItem    `json:"attributes"`
 	DefaultAttributes []ProductDefaultAttribute `json:"default_attributes"`
 	Variations        []int                     `json:"variations"`
 	GroupedProducts   []int                     `json:"grouped_products"`
 	MenuOrder         int                       `json:"menu_order"`
 	MetaData          []Meta                    `json:"meta_data"`
+}
+
+// ProductAttributeItem product attribute properties
+type ProductAttributeItem struct {
+	ID        int      `json:"id"`
+	Name      string   `json:"name"`
+	Position  int      `json:"position"`
+	Visible   bool     `json:"visible"`
+	Variation bool     `json:"variation"`
+	Options   []string `json:"options"`
 }
