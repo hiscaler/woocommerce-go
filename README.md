@@ -15,20 +15,21 @@ https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 // Read you config
 b, err := os.ReadFile("./config/config_test.json")
 if err != nil {
-    panic(fmt.Sprintf("Read config error: %s", err.Error()))
+panic(fmt.Sprintf("Read config error: %s", err.Error()))
 }
 var c config.Config
 err = jsoniter.Unmarshal(b, &c)
 if err != nil {
-    panic(fmt.Sprintf("Parse config file error: %s", err.Error()))
+panic(fmt.Sprintf("Parse config file error: %s", err.Error()))
 }
 
 wooClient := NewClient(c)
 ```
 
-Now you get a wooCommerce client object, If you want operate data, please refer second step. 
+Now you get a wooCommerce client object, If you want operate data, please refer second step.
 
 ### Step 2. Call special service method
+
 ```go
 // Product Query
 params := ProductsQueryParams{}
@@ -52,8 +53,7 @@ And you can retrieve one data use One() method.
 product, err := wooClient.Services.Product.One(1)
 ```
 
-**Note**: If the error type is ErrNotFound, it indicates that the corresponding data is not found. If the error type is other error, an error may occur in the call.  So you should judge the results to further process your business logic.
-
+**Note**: If the error type is ErrNotFound, it indicates that the corresponding data is not found. If the error type is other error, an error may occur in the call. So you should judge the results to further process your business logic.
 
 ## Services
 
@@ -93,7 +93,7 @@ product, err := wooClient.Services.Product.One(1)
 - Create
 - Delete
 
-### Products 
+### Products
 
 - All
 - One
@@ -131,3 +131,11 @@ product, err := wooClient.Services.Product.One(1)
 
 - All
 - Update
+
+### Shipping Zones
+
+- All
+- One
+- Create
+- Update
+- Delete
