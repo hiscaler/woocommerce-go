@@ -57,22 +57,23 @@ type service struct {
 }
 
 type services struct {
-	Product          productService
-	ProductTag       productTagService
-	ProductCategory  productCategoryService
-	ProductVariation productVariationService
-	Customer         customerService
-	Order            orderService
-	OrderNote        orderNoteService
-	OrderRefund      orderRefundService
-	Setting          settingService
-	SettingOption    settingOptionService
-	TaxClass         taxClassService
-	System           systemService
-	Coupon           couponService
-	TaxRate          taxRateService
-	PaymentGateway   paymentGatewayService
-	ShippingZone     shippingZoneService
+	Product              productService
+	ProductTag           productTagService
+	ProductCategory      productCategoryService
+	ProductVariation     productVariationService
+	Customer             customerService
+	Order                orderService
+	OrderNote            orderNoteService
+	OrderRefund          orderRefundService
+	Setting              settingService
+	SettingOption        settingOptionService
+	TaxClass             taxClassService
+	System               systemService
+	Coupon               couponService
+	TaxRate              taxRateService
+	PaymentGateway       paymentGatewayService
+	ShippingZone         shippingZoneService
+	ShippingZoneLocation shippingZoneLocationService
 }
 
 // OAuth 签名
@@ -180,22 +181,23 @@ func NewClient(config config.Config) *WooCommerce {
 		httpClient: httpClient,
 	}
 	wooClient.Services = services{
-		Product:          (productService)(xService),
-		ProductTag:       (productTagService)(xService),
-		ProductCategory:  (productCategoryService)(xService),
-		ProductVariation: (productVariationService)(xService),
-		Customer:         (customerService)(xService),
-		Order:            (orderService)(xService),
-		OrderNote:        (orderNoteService)(xService),
-		OrderRefund:      (orderRefundService)(xService),
-		Setting:          (settingService)(xService),
-		SettingOption:    (settingOptionService)(xService),
-		TaxClass:         (taxClassService)(xService),
-		System:           (systemService)(xService),
-		Coupon:           (couponService)(xService),
-		TaxRate:          (taxRateService)(xService),
-		PaymentGateway:   (paymentGatewayService)(xService),
-		ShippingZone:     (shippingZoneService)(xService),
+		Product:              (productService)(xService),
+		ProductTag:           (productTagService)(xService),
+		ProductCategory:      (productCategoryService)(xService),
+		ProductVariation:     (productVariationService)(xService),
+		Customer:             (customerService)(xService),
+		Order:                (orderService)(xService),
+		OrderNote:            (orderNoteService)(xService),
+		OrderRefund:          (orderRefundService)(xService),
+		Setting:              (settingService)(xService),
+		SettingOption:        (settingOptionService)(xService),
+		TaxClass:             (taxClassService)(xService),
+		System:               (systemService)(xService),
+		Coupon:               (couponService)(xService),
+		TaxRate:              (taxRateService)(xService),
+		PaymentGateway:       (paymentGatewayService)(xService),
+		ShippingZone:         (shippingZoneService)(xService),
+		ShippingZoneLocation: (shippingZoneLocationService)(xService),
 	}
 	return wooClient
 }
