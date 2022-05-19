@@ -13,7 +13,7 @@ type Shipping struct {
 }
 
 type ShippingLine struct {
-	Id          int        `json:"id"`
+	ID          int        `json:"id"`
 	MethodTitle string     `json:"method_title"`
 	MethodId    string     `json:"method_id"`
 	Total       string     `json:"total"`

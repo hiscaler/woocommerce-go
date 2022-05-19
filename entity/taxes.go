@@ -1,7 +1,7 @@
 package entity
 
 type Taxes struct {
-	Id               int        `json:"id"`
+	ID               int        `json:"id"`
 	RateCode         string     `json:"rate_code"`
 	RateId           string     `json:"rate_id"`
 	Label            string     `json:"label"`
@@ -12,7 +12,7 @@ type Taxes struct {
 }
 
 type TaxLine struct {
-	Id               int        `json:"id"`
+	ID               int        `json:"id"`
 	RateCode         string     `json:"rate_code"`
 	RateId           string     `json:"rate_id"`
 	Label            string     `json:"label"`
