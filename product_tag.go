@@ -160,7 +160,7 @@ func (s productTagService) Batch(req BatchProductTagsRequest) (res BatchProductT
 		return
 	}
 
-	resp, err := s.httpClient.R().SetBody(req).Post("products/tags/batch")
+	resp, err := s.httpClient.R().SetBody(req).Post("/products/tags/batch")
 	if err != nil {
 		return
 	}
