@@ -115,11 +115,11 @@ func TestCouponService_CreateUpdateDelete(t *testing.T) {
 
 func TestCouponService_Batch(t *testing.T) {
 	n := 3
-	createRequests := make([]BatchCreateCouponRequest, n)
+	createRequests := make([]BatchCouponsCreateItem, n)
 	codes := make([]string, n)
 	for i := 0; i < n; i++ {
 		code := strings.ToLower(gofakeit.LetterN(8))
-		req := BatchCreateCouponRequest{
+		req := BatchCouponsCreateItem{
 			Code:             code,
 			DiscountType:     "percent",
 			Amount:           float64(i),
@@ -130,7 +130,7 @@ func TestCouponService_Batch(t *testing.T) {
 		createRequests[i] = req
 		codes[i] = req.Code
 	}
-	batchReq := BatchCouponRequest{
+	batchReq := BatchCouponsRequest{
 		Create: createRequests,
 	}
 	result, err := wooClient.Services.Coupon.Batch(batchReq)

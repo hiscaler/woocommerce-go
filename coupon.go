@@ -157,33 +157,33 @@ func (s couponService) Delete(id int, force bool) (item entity.Coupon, err error
 
 // Batch update coupons
 
-type BatchCreateCouponRequest = CreateCouponRequest
-type BatchUpdateCouponRequest struct {
+type BatchCouponsCreateItem = CreateCouponRequest
+type BatchCouponsUpdateItem struct {
 	ID string `json:"id"`
-	BatchCreateCouponRequest
+	BatchCouponsCreateItem
 }
 
-type BatchCouponRequest struct {
-	Create []BatchCreateCouponRequest `json:"create"`
-	Update []BatchUpdateCouponRequest `json:"update"`
-	Delete []int                      `json:"delete"`
+type BatchCouponsRequest struct {
+	Create []BatchCouponsCreateItem `json:"create,omitempty"`
+	Update []BatchCouponsUpdateItem `json:"update,omitempty"`
+	Delete []int                    `json:"delete,omitempty"`
 }
 
-func (m BatchCouponRequest) Validate() error {
+func (m BatchCouponsRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
 		return errors.New("无效的请求数据")
 	}
 	return nil
 }
 
-type BatchCouponResult struct {
-	Create []entity.Coupon `json:"create,omitempty"`
-	Update []entity.Coupon `json:"update,omitempty"`
-	Delete []entity.Coupon `json:"delete,omitempty"`
+type BatchCouponsResult struct {
+	Create []entity.Coupon `json:"create"`
+	Update []entity.Coupon `json:"update"`
+	Delete []entity.Coupon `json:"delete"`
 }
 
 // Batch Batch create/update/delete coupons
-func (s couponService) Batch(req BatchCouponRequest) (res BatchCouponResult, err error) {
+func (s couponService) Batch(req BatchCouponsRequest) (res BatchCouponsResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
