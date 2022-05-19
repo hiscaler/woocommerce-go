@@ -11,7 +11,7 @@ import (
 
 type productCategoryService service
 
-type CategoriesQueryParams struct {
+type ProductCategoriesQueryParams struct {
 	queryParams
 	Search    string   `url:"search,omitempty"`
 	Exclude   []string `url:"exclude,omitempty"`
@@ -22,13 +22,13 @@ type CategoriesQueryParams struct {
 	Slug      string   `url:"slug,omitempty"`
 }
 
-func (m CategoriesQueryParams) Validate() error {
+func (m ProductCategoriesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的排序字段"))),
 	)
 }
 
-func (s productCategoryService) All(params CategoriesQueryParams) (items []entity.ProductCategory, isLastPage bool, err error) {
+func (s productCategoryService) All(params ProductCategoriesQueryParams) (items []entity.ProductCategory, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -66,20 +66,20 @@ func (s productCategoryService) One(id int) (item entity.ProductCategory, err er
 
 // 新增商品标签
 
-type UpsertCategoryRequest struct {
+type UpsertProductCategoryRequest struct {
 	Name        string               `json:"name"`
-	Slug        string               `json:"slug"`
-	Parent      int                  `json:"parent"`
-	Description string               `json:"description"`
+	Slug        string               `json:"slug,omitempty"`
+	Parent      int                  `json:"parent,omitempty"`
+	Description string               `json:"description,omitempty"`
 	Display     string               `json:"display,omitempty"`
 	Image       *entity.ProductImage `json:"image,omitempty"`
-	MenuOrder   int                  `json:"menu_order"`
+	MenuOrder   int                  `json:"menu_order,omitempty"`
 }
 
-type CreateCategoryRequest = UpsertCategoryRequest
-type UpdateCategoryRequest = UpsertCategoryRequest
+type CreateProductCategoryRequest = UpsertProductCategoryRequest
+type UpdateProductCategoryRequest = UpsertProductCategoryRequest
 
-func (m UpsertCategoryRequest) Validate() error {
+func (m UpsertProductCategoryRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
 			validation.Required.Error("分类名称不能为空"),
@@ -87,7 +87,7 @@ func (m UpsertCategoryRequest) Validate() error {
 	)
 }
 
-func (s productCategoryService) Create(req CreateCategoryRequest) (item entity.ProductCategory, err error) {
+func (s productCategoryService) Create(req CreateProductCategoryRequest) (item entity.ProductCategory, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -103,7 +103,7 @@ func (s productCategoryService) Create(req CreateCategoryRequest) (item entity.P
 	return
 }
 
-func (s productCategoryService) Update(id int, req UpdateCategoryRequest) (item entity.ProductCategory, err error) {
+func (s productCategoryService) Update(id int, req UpdateProductCategoryRequest) (item entity.ProductCategory, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -119,8 +119,10 @@ func (s productCategoryService) Update(id int, req UpdateCategoryRequest) (item 
 	return
 }
 
-func (s productCategoryService) Delete(id int) (item entity.ProductCategory, err error) {
-	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/products/categories/%d", id))
+func (s productCategoryService) Delete(id int, force bool) (item entity.ProductCategory, err error) {
+	resp, err := s.httpClient.R().
+		SetBody(map[string]bool{"force": force}).
+		Delete(fmt.Sprintf("/products/categories/%d", id))
 	if err != nil {
 		return
 	}
@@ -133,17 +135,18 @@ func (s productCategoryService) Delete(id int) (item entity.ProductCategory, err
 
 // Batch tag create,update and delete operation
 
-type CUDCategoriesUpdateRequest struct {
+type BatchProductCategoriesCreateItem = UpsertProductCategoryRequest
+type BatchProductCategoriesUpdateItem struct {
 	ID int `json:"id"`
-	UpsertTagRequest
+	UpsertProductTagRequest
 }
-type CUDCategoriesRequest struct {
-	Create []UpsertCategoryRequest      `json:"create"`
-	Update []CUDCategoriesUpdateRequest `json:"update"`
-	Delete []int                        `json:"delete"`
+type BatchProductCategoriesRequest struct {
+	Create []BatchProductCategoriesCreateItem `json:"create,omitempty"`
+	Update []BatchProductCategoriesUpdateItem `json:"update,omitempty"`
+	Delete []int                              `json:"delete,omitempty"`
 }
 
-func (m CUDCategoriesRequest) Validate() error {
+func (m BatchProductCategoriesRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
 		return errors.New("无效的请求数据")
 	}
@@ -156,12 +159,12 @@ type BatchCategoriesResult struct {
 	Delete []entity.ProductTag `json:"delete"`
 }
 
-func (s productCategoryService) Batch(req CUDCategoriesRequest) (res BatchCategoriesResult, err error) {
+func (s productCategoryService) Batch(req BatchProductCategoriesRequest) (res BatchCategoriesResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.httpClient.R().SetBody(req).Post("products/categories/batch")
+	resp, err := s.httpClient.R().SetBody(req).Post("/products/categories/batch")
 	if err != nil {
 		return
 	}
