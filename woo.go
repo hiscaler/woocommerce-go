@@ -159,7 +159,7 @@ func NewClient(config config.Config) *WooCommerce {
 				}
 				params.Add("oauth_signature", oauthSignature(config, request.Method, client.BaseURL+request.URL, params))
 			}
-			request.SetQueryParamsFromValues(params)
+			request.QueryParam = params
 			return nil
 		}).
 		OnAfterResponse(func(client *resty.Client, response *resty.Response) (err error) {
