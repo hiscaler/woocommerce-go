@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/hiscaler/gox/inx"
+	"github.com/hiscaler/gox/stringx"
 	"github.com/hiscaler/woocommerce-go/config"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/json-iterator/go/extra"
@@ -78,13 +79,21 @@ type services struct {
 
 // OAuth 签名
 func oauthSignature(config config.Config, method, endpoint string, params url.Values) string {
-	consumerSecret := config.ConsumerSecret
+	sb := strings.Builder{}
+	sb.WriteString(config.ConsumerSecret)
 	if config.Version != "v1" && config.Version != "v2" {
-		consumerSecret = consumerSecret + "&"
+		sb.WriteByte('&')
 	}
-	s := method + "&" + url.QueryEscape(endpoint) + "&" + url.QueryEscape(params.Encode())
-	mac := hmac.New(sha256.New, []byte(consumerSecret))
-	mac.Write([]byte(s))
+	consumerSecret := sb.String()
+
+	sb.Reset()
+	sb.WriteString(method)
+	sb.WriteByte('&')
+	sb.WriteString(url.QueryEscape(endpoint))
+	sb.WriteByte('&')
+	sb.WriteString(url.QueryEscape(params.Encode()))
+	mac := hmac.New(sha256.New, stringx.ToBytes(consumerSecret))
+	mac.Write(stringx.ToBytes(sb.String()))
 	signatureBytes := mac.Sum(nil)
 	return base64.StdEncoding.EncodeToString(signatureBytes)
 }
