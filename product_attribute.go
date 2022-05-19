@@ -121,7 +121,7 @@ func (s productAttributeService) Delete(id int, force bool) (item entity.Product
 	return
 }
 
-// Batch update porduct attributes
+// Batch update product attributes
 
 type BatchProductAttributesCreateItem = CreateProductAttributeRequest
 type BatchProductAttributesUpdateItem struct {
