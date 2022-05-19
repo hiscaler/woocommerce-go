@@ -76,6 +76,7 @@ type services struct {
 	ShippingZone         shippingZoneService
 	ShippingZoneLocation shippingZoneLocationService
 	ProductAttribute     productAttributeService
+	ProductAttributeTerm productAttributeTermService
 }
 
 // OAuth 签名
@@ -209,6 +210,7 @@ func NewClient(config config.Config) *WooCommerce {
 		ShippingZone:         (shippingZoneService)(xService),
 		ShippingZoneLocation: (shippingZoneLocationService)(xService),
 		ProductAttribute:     (productAttributeService)(xService),
+		ProductAttributeTerm: (productAttributeTermService)(xService),
 	}
 	return wooClient
 }
