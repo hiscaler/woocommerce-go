@@ -120,3 +120,9 @@ product, err := wooClient.Services.Product.One(1)
 ### Settings
 
 - Groups
+
+### Setting Options
+
+- All
+- One
+- Update
