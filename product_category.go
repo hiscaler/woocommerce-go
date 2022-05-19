@@ -133,7 +133,7 @@ func (s productCategoryService) Delete(id int, force bool) (item entity.ProductC
 	return
 }
 
-// Batch tag create,update and delete operation
+// Batch category create,update and delete operation
 
 type BatchProductCategoriesCreateItem = UpsertProductCategoryRequest
 type BatchProductCategoriesUpdateItem struct {
@@ -153,13 +153,13 @@ func (m BatchProductCategoriesRequest) Validate() error {
 	return nil
 }
 
-type BatchCategoriesResult struct {
+type BatchProductCategoriesResult struct {
 	Create []entity.ProductTag `json:"create"`
 	Update []entity.ProductTag `json:"update"`
 	Delete []entity.ProductTag `json:"delete"`
 }
 
-func (s productCategoryService) Batch(req BatchProductCategoriesRequest) (res BatchCategoriesResult, err error) {
+func (s productCategoryService) Batch(req BatchProductCategoriesRequest) (res BatchProductCategoriesResult, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
