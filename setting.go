@@ -7,7 +7,7 @@ import (
 
 type settingService service
 
-func (s settingService) All() (items []entity.SettingGroup, err error) {
+func (s settingService) Groups() (items []entity.SettingGroup, err error) {
 	resp, err := s.httpClient.R().Get("/settings")
 	if err != nil {
 		return
