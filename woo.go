@@ -71,6 +71,7 @@ type services struct {
 	System           systemService
 	Coupon           couponService
 	TaxRate          taxRateService
+	PaymentGateway   paymentGatewayService
 }
 
 // OAuth 签名
@@ -192,6 +193,7 @@ func NewClient(config config.Config) *WooCommerce {
 		System:           (systemService)(xService),
 		Coupon:           (couponService)(xService),
 		TaxRate:          (taxRateService)(xService),
+		PaymentGateway:   (paymentGatewayService)(xService),
 	}
 	return wooClient
 }

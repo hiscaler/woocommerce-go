@@ -1,0 +1,55 @@
+package woocommerce
+
+import (
+	"fmt"
+	"github.com/hiscaler/woocommerce-go/entity"
+	jsoniter "github.com/json-iterator/go"
+)
+
+type paymentGatewayService service
+
+func (s paymentGatewayService) All() (items []entity.PaymentGateway, err error) {
+	resp, err := s.httpClient.R().Get("/payment_gateways")
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+	}
+	return
+}
+
+// Update
+
+type UpdatePaymentGatewayRequest struct {
+	Title             string                                  `json:"title,omitempty"`
+	Description       string                                  `json:"description,omitempty"`
+	Order             int                                     `json:"order,omitempty"`
+	Enabled           bool                                    `json:"enabled,omitempty"`
+	MethodTitle       string                                  `json:"method_title,omitempty"`
+	MethodDescription string                                  `json:"method_description,omitempty"`
+	MethodSupports    []string                                `json:"method_supports,omitempty"`
+	Settings          map[string]entity.PaymentGatewaySetting `json:"settings,omitempty"`
+}
+
+func (m UpdatePaymentGatewayRequest) Validate() error {
+	return nil
+}
+
+func (s paymentGatewayService) Update(id int, req UpdatePaymentGatewayRequest) (item entity.PaymentGateway, err error) {
+	if err = req.Validate(); err != nil {
+		return
+	}
+	resp, err := s.httpClient.R().
+		SetBody(req).
+		Put(fmt.Sprintf("/payment_gateways/%d", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}

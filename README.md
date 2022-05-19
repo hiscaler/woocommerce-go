@@ -126,3 +126,8 @@ product, err := wooClient.Services.Product.One(1)
 - All
 - One
 - Update
+
+### Payment Gateways
+
+- All
+- Update
