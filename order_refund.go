@@ -55,7 +55,7 @@ func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (it
 // Create an order refund
 
 type CreateOrderRefundRequest struct {
-	Amount     string                       `json:"amount"`
+	Amount     float64                      `json:"amount,string"`
 	Reason     string                       `json:"reason,omitempty"`
 	RefundedBy int                          `json:"refunded_by,omitempty"`
 	MetaData   []entity.MetaData            `json:"meta_data,omitempty"`

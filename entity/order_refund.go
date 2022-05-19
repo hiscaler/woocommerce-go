@@ -2,7 +2,7 @@ package entity
 
 // OrderRefund order refund properties
 type OrderRefund struct {
-	ID              string                `json:"id"`
+	ID              int                   `json:"id"`
 	DateCreated     string                `json:"date_created"`
 	DateCreatedGMT  string                `json:"date_created_gmt"`
 	Amount          string                `json:"amount"`

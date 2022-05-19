@@ -94,24 +94,24 @@ func (s orderService) One(id int) (item entity.Order, err error) {
 // Create order
 
 type CreateOrderRequest struct {
-	Status             string                `json:"status"`
-	Currency           string                `json:"currency"`
-	CurrencySymbol     string                `json:"currency_symbol"`
-	PricesIncludeTax   bool                  `json:"prices_include_tax"`
-	CustomerId         int                   `json:"customer_id"`
-	CustomerNote       string                `json:"customer_note"`
-	Billing            entity.Billing        `json:"billing"`
-	Shipping           entity.Shipping       `json:"shipping"`
-	PaymentMethod      string                `json:"payment_method"`
-	PaymentMethodTitle string                `json:"payment_method_title"`
-	TransactionId      string                `json:"transaction_id"`
-	MetaData           []entity.MetaData     `json:"meta_data"`
-	LineItems          []entity.LineItem     `json:"line_items"`
-	TaxLines           []entity.TaxLine      `json:"tax_lines"`
-	ShippingLines      []entity.ShippingLine `json:"shipping_lines"`
-	FeeLines           []entity.FeeLine      `json:"fee_lines"`
-	CouponLines        []entity.CouponLine   `json:"coupon_lines"`
-	SetPaid            bool                  `json:"set_paid"`
+	Status             string                `json:"status,omitempty"`
+	Currency           string                `json:"currency,omitempty"`
+	CurrencySymbol     string                `json:"currency_symbol,omitempty"`
+	PricesIncludeTax   bool                  `json:"prices_include_tax,omitempty"`
+	CustomerId         int                   `json:"customer_id,omitempty"`
+	CustomerNote       string                `json:"customer_note,omitempty"`
+	Billing            *entity.Billing       `json:"billing,omitempty"`
+	Shipping           *entity.Shipping      `json:"shipping,omitempty"`
+	PaymentMethod      string                `json:"payment_method,omitempty"`
+	PaymentMethodTitle string                `json:"payment_method_title,omitempty"`
+	TransactionId      string                `json:"transaction_id,omitempty"`
+	MetaData           []entity.MetaData     `json:"meta_data,omitempty"`
+	LineItems          []entity.LineItem     `json:"line_items,omitempty"`
+	TaxLines           []entity.TaxLine      `json:"tax_lines,omitempty"`
+	ShippingLines      []entity.ShippingLine `json:"shipping_lines,omitempty"`
+	FeeLines           []entity.FeeLine      `json:"fee_lines,omitempty"`
+	CouponLines        []entity.CouponLine   `json:"coupon_lines,omitempty"`
+	SetPaid            bool                  `json:"set_paid,omitempty"`
 }
 
 func (m CreateOrderRequest) Validate() error {

@@ -37,6 +37,20 @@ func TestOrderService_Create(t *testing.T) {
 	orderId = item.ID
 }
 
+func TestOrderService_Update(t *testing.T) {
+	t.Run("getOrderId", getOrderId)
+	req := UpdateOrderRequest{
+		PaymentMethod:      "paypal",
+		PaymentMethodTitle: "Paypal",
+	}
+	item, err := wooClient.Services.Order.Update(orderId, req)
+	if err != nil {
+		t.Fatalf("wooClient.Services.Order.Update error: %s", err.Error())
+	} else {
+		assert.Equal(t, orderId, item.ID, "order id")
+	}
+}
+
 func TestOrderService_Delete(t *testing.T) {
 	_, err := wooClient.Services.Order.Delete(orderId, true)
 	if err != nil {

@@ -167,12 +167,9 @@ func NewClient(config config.Config) *WooCommerce {
 				r := struct {
 					Code    string `json:"code"`
 					Message string `json:"message"`
-					Data    struct {
-						Status int `json:"status"`
-					} `json:"data"`
 				}{}
 				if err = jsoniter.Unmarshal(response.Body(), &r); err == nil {
-					err = ErrorWrap(r.Data.Status, r.Message)
+					err = ErrorWrap(response.StatusCode(), r.Message)
 				}
 			}
 			if err != nil {

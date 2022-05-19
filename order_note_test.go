@@ -8,17 +8,6 @@ import (
 	"testing"
 )
 
-var orderId, noteId int
-
-func getOrderId(t *testing.T) {
-	t.Log("Execute getOrderId test")
-	items, _, err := wooClient.Services.Order.All(OrdersQueryParams{})
-	if err != nil || len(items) == 0 {
-		t.FailNow()
-	}
-	orderId = items[0].ID
-}
-
 func TestOrderNoteService_All(t *testing.T) {
 	t.Run("getOrderId", getOrderId)
 	params := OrderNotesQueryParams{}

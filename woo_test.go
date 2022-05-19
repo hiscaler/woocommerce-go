@@ -10,6 +10,19 @@ import (
 
 var wooClient *WooCommerce
 
+var orderId, noteId int
+var mainId, childId int
+
+func getOrderId(t *testing.T) {
+	t.Log("Execute getOrderId test")
+	items, _, err := wooClient.Services.Order.All(OrdersQueryParams{})
+	if err != nil || len(items) == 0 {
+		t.FailNow()
+	}
+	orderId = items[0].ID
+	mainId = items[0].ID
+}
+
 func TestMain(m *testing.M) {
 	b, err := os.ReadFile("./config/config_test.json")
 	if err != nil {
