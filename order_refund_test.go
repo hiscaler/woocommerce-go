@@ -40,8 +40,8 @@ func TestOrderRefundService_Create(t *testing.T) {
 }
 
 func TestOrderRefundService_One(t *testing.T) {
-	t.Run("TestOrderNoteService_All", TestOrderNoteService_All)
-	item, err := wooClient.Services.OrderNote.One(mainId, childId)
+	t.Run("TestOrderRefundService_All", TestOrderRefundService_All)
+	item, err := wooClient.Services.OrderRefund.One(mainId, childId, 2)
 	if err != nil {
 		t.Errorf("wooClient.Services.OrderRefund.One(%d, %d) error: %s", orderId, noteId, err.Error())
 	} else {
