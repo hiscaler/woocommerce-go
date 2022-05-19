@@ -2,7 +2,7 @@ package entity
 
 // PaymentGateway payment gateway properties
 type PaymentGateway struct {
-	ID                int                              `json:"id"`
+	ID                string                           `json:"id"`
 	Title             string                           `json:"title"`
 	Description       string                           `json:"description"`
 	Order             int                              `json:"order"`

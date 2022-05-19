@@ -20,6 +20,19 @@ func (s paymentGatewayService) All() (items []entity.PaymentGateway, err error) 
 	return
 }
 
+// One retrieve a payment gateway
+func (s paymentGatewayService) One(id string) (item entity.PaymentGateway, err error) {
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/payment_gateways/%s", id))
+	if err != nil {
+		return
+	}
+
+	if resp.IsSuccess() {
+		err = jsoniter.Unmarshal(resp.Body(), &item)
+	}
+	return
+}
+
 // Update
 
 type UpdatePaymentGatewayRequest struct {
@@ -37,13 +50,13 @@ func (m UpdatePaymentGatewayRequest) Validate() error {
 	return nil
 }
 
-func (s paymentGatewayService) Update(id int, req UpdatePaymentGatewayRequest) (item entity.PaymentGateway, err error) {
+func (s paymentGatewayService) Update(id string, req UpdatePaymentGatewayRequest) (item entity.PaymentGateway, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 	resp, err := s.httpClient.R().
 		SetBody(req).
-		Put(fmt.Sprintf("/payment_gateways/%d", id))
+		Put(fmt.Sprintf("/payment_gateways/%s", id))
 	if err != nil {
 		return
 	}
