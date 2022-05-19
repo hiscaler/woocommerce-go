@@ -44,17 +44,10 @@ func init() {
 	extra.RegisterFuzzyDecoders()
 }
 
-type queryDefaultValues struct {
-	Page     int `json:"page"`     // 当前页
-	PageSize int `json:"per_page"` // 每页数据量
-}
-
 type WooCommerce struct {
-	Debug              bool               // Is debug mode
-	Client             *resty.Client      // HTTP client
-	Logger             *log.Logger        // Log
-	QueryDefaultValues queryDefaultValues // Query default values
-	Services           services           // WooCommerce API services
+	Debug    bool        // Is debug mode
+	Logger   *log.Logger // Log
+	Services services    // WooCommerce API services
 }
 
 type service struct {
@@ -94,13 +87,9 @@ func oauthSignature(config config.Config, method, endpoint string, params url.Va
 
 func NewClient(config config.Config) *WooCommerce {
 	logger := log.New(os.Stdout, "[ WooCommerce ] ", log.LstdFlags|log.Llongfile)
-	wooInstance := &WooCommerce{
+	wooClient := &WooCommerce{
 		Debug:  config.Debug,
 		Logger: logger,
-		QueryDefaultValues: queryDefaultValues{
-			Page:     1,
-			PageSize: 100,
-		},
 	}
 	// Add default value
 	if config.Version == "" {
@@ -116,7 +105,7 @@ func NewClient(config config.Config) *WooCommerce {
 	}
 
 	storeURL := strings.Trim(config.URL, "/") + "/wp-json/wc/" + config.Version
-	client := resty.New().
+	httpClient := resty.New().
 		SetDebug(config.Debug).
 		SetBaseURL(storeURL).
 		SetHeaders(map[string]string{
@@ -178,17 +167,16 @@ func NewClient(config config.Config) *WooCommerce {
 			return
 		})
 	if config.Debug {
-		client.EnableTrace()
+		httpClient.EnableTrace()
 	}
-	client.JSONMarshal = jsoniter.Marshal
-	client.JSONUnmarshal = jsoniter.Unmarshal
-	wooInstance.Client = client
+	httpClient.JSONMarshal = jsoniter.Marshal
+	httpClient.JSONUnmarshal = jsoniter.Unmarshal
 	xService := service{
 		debug:      config.Debug,
 		logger:     logger,
-		httpClient: client,
+		httpClient: httpClient,
 	}
-	wooInstance.Services = services{
+	wooClient.Services = services{
 		Product:          (productService)(xService),
 		ProductTag:       (productTagService)(xService),
 		ProductCategory:  (productCategoryService)(xService),
@@ -203,7 +191,7 @@ func NewClient(config config.Config) *WooCommerce {
 		Coupon:           (couponService)(xService),
 		TaxRate:          (taxRateService)(xService),
 	}
-	return wooInstance
+	return wooClient
 }
 
 // ErrorWrap 错误包装
