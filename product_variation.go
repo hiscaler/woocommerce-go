@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -14,11 +15,30 @@ type productVariationService service
 
 type ProductVariationsQueryParams struct {
 	queryParams
-	Search string `json:"search,omitempty"`
+	Search        string  `url:"search,omitempty"`
+	After         string  `url:"after,omitempty"`
+	Before        string  `url:"before,omitempty"`
+	Exclude       []int   `url:"exclude,omitempty"`
+	Include       []int   `url:"include,omitempty"`
+	Parent        []int   `url:"parent,omitempty"`
+	ParentExclude []int   `url:"parent_exclude,omitempty"`
+	Slug          string  `url:"slug,omitempty"`
+	Status        string  `url:"status,omitempty"`
+	SKU           string  `url:"sku,omitempty"`
+	TaxClass      string  `url:"tax_class,omitempty"`
+	OnSale        string  `url:"on_sale,omitempty"`
+	MinPrice      float64 `url:"min_price,omitempty"`
+	MaxPrice      float64 `url:"max_price,omitempty"`
+	StockStatus   string  `url:"stock_status,omitempty"`
 }
 
 func (m ProductVariationsQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "title", "include", "date", "slug").Error("无效的排序字段"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("Invalid status value"))),
+		validation.Field(&m.TaxClass, validation.When(m.TaxClass != "", validation.In("standard", "reduced-rate", "zero-rate").Error("Invalid tax class"))),
+		validation.Field(&m.StockStatus, validation.When(m.StockStatus != "", validation.In("instock", "outofstock", "onbackorder").Error("Invalid stock status"))),
+	)
 }
 
 // All List all product variations
