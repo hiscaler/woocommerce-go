@@ -80,6 +80,7 @@ type services struct {
 	ProductShippingClass productShippingClassService
 	ProductReview        productReviewService
 	ShippingMethod       shippingMethodService
+	Data                 dataService
 }
 
 // OAuth 签名
@@ -217,6 +218,7 @@ func NewClient(config config.Config) *WooCommerce {
 		ProductShippingClass: (productShippingClassService)(xService),
 		ProductReview:        (productReviewService)(xService),
 		ShippingMethod:       (shippingMethodService)(xService),
+		Data:                 (dataService)(xService),
 	}
 	return wooClient
 }
