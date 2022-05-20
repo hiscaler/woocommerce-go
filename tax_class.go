@@ -15,8 +15,8 @@ type TaxClass struct {
 	Name string `json:"name"`
 }
 
-// TaxClasses List all tax classes
-func (s taxClassService) TaxClasses() (items []TaxClass, err error) {
+// All List all tax classes
+func (s taxClassService) All() (items []TaxClass, err error) {
 	resp, err := s.httpClient.R().Get("/tax/classes")
 	if err != nil {
 		return
