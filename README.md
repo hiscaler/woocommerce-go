@@ -59,6 +59,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Coupons
 
+Service Name: wooClient.Service.Coupon
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -67,6 +71,10 @@ product, err := wooClient.Services.Product.One(1)
 - Update
 
 ### Customers
+
+Service Name: wooClient.Service.Customer
+
+Methods:
 
 - All
 - Batch
@@ -78,6 +86,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Order
 
+Service Name: wooClient.Service.Order
+
+Methods:
+
 - All
 - Create
 - Delete
@@ -86,12 +98,20 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Order Notes
 
+Service Name: wooClient.Service.OrderNote
+
+Methods:
+
 - All
 - Create
 - Delete
 - One
 
 ### Refunds
+
+Service Name: wooClient.Service.OrderRefund
+
+Methods:
 
 - All
 - Create
@@ -100,6 +120,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Products
 
+Service Name: wooClient.Service.Product
+
+Methods:
+
 - All
 - Create
 - Delete
@@ -107,6 +131,10 @@ product, err := wooClient.Services.Product.One(1)
 - Update
 
 ### Product Variations
+
+Service Name: wooClient.Service.ProductVariation
+
+Methods:
 
 - All
 - Batch
@@ -117,6 +145,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Product Attributes
 
+Service Name: wooClient.Service.ProductAttribute
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -125,6 +157,10 @@ product, err := wooClient.Services.Product.One(1)
 - Update
 
 ### Product Attribute Terms
+
+Service Name: wooClient.Service.ProductAttributeTerm
+
+Methods:
 
 - All
 - Batch
@@ -135,6 +171,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Product Categories
 
+Service Name: wooClient.Service.ProductCategory
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -143,6 +183,10 @@ product, err := wooClient.Services.Product.One(1)
 - Update
 
 ### Product Shipping Classes
+
+Service Name: wooClient.Service.ProductShippingClass
+
+Methods:
 
 - All
 - Batch
@@ -153,6 +197,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Product Tags
 
+Service Name: wooClient.Service.ProductTag
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -162,6 +210,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Product Reviews
 
+Service Name: wooClient.Service.ProductReview
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -170,6 +222,11 @@ product, err := wooClient.Services.Product.One(1)
 - Update
 
 ### Report
+
+Service Name: wooClient.Service.Report
+
+Methods:
+
 - All
 - CouponTotals
 - CustomerTotals
@@ -181,6 +238,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Tax Rates
 
+Service Name: wooClient.Service.TaxRate
+
+Methods:
+
 - All
 - Batch
 - Create
@@ -190,6 +251,10 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Tax Classes
 
+Service Name: wooClient.Service.TaxClass
+
+Methods:
+
 - All
 - Create
 - Delete
@@ -197,6 +262,10 @@ product, err := wooClient.Services.Product.One(1)
 ### Settings
 
 - Groups
+
+Service Name: wooClient.Service.Group
+
+Methods:
 
 ### Setting Options
 
@@ -206,11 +275,19 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Payment Gateways
 
+Service Name: wooClient.Service.PaymentGateway
+
+Methods:
+
 - All
 - One
 - Update
 
 ### Shipping Zones
+
+Service Name: wooClient.Service.ShippingZone
+
+Methods:
 
 - All
 - Create
@@ -220,10 +297,18 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Shipping Zone Locations
 
+Service Name: wooClient.Service.ShippingZoneLocation
+
+Methods:
+
 - All
 - Update
 
 ### Shipping Zone Methods
+
+Service Name: wooClient.Service.ShippingZoneMethod
+
+Methods:
 
 - All
 - Delete
@@ -233,20 +318,36 @@ product, err := wooClient.Services.Product.One(1)
 
 ### Shipping Methods
 
+Service Name: wooClient.Service.ShippingMethod
+
+Methods:
+
 - All
 - One
 
 ### System Status
 
+Service Name: wooClient.Service.SystemStatus
+
+Methods:
+
 - All
 
 ### System Status Tools
+
+Service Name: wooClient.Service.SystemStatusTool
+
+Methods:
 
 - All
 - One
 - Run
 
 ### Data
+
+Service Name: wooClient.Service.Data
+
+Methods:
 
 - All
 - Continent
