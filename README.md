@@ -259,6 +259,19 @@ Methods:
 - Create
 - Delete
 
+### Webhooks
+
+Service Name: wooClient.Service.Webhook
+
+Methods:
+
+- All
+- Batch
+- Create
+- Delete
+- One
+- Update
+
 ### Settings
 
 - Groups

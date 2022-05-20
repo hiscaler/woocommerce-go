@@ -74,6 +74,7 @@ type services struct {
 	Report               reportService
 	TaxRate              taxRateService
 	TaxClass             taxClassService
+	Webhook              webhookService
 	Setting              settingService
 	SettingOption        settingOptionService
 	PaymentGateway       paymentGatewayService
@@ -216,6 +217,7 @@ func NewClient(config config.Config) *WooCommerce {
 		Report:               (reportService)(xService),
 		TaxRate:              (taxRateService)(xService),
 		TaxClass:             (taxClassService)(xService),
+		Webhook:              (webhookService)(xService),
 		Setting:              (settingService)(xService),
 		SettingOption:        (settingOptionService)(xService),
 		PaymentGateway:       (paymentGatewayService)(xService),
