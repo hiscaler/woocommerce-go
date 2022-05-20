@@ -256,3 +256,12 @@ product, err := wooClient.Services.Product.One(1)
 - Currencies
 - Currency
 - CurrentCurrency
+
+
+## Contributing
+If you have any questions or suggestions, you can:
+
+1. [Report an issue](https://github.com/hiscaler/woocommerce-go/issues/new)
+2. Fork it and pull a request
+
+Thanks.
