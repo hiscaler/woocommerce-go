@@ -58,14 +58,14 @@ func (s taxClassService) Create(req CreateTaxClassRequest) (item TaxClass, err e
 }
 
 // Delete Delete a tax classes
-func (s taxClassService) Delete(slug string) (item TaxClass, err error) {
+func (s taxClassService) Delete(slug string, force bool) (item TaxClass, err error) {
 	slug = strings.TrimSpace(slug)
 	if slug == "" {
 		err = errors.New("slug 参数不能为空")
 		return
 	}
 
-	resp, err := s.httpClient.R().Delete(fmt.Sprintf("/taxes/classes/%s", slug))
+	resp, err := s.httpClient.R().SetBody(map[string]bool{"force": force}).Delete(fmt.Sprintf("/taxes/classes/%s", slug))
 	if err != nil {
 		return
 	}
