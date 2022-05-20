@@ -82,6 +82,7 @@ type services struct {
 	ShippingZoneMethod   shippingZoneMethodService
 	ShippingMethod       shippingMethodService
 	SystemStatus         systemStatusService
+	SystemStatusTool     systemStatusToolService
 	Data                 dataService
 }
 
@@ -222,6 +223,7 @@ func NewClient(config config.Config) *WooCommerce {
 		ShippingZoneMethod:   (shippingZoneMethodService)(xService),
 		ShippingMethod:       (shippingMethodService)(xService),
 		SystemStatus:         (systemStatusService)(xService),
+		SystemStatusTool:     (systemStatusToolService)(xService),
 		Data:                 (dataService)(xService),
 	}
 	return wooClient
