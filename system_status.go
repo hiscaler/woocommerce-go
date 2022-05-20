@@ -5,9 +5,9 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type systemService service
+type systemStatusService service
 
-func (s systemService) Status() (item entity.SystemStatus, err error) {
+func (s systemStatusService) All() (item entity.SystemStatus, err error) {
 	resp, err := s.httpClient.R().Get("/system_status")
 	if err != nil {
 		return
