@@ -1,11 +1,10 @@
 {
   "debug": true,
-  "url": "https://www.example.com",
+  "url": "http://127.0.0.1/",
   "version": "v3",
   "consumer_key": "",
   "consumer_secret": "",
-  "use_auth_in_query": false,
+  "add_authentication_to_url": false,
   "timeout": 10,
-  "verify_ssl": false,
-  "enable_cache": false
+  "verify_ssl": true
 }

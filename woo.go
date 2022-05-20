@@ -147,10 +147,11 @@ func NewClient(config config.Config) *WooCommerce {
 			params := url.Values{}
 			if strings.HasPrefix(config.URL, "https") {
 				// basicAuth
-				if config.UseAuthInQuery {
+				if config.AddAuthenticationToURL {
 					params.Add("consumer_key", config.ConsumerKey)
 					params.Add("consumer_secret", config.ConsumerSecret)
 				} else {
+					// Set to header
 					client.SetAuthScheme("Basic").
 						SetAuthToken(fmt.Sprintf("%s %s", config.ConsumerKey, config.ConsumerSecret))
 				}
