@@ -12,10 +12,10 @@ import (
 type reportService service
 
 type ReportsQueryParams struct {
-	Context string `json:"context,omitempty"`
-	Period  string `json:"period,omitempty"`
-	DateMin string `json:"date_min,omitempty"`
-	DateMax string `json:"date_max,omitempty"`
+	Context string `url:"context,omitempty"`
+	Period  string `url:"period,omitempty"`
+	DateMin string `url:"date_min,omitempty"`
+	DateMax string `url:"date_max,omitempty"`
 }
 
 func (m ReportsQueryParams) Validate() error {
