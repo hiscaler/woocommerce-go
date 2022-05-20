@@ -39,15 +39,14 @@ func (s customerService) All(params CustomersQueryParams) (items []entity.Custom
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []entity.Customer
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/customers")
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
+			isLastPage = len(items) < params.PerPage
 		}
 	}
 	return

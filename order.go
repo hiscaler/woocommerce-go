@@ -59,15 +59,13 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLas
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []entity.Order
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/orders")
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
 			isLastPage = len(items) < params.PerPage
 		}
 	} else {

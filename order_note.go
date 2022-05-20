@@ -27,15 +27,14 @@ func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items 
 	}
 
 	urlValues, _ := query.Values(params)
-	var res []entity.OrderNote
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/orders/%d/notes", orderId))
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
+			isLastPage = len(items) < params.PerPage
 		}
 	}
 	return

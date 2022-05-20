@@ -49,15 +49,14 @@ func (s productVariationService) All(productId int, params ProductVariationsQuer
 
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
-	var res []entity.ProductVariation
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get(fmt.Sprintf("/products/%d/variations", productId))
 	if err != nil {
 		return
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
+			isLastPage = len(items) < params.PerPage
 		}
 	} else {
 		err = ErrorWrap(resp.StatusCode(), "")

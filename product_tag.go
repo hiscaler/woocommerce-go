@@ -32,7 +32,6 @@ func (s productTagService) All(params ProductTagsQueryParams) (items []entity.Pr
 		return
 	}
 
-	var res []entity.ProductTag
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products/tags")
@@ -41,8 +40,8 @@ func (s productTagService) All(params ProductTagsQueryParams) (items []entity.Pr
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
+			isLastPage = len(items) < params.PerPage
 		}
 	}
 	return

@@ -33,7 +33,6 @@ func (s productCategoryService) All(params ProductCategoriesQueryParams) (items 
 		return
 	}
 
-	var res []entity.ProductCategory
 	params.TidyVars()
 	urlValues, _ := query.Values(params)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products/categories")
@@ -42,8 +41,8 @@ func (s productCategoryService) All(params ProductCategoriesQueryParams) (items 
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &res); err == nil {
-			items = res
+		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
+			isLastPage = len(items) < params.PerPage
 		}
 	}
 	return
