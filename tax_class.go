@@ -4,19 +4,15 @@ import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 	"strings"
 )
 
 type taxClassService service
 
-type TaxClass struct {
-	Slug string `json:"slug"`
-	Name string `json:"name"`
-}
-
 // All List all tax classes
-func (s taxClassService) All() (items []TaxClass, err error) {
+func (s taxClassService) All() (items []entity.TaxClass, err error) {
 	resp, err := s.httpClient.R().Get("/tax/classes")
 	if err != nil {
 		return
@@ -41,7 +37,7 @@ func (m CreateTaxClassRequest) Validate() error {
 }
 
 // Create Create a tax class
-func (s taxClassService) Create(req CreateTaxClassRequest) (item TaxClass, err error) {
+func (s taxClassService) Create(req CreateTaxClassRequest) (item entity.TaxClass, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
@@ -58,7 +54,7 @@ func (s taxClassService) Create(req CreateTaxClassRequest) (item TaxClass, err e
 }
 
 // Delete Delete a tax classes
-func (s taxClassService) Delete(slug string, force bool) (item TaxClass, err error) {
+func (s taxClassService) Delete(slug string, force bool) (item entity.TaxClass, err error) {
 	slug = strings.TrimSpace(slug)
 	if slug == "" {
 		err = errors.New("slug 参数不能为空")
