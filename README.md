@@ -9,7 +9,7 @@ https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 
 ## Install
 ```go
-go get https://github.com/hiscaler/woocommerce-go
+go get github.com/hiscaler/woocommerce-go
 ```
 
 ## Config
