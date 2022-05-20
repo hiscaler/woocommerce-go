@@ -127,10 +127,9 @@ func NewClient(config config.Config) *WooCommerce {
 		config.Timeout = 2
 	}
 
-	storeURL := strings.Trim(config.URL, "/") + "/wp-json/wc/" + config.Version
 	httpClient := resty.New().
 		SetDebug(config.Debug).
-		SetBaseURL(storeURL).
+		SetBaseURL(strings.TrimRight(config.URL, "/") + "/wp-json/wc/" + config.Version).
 		SetHeaders(map[string]string{
 			"Content-Type": "application/json",
 			"Accept":       "application/json",
