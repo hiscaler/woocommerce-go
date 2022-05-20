@@ -31,11 +31,23 @@ func (q *queryParams) TidyVars() *queryParams {
 	if q.Offset < 0 {
 		q.Offset = 0
 	}
-	if q.Order == "" || !strings.EqualFold(q.Order, SortDesc) {
+
+	if q.Order == "" {
 		q.Order = SortAsc
+	} else {
+		q.Order = strings.ToLower(q.Order)
+		if q.Order != SortDesc {
+			q.OrderBy = SortAsc
+		}
 	}
-	if q.Context == "" || !strings.EqualFold(q.Context, EditContext) {
+
+	if q.Context == "" {
 		q.Context = ViewContext
+	} else {
+		q.Context = strings.ToLower(q.Context)
+		if q.Context != EditContext {
+			q.Context = ViewContext
+		}
 	}
 	return q
 }
