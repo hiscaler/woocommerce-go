@@ -79,6 +79,7 @@ type services struct {
 	PaymentGateway       paymentGatewayService
 	ShippingZone         shippingZoneService
 	ShippingZoneLocation shippingZoneLocationService
+	ShippingZoneMethod   shippingZoneMethodService
 	ShippingMethod       shippingMethodService
 	System               systemService
 	Data                 dataService
@@ -218,6 +219,7 @@ func NewClient(config config.Config) *WooCommerce {
 		PaymentGateway:       (paymentGatewayService)(xService),
 		ShippingZone:         (shippingZoneService)(xService),
 		ShippingZoneLocation: (shippingZoneLocationService)(xService),
+		ShippingZoneMethod:   (shippingZoneMethodService)(xService),
 		ShippingMethod:       (shippingMethodService)(xService),
 		System:               (systemService)(xService),
 		Data:                 (dataService)(xService),
