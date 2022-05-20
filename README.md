@@ -60,62 +60,139 @@ product, err := wooClient.Services.Product.One(1)
 ### Coupons
 
 - All
-- One
+- Batch
 - Create
 - Delete
-- Batch
+- One
+- Update
 
 ### Customers
 
 - All
-- One
+- Batch
 - Create
 - Delete
-- Batch
 - Downloads
+- One
+- Update
 
 ### Order
 
 - All
+- Create
+- Delete
 - One
+- Update
 
 ### Order Notes
 
 - All
-- One
 - Create
 - Delete
+- One
 
-### Order Refunds
+### Refunds
 
 - All
-- One
 - Create
 - Delete
+- One
 
 ### Products
 
 - All
-- One
 - Create
-- Update
 - Delete
+- One
+- Update
+
+### Product Variations
+
+- All
+- Batch
+- Create
+- Delete
+- One
+- Update
+
+### Product Attributes
+
+- All
+- Batch
+- Create
+- Delete
+- One
+- Update
+
+### Product Attribute Terms
+
+- All
+- Batch
+- Create
+- Delete
+- One
+- Update
 
 ### Product Categories
 
 - All
-- One
+- Batch
 - Create
 - Delete
+- One
+- Update
+
+### Product Shipping Classes
+
+- All
 - Batch
+- Create
+- Delete
+- One
+- Update
 
 ### Product Tags
 
 - All
-- One
+- Batch
 - Create
 - Delete
+- One
+- Update
+
+### Product Reviews
+
+- All
 - Batch
+- Create
+- Delete
+- One
+- Update
+
+### Report
+- All
+- CouponTotals
+- CustomerTotals
+- OrderTotals
+- ProductTotals
+- ReviewTotals
+- SalesReports
+- TopSellerReports
+
+### Tax Rates
+
+- All
+- Batch
+- Create
+- Delete
+- One
+- Update
+
+### Tax Classes
+
+- All
+- Create
+- Delete
 
 ### Settings
 
@@ -130,12 +207,52 @@ product, err := wooClient.Services.Product.One(1)
 ### Payment Gateways
 
 - All
+- One
 - Update
 
 ### Shipping Zones
 
 - All
-- One
 - Create
-- Update
 - Delete
+- One
+- Update
+
+### Shipping Zone Locations
+
+- All
+- Update
+
+### Shipping Zone Methods
+
+- All
+- Delete
+- Include
+- One
+- Update
+
+### Shipping Methods
+
+- All
+- One
+
+### System Status
+
+- All
+
+### System Status Tools
+
+- All
+- One
+- Run
+
+### Data
+
+- All
+- Continent
+- Continents
+- Countries
+- Country
+- Currencies
+- Currency
+- CurrentCurrency
