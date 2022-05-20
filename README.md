@@ -7,6 +7,25 @@ WooCommerce SDK for golang
 
 https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 
+## Install
+```go
+go get https://github.com/hiscaler/woocommerce-go
+```
+
+## Config
+```json
+{
+  "debug": true,
+  "url": "http://127.0.0.1/",
+  "version": "v3",
+  "consumer_key": "",
+  "consumer_secret": "",
+  "add_authentication_to_url": false,
+  "timeout": 10,
+  "verify_ssl": true
+}
+```
+
 ## Usage
 
 ### Step 1. Create a new client
