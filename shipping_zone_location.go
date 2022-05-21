@@ -12,7 +12,7 @@ type shippingZoneLocationService service
 
 // All list all shipping zone locations
 func (s shippingZoneLocationService) All(shippingZoneId int) (items []entity.ShippingZoneLocation, err error) {
-	resp, err := s.httpClient.R().Get(fmt.Sprintf("shipping/zones/%d/locations", shippingZoneId))
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/shipping/zones/%d/locations", shippingZoneId))
 	if err != nil {
 		return
 	}
@@ -53,7 +53,7 @@ func (s shippingZoneLocationService) Update(shippingZoneId int, req UpdateShippi
 	if err = req.Validate(); err != nil {
 		return
 	}
-	resp, err := s.httpClient.R().SetBody(req).Put(fmt.Sprintf("shipping/zones/%d/locations", shippingZoneId))
+	resp, err := s.httpClient.R().SetBody(req).Put(fmt.Sprintf("/shipping/zones/%d/locations", shippingZoneId))
 	if err != nil {
 		return
 	}
