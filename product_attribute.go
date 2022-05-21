@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -26,8 +25,7 @@ func (s productAttributeService) All(params ProductAttributesQueryParams) (items
 	}
 
 	params.TidyVars()
-	urlValues, _ := query.Values(params)
-	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products/attributes")
+	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/attributes")
 	if err != nil {
 		return
 	}

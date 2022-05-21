@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -35,8 +34,7 @@ func (s productShippingClassService) All(params ProductShippingClassesQueryParam
 	}
 
 	params.TidyVars()
-	urlValues, _ := query.Values(params)
-	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/products/shipping_classes")
+	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/shipping_classes")
 	if err != nil {
 		return
 	}

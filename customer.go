@@ -5,7 +5,6 @@ import (
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
-	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -38,8 +37,7 @@ func (s customerService) All(params CustomersQueryParams) (items []entity.Custom
 	}
 
 	params.TidyVars()
-	urlValues, _ := query.Values(params)
-	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/customers")
+	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/customers")
 	if err != nil {
 		return
 	}

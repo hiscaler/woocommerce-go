@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
 )
@@ -36,8 +35,7 @@ func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, is
 	}
 
 	params.TidyVars()
-	urlValues, _ := query.Values(params)
-	resp, err := s.httpClient.R().SetQueryParamsFromValues(urlValues).Get("/coupons")
+	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/coupons")
 	if err != nil {
 		return
 	}

@@ -1,6 +1,9 @@
 package woocommerce
 
-import "strings"
+import (
+	"github.com/google/go-querystring/query"
+	"strings"
+)
 
 const (
 	SortAsc  = "asc"
@@ -50,4 +53,12 @@ func (q *queryParams) TidyVars() *queryParams {
 		}
 	}
 	return q
+}
+
+func encode(i interface{}) string {
+	urlValues, err := query.Values(i)
+	if err != nil {
+		return ""
+	}
+	return urlValues.Encode()
 }
