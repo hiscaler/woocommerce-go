@@ -13,28 +13,28 @@ type productService service
 
 type ProductsQueryParams struct {
 	queryParams
-	Search        string   `url:"search,omitempty"`
-	After         string   `url:"after,omitempty"`
-	Before        string   `url:"before,omitempty"`
-	Exclude       []string `url:"exclude,omitempty"`
-	Include       []string `url:"include,omitempty"`
-	Parent        []string `url:"parent,omitempty"`
-	ParentExclude []string `url:"parent_exclude,omitempty"`
-	Slug          string   `url:"slug,omitempty"`
-	Status        string   `url:"status,omitempty"`
-	Type          string   `url:"type,omitempty"`
-	SKU           string   `url:"sku,omitempty"`
-	Featured      bool     `url:"featured,omitempty"`
-	Category      string   `url:"category,omitempty"`
-	Tag           string   `url:"tag,omitempty"`
-	ShippingClass string   `url:"shipping_class,omitempty"`
-	Attribute     string   `url:"attribute,omitempty"`
-	AttributeTerm string   `url:"attribute_term,omitempty"`
-	TaxClass      string   `url:"tax_class,omitempty"`
-	OnSale        bool     `url:"on_sale,omitempty"`
-	MinPrice      string   `url:"min_price,omitempty"`
-	MaxPrice      string   `url:"max_price,omitempty"`
-	StockStatus   string   `url:"stock_status,omitempty"`
+	Search        string `url:"search,omitempty"`
+	After         string `url:"after,omitempty"`
+	Before        string `url:"before,omitempty"`
+	Exclude       []int  `url:"exclude,omitempty"`
+	Include       []int  `url:"include,omitempty"`
+	Parent        []int  `url:"parent,omitempty"`
+	ParentExclude []int  `url:"parent_exclude,omitempty"`
+	Slug          string `url:"slug,omitempty"`
+	Status        string `url:"status,omitempty"`
+	Type          string `url:"type,omitempty"`
+	SKU           string `url:"sku,omitempty"`
+	Featured      bool   `url:"featured,omitempty"`
+	Category      string `url:"category,omitempty"`
+	Tag           string `url:"tag,omitempty"`
+	ShippingClass string `url:"shipping_class,omitempty"`
+	Attribute     string `url:"attribute,omitempty"`
+	AttributeTerm string `url:"attribute_term,omitempty"`
+	TaxClass      string `url:"tax_class,omitempty"`
+	OnSale        bool   `url:"on_sale,omitempty"`
+	MinPrice      string `url:"min_price,omitempty"`
+	MaxPrice      string `url:"max_price,omitempty"`
+	StockStatus   string `url:"stock_status,omitempty"`
 }
 
 func (m ProductsQueryParams) Validate() error {

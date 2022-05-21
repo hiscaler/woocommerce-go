@@ -12,12 +12,12 @@ type productTagService service
 
 type ProductTagsQueryParams struct {
 	queryParams
-	Search    string   `url:"search,omitempty"`
-	Exclude   []string `url:"exclude,omitempty"`
-	Include   []string `url:"include,omitempty"`
-	HideEmpty bool     `url:"hide_empty,omitempty"`
-	Product   int      `url:"product,omitempty"`
-	Slug      string   `url:"slug,omitempty"`
+	Search    string `url:"search,omitempty"`
+	Exclude   []int  `url:"exclude,omitempty"`
+	Include   []int  `url:"include,omitempty"`
+	HideEmpty bool   `url:"hide_empty,omitempty"`
+	Product   int    `url:"product,omitempty"`
+	Slug      string `url:"slug,omitempty"`
 }
 
 func (m ProductTagsQueryParams) Validate() error {

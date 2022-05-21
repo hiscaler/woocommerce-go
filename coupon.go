@@ -14,12 +14,12 @@ type couponService service
 
 type CouponsQueryParams struct {
 	queryParams
-	Search  string   `url:"search,omitempty"`
-	After   string   `url:"after,omitempty"`
-	Before  string   `url:"before,omitempty"`
-	Exclude []string `url:"exclude,omitempty"`
-	Include []string `url:"include,omitempty"`
-	Code    string   `url:"code,omitempty"`
+	Search  string `url:"search,omitempty"`
+	After   string `url:"after,omitempty"`
+	Before  string `url:"before,omitempty"`
+	Exclude []int  `url:"exclude,omitempty"`
+	Include []int  `url:"include,omitempty"`
+	Code    string `url:"code,omitempty"`
 }
 
 func (m CouponsQueryParams) Validate() error {
