@@ -34,7 +34,7 @@ func (s productShippingClassService) All(params ProductShippingClassesQueryParam
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/shipping_classes")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/shipping_classes")
 	if err != nil {
 		return
 	}

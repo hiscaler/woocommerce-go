@@ -35,7 +35,7 @@ func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, is
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/coupons")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/coupons")
 	if err != nil {
 		return
 	}

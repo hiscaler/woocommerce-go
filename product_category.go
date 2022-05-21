@@ -33,7 +33,7 @@ func (s productCategoryService) All(params ProductCategoriesQueryParams) (items 
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/categories")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/categories")
 	if err != nil {
 		return
 	}

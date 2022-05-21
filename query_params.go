@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"github.com/google/go-querystring/query"
+	"net/url"
 	"strings"
 )
 
@@ -55,10 +56,7 @@ func (q *queryParams) TidyVars() *queryParams {
 	return q
 }
 
-func encode(i interface{}) string {
-	urlValues, err := query.Values(i)
-	if err != nil {
-		return ""
-	}
-	return urlValues.Encode()
+func toValues(i interface{}) (values url.Values) {
+	values, _ = query.Values(i)
+	return
 }

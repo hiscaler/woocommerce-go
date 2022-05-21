@@ -32,7 +32,7 @@ func (s webhookService) All(params WebhooksQueryParams) (items []entity.Webhook,
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/webhooks")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/webhooks")
 	if err != nil {
 		return
 	}

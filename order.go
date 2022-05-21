@@ -57,7 +57,7 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, isLas
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/orders")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/orders")
 	if err != nil {
 		return
 	}

@@ -12,12 +12,14 @@ import (
 )
 
 func TestCouponService_All(t *testing.T) {
-	params := CouponsQueryParams{}
+	params := CouponsQueryParams{Search: ""}
+	params.PerPage = 100
+	params.Order = SortDesc
 	items, _, err := wooClient.Services.Coupon.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.Coupon.All error: %s", err.Error())
 	} else {
-		t.Logf("items = %#v", jsonx.ToPrettyJson(items))
+		t.Logf("items = %s", jsonx.ToPrettyJson(items))
 	}
 }
 

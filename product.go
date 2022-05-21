@@ -52,7 +52,7 @@ func (s productService) All(params ProductsQueryParams) (items []entity.Product,
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products")
 	if err != nil {
 		return
 	}

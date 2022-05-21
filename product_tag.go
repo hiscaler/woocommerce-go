@@ -32,7 +32,7 @@ func (s productTagService) All(params ProductTagsQueryParams) (items []entity.Pr
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/tags")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/tags")
 	if err != nil {
 		return
 	}

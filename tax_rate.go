@@ -28,7 +28,7 @@ func (s taxRateService) All(params TaxRatesQueryParams) (items []entity.TaxRate,
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/taxes")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/taxes")
 	if err != nil {
 		return
 	}

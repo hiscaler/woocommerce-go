@@ -47,7 +47,7 @@ func (s productVariationService) All(productId int, params ProductVariationsQuer
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get(fmt.Sprintf("/products/%d/variations", productId))
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get(fmt.Sprintf("/products/%d/variations", productId))
 	if err != nil {
 		return
 	}

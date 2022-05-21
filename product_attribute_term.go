@@ -34,7 +34,7 @@ func (s productAttributeTermService) All(attributeId int, params ProductAttribut
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get(fmt.Sprintf("/products/attributes/%d/terms", attributeId))
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get(fmt.Sprintf("/products/attributes/%d/terms", attributeId))
 	if err != nil {
 		return
 	}

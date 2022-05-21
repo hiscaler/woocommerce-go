@@ -37,7 +37,7 @@ func (s productReviewService) All(params ProductReviewsQueryParams) (items []ent
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/reviews")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/reviews")
 	if err != nil {
 		return
 	}

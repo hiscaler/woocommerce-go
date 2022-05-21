@@ -37,7 +37,7 @@ func (s customerService) All(params CustomersQueryParams) (items []entity.Custom
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/customers")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/customers")
 	if err != nil {
 		return
 	}

@@ -35,7 +35,7 @@ func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (it
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get(fmt.Sprintf("/orders/%d/refunds", orderId))
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get(fmt.Sprintf("/orders/%d/refunds", orderId))
 	if err != nil {
 		return
 	}

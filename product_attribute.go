@@ -25,7 +25,7 @@ func (s productAttributeService) All(params ProductAttributesQueryParams) (items
 	}
 
 	params.TidyVars()
-	resp, err := s.httpClient.R().SetQueryString(encode(params)).Get("/products/attributes")
+	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/attributes")
 	if err != nil {
 		return
 	}
