@@ -15,6 +15,7 @@ WooCommerce for golang Change Log
 - Bug: Fixed is last page check condition
 - Enh: Add total and totalPages return in All() method
 - Chg: product and product variation price, weight attribute change to float64
+- Bug: Fixed parse string to float64 failed if an empty string
 
 ## 1.0.0
 
