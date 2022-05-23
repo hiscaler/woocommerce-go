@@ -10,7 +10,7 @@ type Data struct {
 type Continent struct {
 	Code      string             `json:"code"`
 	Name      string             `json:"name"`
-	countries []ContinentCountry `json:"countries"`
+	Countries []ContinentCountry `json:"countries"` // Only code, name, []state?
 }
 
 // ContinentCountry continent country properties
