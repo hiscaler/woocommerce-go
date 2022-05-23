@@ -21,9 +21,9 @@ type ProductVariation struct {
 	Description       string            `json:"description"`
 	Permalink         string            `json:"permalink"`
 	SKU               string            `json:"sku"`
-	Price             string            `json:"price"`
-	RegularPrice      string            `json:"regular_price"`
-	SalePrice         string            `json:"sale_price"`
+	Price             float64           `json:"price"`
+	RegularPrice      float64           `json:"regular_price"`
+	SalePrice         float64           `json:"sale_price"`
 	DateOnSaleFrom    time.Time         `json:"date_on_sale_from"`
 	DateOnSaleFromGMT time.Time         `json:"date_on_sale_from_gmt"`
 	DateOnSaleTo      time.Time         `json:"date_on_sale_to"`
@@ -44,7 +44,7 @@ type ProductVariation struct {
 	Backorders        string            `json:"backorders"`
 	BackordersAllowed bool              `json:"backorders_allowed"`
 	Backordered       bool              `json:"backordered"`
-	Weight            string            `json:"weight"`
+	Weight            float64           `json:"weight"`
 	// ProductDimension        *request.VariationDimensionsRequest `json:"dimensions"`
 	ShippingClass   string                      `json:"shipping_class"`
 	ShippingClassId int                         `json:"shipping_class_id"`

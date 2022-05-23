@@ -14,6 +14,7 @@ WooCommerce for golang Change Log
 - Enh: Set per page is max to 100
 - Bug: Fixed is last page check condition
 - Enh: Add total and totalPages return in All() method
+- Chg: product and product variation price, weight attribute change to float64
 
 ## 1.0.0
 

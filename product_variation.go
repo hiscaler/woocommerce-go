@@ -81,8 +81,8 @@ func (s productVariationService) One(productId, variationId int) (item entity.Pr
 type CreateProductVariationRequest struct {
 	Description    string                             `json:"description,omitempty"`
 	SKU            string                             `json:"sku,omitempty"`
-	RegularPrice   string                             `json:"regular_price,omitempty"`
-	SalePrice      string                             `json:"sale_price,omitempty"`
+	RegularPrice   float64                            `json:"regular_price,string,omitempty"`
+	SalePrice      float64                            `json:"sale_price,string,omitempty"`
 	Status         string                             `json:"status,omitempty"`
 	Virtual        bool                               `json:"virtual,omitempty"`
 	Downloadable   bool                               `json:"downloadable,omitempty"`
@@ -95,7 +95,7 @@ type CreateProductVariationRequest struct {
 	StockQuantity  int                                `json:"stock_quantity,omitempty"`
 	StockStatus    string                             `json:"stock_status,omitempty"`
 	Backorders     string                             `json:"backorders,omitempty"`
-	Weight         string                             `json:"weight,omitempty"`
+	Weight         float64                            `json:"weight,string,omitempty"`
 	Dimension      *entity.ProductDimension           `json:"dimensions,omitempty"`
 	ShippingClass  string                             `json:"shipping_class,omitempty"`
 	Image          *entity.ProductImage               `json:"image,omitempty"`

@@ -24,8 +24,8 @@ type Product struct {
 	ShortDescription  string                    `json:"short_description"`
 	SKU               string                    `json:"sku"`
 	Price             string                    `json:"price"`
-	RegularPrice      string                    `json:"regular_price"`
-	SalePrice         string                    `json:"sale_price"`
+	RegularPrice      float64                   `json:"regular_price"`
+	SalePrice         float64                   `json:"sale_price"`
 	DateOnSaleFrom    string                    `json:"date_on_sale_from"`
 	DateOnSaleFromGMT string                    `json:"date_on_sale_from_gmt"`
 	DateOnSaleTo      string                    `json:"date_on_sale_to"`
@@ -50,7 +50,7 @@ type Product struct {
 	BackordersAllowed bool                      `json:"backorders_allowed"`
 	Backordered       bool                      `json:"backordered"`
 	SoldIndividually  bool                      `json:"sold_individually"`
-	Weight            string                    `json:"weight"`
+	Weight            float64                   `json:"weight"`
 	Dimensions        *ProductDimension         `json:"dimensions"`
 	ShippingRequired  bool                      `json:"shipping_required"`
 	ShippingTaxable   bool                      `json:"shipping_taxable"`
