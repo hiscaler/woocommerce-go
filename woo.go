@@ -195,17 +195,21 @@ func NewClient(config config.Config) *WooCommerce {
 	}
 
 	jsoniter.RegisterTypeDecoderFunc("float64", func(ptr unsafe.Pointer, iter *jsoniter.Iterator) {
-		var t float64
-		v := strings.TrimSpace(iter.ReadString())
-		if v != "" {
-			var err error
-			if t, err = strconv.ParseFloat(v, 10); err != nil {
-				iter.Error = err
-				return
+		switch iter.WhatIsNext() {
+		case jsoniter.StringValue:
+			var t float64
+			v := strings.TrimSpace(iter.ReadString())
+			if v != "" {
+				var err error
+				if t, err = strconv.ParseFloat(v, 64); err != nil {
+					iter.Error = err
+					return
+				}
 			}
+			*((*float64)(ptr)) = t
+		default:
+			*((*float64)(ptr)) = iter.ReadFloat64()
 		}
-
-		*((*float64)(ptr)) = t
 	})
 	httpClient.JSONMarshal = jsoniter.Marshal
 	httpClient.JSONUnmarshal = jsoniter.Unmarshal
