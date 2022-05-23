@@ -1,7 +1,9 @@
 WooCommerce for golang Change Log
 =================================
 
-## 1.0.1 under development
+## 1.0.2 under development
+
+## 1.0.1
 
 - Enh: Perfect doc
 - Enh: Perfect product variation query params validation
