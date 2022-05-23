@@ -31,6 +31,8 @@ func (q *queryParams) TidyVars() *queryParams {
 	}
 	if q.PerPage <= 0 {
 		q.PerPage = 10
+	} else if q.PerPage > 100 {
+		q.PerPage = 100
 	}
 	if q.Offset < 0 {
 		q.Offset = 0
