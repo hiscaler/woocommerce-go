@@ -7,6 +7,16 @@ WooCommerce SDK for golang
 
 https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 
+### Requirements
+To use the latest version of the REST API you must be using:
+
+- WooCommerce 3.5+.
+- WordPress 4.4+.
+
+Pretty permalinks in Settings > Permalinks so that the custom endpoints are supported. Default permalinks will not work.
+You may access the API over either HTTP or HTTPS, but HTTPS is recommended where possible.
+If you use ModSecurity and see 501 Method Not Implemented errors, see [this issue](https://github.com/woocommerce/woocommerce/issues/9838) for details.
+
 ## Install
 ```go
 go get github.com/hiscaler/woocommerce-go
