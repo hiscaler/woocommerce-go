@@ -37,6 +37,8 @@ func (m ProductVariationsQueryParams) Validate() error {
 		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("Invalid status value"))),
 		validation.Field(&m.TaxClass, validation.When(m.TaxClass != "", validation.In("standard", "reduced-rate", "zero-rate").Error("Invalid tax class"))),
 		validation.Field(&m.StockStatus, validation.When(m.StockStatus != "", validation.In("instock", "outofstock", "onbackorder").Error("Invalid stock status"))),
+		validation.Field(&m.MinPrice, validation.Min(0.0)),
+		validation.Field(&m.MaxPrice, validation.Min(m.MinPrice)),
 	)
 }
 

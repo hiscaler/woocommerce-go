@@ -23,7 +23,7 @@ type Product struct {
 	Description       string                    `json:"description"`
 	ShortDescription  string                    `json:"short_description"`
 	SKU               string                    `json:"sku"`
-	Price             string                    `json:"price"`
+	Price             float64                   `json:"price"`
 	RegularPrice      float64                   `json:"regular_price"`
 	SalePrice         float64                   `json:"sale_price"`
 	DateOnSaleFrom    string                    `json:"date_on_sale_from"`

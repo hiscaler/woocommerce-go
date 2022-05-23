@@ -23,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unsafe"
 )
 
 const (
@@ -192,6 +193,20 @@ func NewClient(config config.Config) *WooCommerce {
 	if config.Debug {
 		httpClient.EnableTrace()
 	}
+
+	jsoniter.RegisterTypeDecoderFunc("float64", func(ptr unsafe.Pointer, iter *jsoniter.Iterator) {
+		var t float64
+		v := strings.TrimSpace(iter.ReadString())
+		if v != "" {
+			var err error
+			if t, err = strconv.ParseFloat(v, 10); err != nil {
+				iter.Error = err
+				return
+			}
+		}
+
+		*((*float64)(ptr)) = t
+	})
 	httpClient.JSONMarshal = jsoniter.Marshal
 	httpClient.JSONUnmarshal = jsoniter.Unmarshal
 	xService := service{
