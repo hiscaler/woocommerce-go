@@ -40,7 +40,7 @@ func (s productCategoryService) All(params ProductCategoriesQueryParams) (items 
 
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = len(items) < params.PerPage
+			isLastPage = lastPage(params.Page, resp)
 		}
 	}
 	return

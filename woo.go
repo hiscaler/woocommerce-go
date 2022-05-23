@@ -231,6 +231,19 @@ func NewClient(config config.Config) *WooCommerce {
 	return wooClient
 }
 
+// check response items is last page
+func lastPage(currentPage int, resp *resty.Response) bool {
+	if currentPage == 0 {
+		currentPage = 1
+	}
+	totalPages := 0
+	s := resp.Header().Get("X-Wp-Totalpages")
+	if s != "" {
+		totalPages, _ = strconv.Atoi(s)
+	}
+	return currentPage >= totalPages
+}
+
 // ErrorWrap 错误包装
 func ErrorWrap(code int, message string) error {
 	if code == http.StatusOK {

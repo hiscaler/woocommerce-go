@@ -39,7 +39,7 @@ func (s productTagService) All(params ProductTagsQueryParams) (items []entity.Pr
 
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = len(items) < params.PerPage
+			isLastPage = lastPage(params.Page, resp)
 		}
 	}
 	return

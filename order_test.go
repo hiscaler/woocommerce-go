@@ -1,22 +1,21 @@
 package woocommerce
 
 import (
-	"github.com/hiscaler/gox/jsonx"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestOrderService_All(t *testing.T) {
 	params := OrdersQueryParams{}
-	items, _, err := wooClient.Services.Order.All(params)
+	params.PerPage = 100
+	items, isLastPage, err := wooClient.Services.Order.All(params)
 	if err != nil {
 		t.Fatalf("wooClient.Services.Order.All error: %s", err.Error())
-	} else {
-		t.Logf("items = %#v", jsonx.ToPrettyJson(items))
-		if len(items) > 0 {
-			orderId = items[0].ID
-		}
 	}
+	if len(items) > 0 {
+		orderId = items[0].ID
+	}
+	assert.Equal(t, true, isLastPage, "check isLastPage")
 }
 
 func TestOrderService_One(t *testing.T) {

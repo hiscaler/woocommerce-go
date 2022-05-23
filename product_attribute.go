@@ -32,7 +32,7 @@ func (s productAttributeService) All(params ProductAttributesQueryParams) (items
 
 	if resp.IsSuccess() {
 		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = len(items) < params.PerPage
+			isLastPage = lastPage(params.Page, resp)
 		}
 	}
 	return
