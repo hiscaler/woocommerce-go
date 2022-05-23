@@ -7,17 +7,25 @@ type Report struct {
 }
 
 type SaleReport struct {
-	TotalSales     float64  `json:"total_sales"`
-	NetSales       float64  `json:"net_sales"`
-	AverageSales   string   `json:"average_sales"`
-	TotalOrders    int      `json:"total_orders"`
-	TotalItems     int      `json:"total_items"`
-	TotalTax       float64  `json:"total_tax"`
-	TotalShipping  float64  `json:"total_shipping"`
-	TotalRefunds   int      `json:"total_refunds"`
-	TotalDiscount  int      `json:"total_discount"`
-	TotalGroupedBy string   `json:"total_grouped_by"`
-	Totals         []string `json:"totals"`
+	TotalSales     float64 `json:"total_sales"`
+	NetSales       float64 `json:"net_sales"`
+	AverageSales   string  `json:"average_sales"`
+	TotalOrders    int     `json:"total_orders"`
+	TotalItems     int     `json:"total_items"`
+	TotalTax       float64 `json:"total_tax"`
+	TotalShipping  float64 `json:"total_shipping"`
+	TotalRefunds   int     `json:"total_refunds"`
+	TotalDiscount  int     `json:"total_discount"`
+	TotalGroupedBy string  `json:"total_grouped_by"`
+	Totals         map[string]struct {
+		Sales     float64 `json:"sales"`
+		Orders    int     `json:"orders"`
+		Items     int     `json:"items"`
+		Tax       float64 `json:"tax"`
+		Shipping  float64 `json:"shipping"`
+		Discount  float64 `json:"discount"`
+		Customers int     `json:"customers"`
+	} `json:"totals"`
 }
 
 // TopSellerReport top sellers report properties

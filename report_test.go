@@ -11,7 +11,10 @@ func TestReportService_All(t *testing.T) {
 }
 
 func TestReportService_SalesReports(t *testing.T) {
-	req := SalesReportsQueryParams{}
+	req := SalesReportsQueryParams{
+		DateMin: "2022-01-01",
+		DateMax: "2022-01-01",
+	}
 	_, err := wooClient.Services.Report.SalesReports(req)
 	assert.Equal(t, nil, err)
 }
