@@ -29,7 +29,7 @@ func (m OrderRefundsQueryParams) Validate() error {
 	)
 }
 
-func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (items []entity.OrderRefund, isLastPage bool, err error) {
+func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (items []entity.OrderRefund, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -41,9 +41,8 @@ func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (it
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	} else {
 		err = ErrorWrap(resp.StatusCode(), "")
 	}

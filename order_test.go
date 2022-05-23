@@ -8,7 +8,7 @@ import (
 func TestOrderService_All(t *testing.T) {
 	params := OrdersQueryParams{}
 	params.PerPage = 100
-	items, isLastPage, err := wooClient.Services.Order.All(params)
+	items, _, _, isLastPage, err := wooClient.Services.Order.All(params)
 	if err != nil {
 		t.Fatalf("wooClient.Services.Order.All error: %s", err.Error())
 	}

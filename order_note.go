@@ -21,7 +21,7 @@ func (m OrderNotesQueryParams) Validate() error {
 	)
 }
 
-func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items []entity.OrderNote, isLastPage bool, err error) {
+func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items []entity.OrderNote, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -33,9 +33,8 @@ func (s orderNoteService) All(orderId int, params OrderNotesQueryParams) (items 
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	}
 	return
 }

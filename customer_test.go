@@ -14,7 +14,7 @@ func getCustomerId(t *testing.T) {
 	params := CustomersQueryParams{}
 	params.Page = 1
 	params.PerPage = 1
-	items, _, err := wooClient.Services.Customer.All(params)
+	items, _, _, _, err := wooClient.Services.Customer.All(params)
 	if err != nil || len(items) == 0 {
 		t.FailNow()
 	}
@@ -26,7 +26,7 @@ func getCustomerId(t *testing.T) {
 
 func TestCustomerService_All(t *testing.T) {
 	params := CustomersQueryParams{}
-	_, _, err := wooClient.Services.Customer.All(params)
+	_, _, _,_, err := wooClient.Services.Customer.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.Customer.All error: %s", err.Error())
 	}

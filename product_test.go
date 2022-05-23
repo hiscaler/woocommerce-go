@@ -9,7 +9,7 @@ import (
 
 func TestProductService_All(t *testing.T) {
 	params := ProductsQueryParams{}
-	items, _, err := wooClient.Services.Product.All(params)
+	items, _, _, _, err := wooClient.Services.Product.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.Product.All: %s", err.Error())
 	} else {

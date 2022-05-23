@@ -15,7 +15,7 @@ func TestCouponService_All(t *testing.T) {
 	params := CouponsQueryParams{Search: ""}
 	params.PerPage = 100
 	params.Order = SortDesc
-	items, _, err := wooClient.Services.Coupon.All(params)
+	items, _, _, _, err := wooClient.Services.Coupon.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.Coupon.All error: %s", err.Error())
 	} else {

@@ -26,7 +26,7 @@ func (m WebhooksQueryParams) Validate() error {
 }
 
 // All List all webhooks
-func (s webhookService) All(params WebhooksQueryParams) (items []entity.Webhook, isLastPage bool, err error) {
+func (s webhookService) All(params WebhooksQueryParams) (items []entity.Webhook, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -38,9 +38,8 @@ func (s webhookService) All(params WebhooksQueryParams) (items []entity.Webhook,
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	}
 	return
 }

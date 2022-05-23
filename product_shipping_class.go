@@ -28,7 +28,7 @@ func (m ProductShippingClassesQueryParams) Validate() error {
 }
 
 // All List all product shipping class
-func (s productShippingClassService) All(params ProductShippingClassesQueryParams) (items []entity.ProductShippingClass, isLastPage bool, err error) {
+func (s productShippingClassService) All(params ProductShippingClassesQueryParams) (items []entity.ProductShippingClass, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -40,9 +40,8 @@ func (s productShippingClassService) All(params ProductShippingClassesQueryParam
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	}
 	return
 }

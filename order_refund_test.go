@@ -10,7 +10,7 @@ import (
 func TestOrderRefundService_All(t *testing.T) {
 	t.Run("getOrderId", getOrderId)
 	params := OrderRefundsQueryParams{}
-	items, _, err := wooClient.Services.OrderRefund.All(orderId, params)
+	items, _, _, _, err := wooClient.Services.OrderRefund.All(orderId, params)
 	if err != nil {
 		t.Errorf("wooClient.Services.OrderRefund.All error: %s", err.Error())
 	} else {

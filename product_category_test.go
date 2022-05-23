@@ -10,7 +10,7 @@ import (
 
 func TestProductCategoryService_All(t *testing.T) {
 	params := ProductCategoriesQueryParams{}
-	items, _, err := wooClient.Services.ProductCategory.All(params)
+	items, _, _, _, err := wooClient.Services.ProductCategory.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.ProductCategory.All: %s", err.Error())
 	} else {

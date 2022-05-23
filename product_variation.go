@@ -41,7 +41,7 @@ func (m ProductVariationsQueryParams) Validate() error {
 }
 
 // All List all product variations
-func (s productVariationService) All(productId int, params ProductVariationsQueryParams) (items []entity.ProductVariation, isLastPage bool, err error) {
+func (s productVariationService) All(productId int, params ProductVariationsQueryParams) (items []entity.ProductVariation, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -53,9 +53,8 @@ func (s productVariationService) All(productId int, params ProductVariationsQuer
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	} else {
 		err = ErrorWrap(resp.StatusCode(), "")
 	}

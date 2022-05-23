@@ -11,7 +11,7 @@ import (
 func TestOrderNoteService_All(t *testing.T) {
 	t.Run("getOrderId", getOrderId)
 	params := OrderNotesQueryParams{}
-	items, _, err := wooClient.Services.OrderNote.All(orderId, params)
+	items, _, _, _, err := wooClient.Services.OrderNote.All(orderId, params)
 	if err != nil {
 		t.Errorf("wooClient.Services.OrderNote.All error: %s", err.Error())
 	} else {

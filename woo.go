@@ -231,17 +231,22 @@ func NewClient(config config.Config) *WooCommerce {
 	return wooClient
 }
 
-// check response items is last page
-func lastPage(currentPage int, resp *resty.Response) bool {
+// Parse response header, get total and total pages, and check it is last page
+func parseResponseTotal(currentPage int, resp *resty.Response) (total, totalPages int, isLastPage bool) {
 	if currentPage == 0 {
 		currentPage = 1
 	}
-	totalPages := 0
-	s := resp.Header().Get("X-Wp-Totalpages")
-	if s != "" {
-		totalPages, _ = strconv.Atoi(s)
+	value := resp.Header().Get("X-Wp-Total")
+	if value != "" {
+		total, _ = strconv.Atoi(value)
 	}
-	return currentPage >= totalPages
+
+	value = resp.Header().Get("X-Wp-Totalpages")
+	if value != "" {
+		totalPages, _ = strconv.Atoi(value)
+	}
+	isLastPage = currentPage >= totalPages
+	return
 }
 
 // ErrorWrap 错误包装

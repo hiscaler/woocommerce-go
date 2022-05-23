@@ -29,7 +29,7 @@ func (m CouponsQueryParams) Validate() error {
 }
 
 // All List all coupons
-func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, isLastPage bool, err error) {
+func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return
 	}
@@ -41,9 +41,8 @@ func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, is
 	}
 
 	if resp.IsSuccess() {
-		if err = jsoniter.Unmarshal(resp.Body(), &items); err == nil {
-			isLastPage = lastPage(params.Page, resp)
-		}
+		err = jsoniter.Unmarshal(resp.Body(), &items)
+		total, totalPages, isLastPage = parseResponseTotal(params.Page, resp)
 	}
 	return
 }

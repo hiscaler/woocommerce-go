@@ -15,7 +15,7 @@ var mainId, childId int
 
 func getOrderId(t *testing.T) {
 	t.Log("Execute getOrderId test")
-	items, _, err := wooClient.Services.Order.All(OrdersQueryParams{})
+	items, _, _, _, err := wooClient.Services.Order.All(OrdersQueryParams{})
 	if err != nil || len(items) == 0 {
 		t.FailNow()
 	}
