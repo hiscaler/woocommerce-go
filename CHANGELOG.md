@@ -5,6 +5,7 @@ WooCommerce for golang Change Log
 
 - Bug: Fixed parse string to float64 failed if an empty string
 - New: Added data and report service tests
+- Bug: Fixed an issue report query parameters did not take effect
 
 ## 1.0.1
 

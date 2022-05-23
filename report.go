@@ -64,12 +64,14 @@ func (s reportService) All() (items []entity.Report, err error) {
 type SalesReportsQueryParams = ReportsQueryParams
 
 // SalesReports list all sales reports
-func (s reportService) SalesReports(req SalesReportsQueryParams) (items []entity.SaleReport, err error) {
-	if err = req.Validate(); err != nil {
+func (s reportService) SalesReports(params SalesReportsQueryParams) (items []entity.SaleReport, err error) {
+	if err = params.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.httpClient.R().Get("/reports/sales")
+	resp, err := s.httpClient.R().
+		SetQueryParamsFromValues(toValues(params)).
+		Get("/reports/sales")
 	if err != nil {
 		return
 	}
@@ -84,12 +86,14 @@ func (s reportService) SalesReports(req SalesReportsQueryParams) (items []entity
 
 type TopSellerReportsQueryParams = SalesReportsQueryParams
 
-func (s reportService) TopSellerReports(req SalesReportsQueryParams) (items []entity.TopSellerReport, err error) {
-	if err = req.Validate(); err != nil {
+func (s reportService) TopSellerReports(parmas SalesReportsQueryParams) (items []entity.TopSellerReport, err error) {
+	if err = parmas.Validate(); err != nil {
 		return
 	}
 
-	resp, err := s.httpClient.R().Get("/reports/top_sellers")
+	resp, err := s.httpClient.R().
+		SetQueryParamsFromValues(toValues(parmas)).
+		Get("/reports/top_sellers")
 	if err != nil {
 		return
 	}
