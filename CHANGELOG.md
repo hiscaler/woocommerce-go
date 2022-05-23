@@ -11,6 +11,7 @@ WooCommerce for golang Change Log
 - Bug: Fixed shipping zone location endpoint error
 - Enh: Set per page is max to 100
 - Bug: Fixed is last page check condition
+- Enh: Add total and totalPages return in All() method
 
 ## 1.0.0
 
