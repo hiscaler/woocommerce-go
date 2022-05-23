@@ -9,23 +9,36 @@ import (
 	"testing"
 )
 
+func getCustomerId(t *testing.T) {
+	t.Log("Execute getCustomerId test")
+	params := CustomersQueryParams{}
+	params.Page = 1
+	params.PerPage = 1
+	items, _, err := wooClient.Services.Customer.All(params)
+	if err != nil || len(items) == 0 {
+		t.FailNow()
+	}
+	if len(items) == 0 {
+		t.Fatalf("getCustomerId not found one customer")
+	}
+	mainId = items[0].ID
+}
+
 func TestCustomerService_All(t *testing.T) {
 	params := CustomersQueryParams{}
-	items, _, err := wooClient.Services.Customer.All(params)
+	_, _, err := wooClient.Services.Customer.All(params)
 	if err != nil {
 		t.Errorf("wooClient.Services.Customer.All error: %s", err.Error())
-	} else {
-		t.Logf("items = %#v", jsonx.ToPrettyJson(items))
 	}
 }
 
 func TestCustomerService_One(t *testing.T) {
-	item, err := wooClient.Services.Customer.One(4)
+	t.Run("getCustomerId", getCustomerId)
+	item, err := wooClient.Services.Customer.One(mainId)
 	if err != nil {
-		t.Errorf("wooClient.Services.Customer.One error: %s", err.Error())
-	} else {
-		t.Logf("item = %s", jsonx.ToPrettyJson(item))
+		t.Fatalf("wooClient.Services.Customer.One error: %s", err.Error())
 	}
+	assert.Equal(t, mainId, item.ID, "customer id")
 }
 
 func TestCustomerService_Create(t *testing.T) {
