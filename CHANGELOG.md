@@ -7,6 +7,7 @@ WooCommerce for golang Change Log
 - New: Added data and report service tests
 - Bug: Fixed an issue report query parameters did not take effect
 - Bug: Fixed report struct error
+- Chg: Modify order money field type from string to float64
 
 ## 1.0.1
 
