@@ -16,8 +16,8 @@ type ShippingLine struct {
 	ID          int        `json:"id"`
 	MethodTitle string     `json:"method_title"`
 	MethodId    string     `json:"method_id"`
-	Total       string     `json:"total"`
-	TotalTax    string     `json:"total_tax"`
+	Total       float64    `json:"total"`
+	TotalTax    float64    `json:"total_tax"`
 	Taxes       []Taxes    `json:"taxes"`
 	MetaData    []MetaData `json:"meta_data"`
 }

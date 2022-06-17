@@ -6,8 +6,8 @@ type Taxes struct {
 	RateId           string     `json:"rate_id"`
 	Label            string     `json:"label"`
 	Compound         bool       `json:"compound"`
-	TaxTotal         string     `json:"tax_total"`
-	ShippingTaxTotal string     `json:"shipping_tax_total"`
+	TaxTotal         float64    `json:"tax_total"`
+	ShippingTaxTotal float64    `json:"shipping_tax_total"`
 	MetaData         []MetaData `json:"meta_data"`
 }
 
@@ -17,7 +17,7 @@ type TaxLine struct {
 	RateId           string     `json:"rate_id"`
 	Label            string     `json:"label"`
 	Compound         bool       `json:"compound"`
-	TaxTotal         string     `json:"tax_total"`
-	ShippingTaxTotal string     `json:"shipping_tax_total"`
+	TaxTotal         float64    `json:"tax_total"`
+	ShippingTaxTotal float64    `json:"shipping_tax_total"`
 	MetaData         []MetaData `json:"meta_data"`
 }

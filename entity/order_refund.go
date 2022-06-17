@@ -5,7 +5,7 @@ type OrderRefund struct {
 	ID              int                   `json:"id"`
 	DateCreated     string                `json:"date_created"`
 	DateCreatedGMT  string                `json:"date_created_gmt"`
-	Amount          string                `json:"amount"`
+	Amount          float64               `json:"amount"`
 	Reason          string                `json:"reason"`
 	RefundedBy      int                   `json:"refunded_by"`
 	RefundedPayment bool                  `json:"refunded_payment"`
@@ -22,10 +22,10 @@ type OrderRefundLineItem struct {
 	VariationId int        `json:"variation_id"`
 	Quantity    int        `json:"quantity"`
 	TaxClass    int        `json:"tax_class"`
-	SubTotal    string     `json:"subtotal"`
-	SubTotalTax string     `json:"subtotal_tax"`
-	Total       string     `json:"total"`
-	TotalTax    string     `json:"total_tax"`
+	SubTotal    float64    `json:"subtotal"`
+	SubTotalTax float64    `json:"subtotal_tax"`
+	Total       float64    `json:"total"`
+	TotalTax    float64    `json:"total_tax"`
 	Taxes       []Taxes    `json:"taxes"`
 	MetaData    []MetaData `json:"meta_data"`
 	SKU         string     `json:"sku"`
