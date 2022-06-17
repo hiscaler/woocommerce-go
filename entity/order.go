@@ -7,10 +7,10 @@ type LineItem struct {
 	VariationId int        `json:"variation_id"`
 	Quantity    int        `json:"quantity"`
 	TaxClass    string     `json:"tax_class"`
-	SubTotal    string     `json:"subtotal"`
-	SubTotalTax string     `json:"subtotal_tax"`
-	Total       string     `json:"total"`
-	TotalTax    string     `json:"total_tax"`
+	SubTotal    float64    `json:"subtotal"`
+	SubTotalTax float64    `json:"subtotal_tax"`
+	Total       float64    `json:"total"`
+	TotalTax    float64    `json:"total_tax"`
 	Taxes       []Taxes    `json:"taxes"`
 	MetaData    []MetaData `json:"meta_data"`
 	SKU         string     `json:"sku"`
@@ -23,8 +23,8 @@ type FeeLine struct {
 	Name      string     `json:"name"`
 	TaxClass  string     `json:"tax_class"`
 	TaxStatus string     `json:"tax_status"`
-	Total     string     `json:"total"`
-	TotalTax  string     `json:"total_tax"`
+	Total     float64    `json:"total"`
+	TotalTax  float64    `json:"total_tax"`
 	Taxes     []Taxes    `json:"taxes"`
 	MetaData  []MetaData `json:"meta_data"`
 }
@@ -32,15 +32,15 @@ type FeeLine struct {
 type CouponLine struct {
 	ID          int        `json:"id"`
 	Code        string     `json:"code"`
-	Discount    string     `json:"discount"`
-	DiscountTax string     `json:"discount_tax"`
+	Discount    float64    `json:"discount"`
+	DiscountTax float64    `json:"discount_tax"`
 	MetaData    []MetaData `json:"meta_data"`
 }
 
 type Refund struct {
-	ID     int    `json:"id"`
-	Reason string `json:"reason"`
-	Total  string `json:"total"`
+	ID     int     `json:"id"`
+	Reason string  `json:"reason"`
+	Total  float64 `json:"total"`
 }
 
 // Order order properties
@@ -58,13 +58,13 @@ type Order struct {
 	DateCreatedGMT     string         `json:"date_created_gmt"`
 	DateModified       string         `json:"date_modified"`
 	DateModifiedGMT    string         `json:"date_modified_gmt"`
-	DiscountTotal      string         `json:"discount_total"`
-	DiscountTax        string         `json:"discount_tax"`
-	ShippingTotal      string         `json:"shipping_total"`
-	ShippingTax        string         `json:"shipping_tax"`
-	CartTax            string         `json:"cart_tax"`
-	Total              string         `json:"total"`
-	TotalTax           string         `json:"total_tax"`
+	DiscountTotal      float64        `json:"discount_total"`
+	DiscountTax        float64        `json:"discount_tax"`
+	ShippingTotal      float64        `json:"shipping_total"`
+	ShippingTax        float64        `json:"shipping_tax"`
+	CartTax            float64        `json:"cart_tax"`
+	Total              float64        `json:"total"`
+	TotalTax           float64        `json:"total_tax"`
 	PricesIncludeTax   bool           `json:"prices_include_tax"`
 	CustomerId         int            `json:"customer_id"`
 	CustomerIpAddress  string         `json:"customer_ip_address"`
