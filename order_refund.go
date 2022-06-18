@@ -25,6 +25,14 @@ type OrderRefundsQueryParams struct {
 
 func (m OrderRefundsQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
+		validation.Field(&m.Before, validation.When(m.Before != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+		validation.Field(&m.After, validation.When(m.After != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序值"))),
 	)
 }
@@ -35,6 +43,8 @@ func (s orderRefundService) All(orderId int, params OrderRefundsQueryParams) (it
 	}
 
 	params.TidyVars()
+	params.After = ToISOTimeString(params.After, false, true)
+	params.Before = ToISOTimeString(params.Before, true, false)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get(fmt.Sprintf("/orders/%d/refunds", orderId))
 	if err != nil {
 		return

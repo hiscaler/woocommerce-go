@@ -22,7 +22,16 @@ type WebhooksQueryParams struct {
 }
 
 func (m WebhooksQueryParams) Validate() error {
-	return nil
+	return validation.ValidateStruct(&m,
+		validation.Field(&m.Before, validation.When(m.Before != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+		validation.Field(&m.After, validation.When(m.After != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+	)
 }
 
 // All List all webhooks
@@ -32,6 +41,8 @@ func (s webhookService) All(params WebhooksQueryParams) (items []entity.Webhook,
 	}
 
 	params.TidyVars()
+	params.After = ToISOTimeString(params.After, false, true)
+	params.Before = ToISOTimeString(params.Before, true, false)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/products/webhooks")
 	if err != nil {
 		return

@@ -27,6 +27,14 @@ type OrdersQueryParams struct {
 
 func (m OrdersQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
+		validation.Field(&m.Before, validation.When(m.Before != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+		validation.Field(&m.After, validation.When(m.After != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序字段"))),
 		validation.Field(&m.Status, validation.When(len(m.Status) > 0, validation.By(func(value interface{}) error {
 			statuses, ok := value.([]string)
@@ -57,6 +65,8 @@ func (s orderService) All(params OrdersQueryParams) (items []entity.Order, total
 	}
 
 	params.TidyVars()
+	params.After = ToISOTimeString(params.After, false, true)
+	params.Before = ToISOTimeString(params.Before, true, false)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/orders")
 	if err != nil {
 		return

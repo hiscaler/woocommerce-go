@@ -33,6 +33,14 @@ type ProductVariationsQueryParams struct {
 
 func (m ProductVariationsQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
+		validation.Field(&m.Before, validation.When(m.Before != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+		validation.Field(&m.After, validation.When(m.After != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "title", "include", "date", "slug").Error("无效的排序字段"))),
 		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("Invalid status value"))),
 		validation.Field(&m.TaxClass, validation.When(m.TaxClass != "", validation.In("standard", "reduced-rate", "zero-rate").Error("Invalid tax class"))),
@@ -49,6 +57,8 @@ func (s productVariationService) All(productId int, params ProductVariationsQuer
 	}
 
 	params.TidyVars()
+	params.After = ToISOTimeString(params.After, false, true)
+	params.Before = ToISOTimeString(params.Before, true, false)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get(fmt.Sprintf("/products/%d/variations", productId))
 	if err != nil {
 		return

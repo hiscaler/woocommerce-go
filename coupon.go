@@ -24,6 +24,14 @@ type CouponsQueryParams struct {
 
 func (m CouponsQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
+		validation.Field(&m.Before, validation.When(m.Before != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
+		validation.Field(&m.After, validation.When(m.After != "", validation.By(func(value interface{}) error {
+			dateStr, _ := value.(string)
+			return IsValidateTime(dateStr)
+		}))),
 		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "date", "title", "slug").Error("无效的排序字段"))),
 	)
 }
@@ -35,6 +43,8 @@ func (s couponService) All(params CouponsQueryParams) (items []entity.Coupon, to
 	}
 
 	params.TidyVars()
+	params.After = ToISOTimeString(params.After, false, true)
+	params.Before = ToISOTimeString(params.Before, true, false)
 	resp, err := s.httpClient.R().SetQueryParamsFromValues(toValues(params)).Get("/coupons")
 	if err != nil {
 		return

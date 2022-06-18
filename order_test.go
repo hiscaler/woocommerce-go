@@ -6,7 +6,9 @@ import (
 )
 
 func TestOrderService_All(t *testing.T) {
-	params := OrdersQueryParams{}
+	params := OrdersQueryParams{
+		After: "2022-06-10",
+	}
 	params.PerPage = 100
 	items, _, _, isLastPage, err := wooClient.Services.Order.All(params)
 	if err != nil {
