@@ -47,6 +47,7 @@ func (m OrdersQueryParams) Validate() error {
 				for _, validStatus := range validStatuses {
 					if status == validStatus {
 						valid = true
+						break
 					}
 				}
 				if !valid {

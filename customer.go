@@ -76,7 +76,10 @@ type CreateCustomerRequest struct {
 
 func (m CreateCustomerRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Email, validation.Required.Error("邮箱不能为空"), is.EmailFormat.Error("无效的邮箱")),
+		validation.Field(&m.Email,
+			validation.Required.Error("邮箱不能为空"),
+			is.EmailFormat.Error("无效的邮箱"),
+		),
 		validation.Field(&m.FirstName, validation.Required.Error("姓不能为空")),
 		validation.Field(&m.LastName, validation.Required.Error("名不能为空")),
 		validation.Field(&m.Username, validation.Required.Error("登录帐号不能为空")),
