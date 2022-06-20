@@ -1,5 +1,7 @@
 WooCommerce for golang Change Log
 =================================
+## 1.0.3 under development
+- Bug: Fixed date type params validation
 
 ## 1.0.2
 

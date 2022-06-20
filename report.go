@@ -2,11 +2,10 @@ package woocommerce
 
 import (
 	"fmt"
+	"github.com/araddon/dateparse"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/hiscaler/woocommerce-go/constant"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
-	"time"
 )
 
 type reportService service
@@ -23,17 +22,24 @@ func (m ReportsQueryParams) Validate() error {
 		validation.Field(&m.Period, validation.When(m.Period != "", validation.In("week", "month", "last_month", "year").Error("无效的报表周期"))),
 		validation.Field(&m.DateMin,
 			validation.Required.Error("报表开始时间不能为空"),
-			validation.Date(constant.DateFormat).Error("报表开始时间格式无效"),
+			validation.By(func(value interface{}) error {
+				dateStr, _ := value.(string)
+				return IsValidateTime(dateStr)
+			}),
 		),
 		validation.Field(&m.DateMax,
 			validation.Required.Error("报表结束时间不能为空"),
-			validation.Date(constant.DateFormat).Error("报表结束时间格式无效"),
 			validation.By(func(value interface{}) (err error) {
-				dateMin, err := time.Parse(constant.DateFormat, m.DateMin)
+				dateStr, _ := value.(string)
+				err = IsValidateTime(dateStr)
 				if err != nil {
 					return
 				}
-				dateMax, err := time.Parse(constant.DateFormat, m.DateMax)
+				dateMin, err := dateparse.ParseAny(m.DateMin)
+				if err != nil {
+					return
+				}
+				dateMax, err := dateparse.ParseAny(m.DateMax)
 				if err != nil {
 					return
 				}
@@ -69,6 +75,8 @@ func (s reportService) SalesReports(params SalesReportsQueryParams) (items []ent
 		return
 	}
 
+	params.DateMin = ToISOTimeString(params.DateMin, true, false)
+	params.DateMax = ToISOTimeString(params.DateMax, false, true)
 	resp, err := s.httpClient.R().
 		SetQueryParamsFromValues(toValues(params)).
 		Get("/reports/sales")
@@ -86,13 +94,15 @@ func (s reportService) SalesReports(params SalesReportsQueryParams) (items []ent
 
 type TopSellerReportsQueryParams = SalesReportsQueryParams
 
-func (s reportService) TopSellerReports(parmas SalesReportsQueryParams) (items []entity.TopSellerReport, err error) {
-	if err = parmas.Validate(); err != nil {
+func (s reportService) TopSellerReports(params SalesReportsQueryParams) (items []entity.TopSellerReport, err error) {
+	if err = params.Validate(); err != nil {
 		return
 	}
 
+	params.DateMin = ToISOTimeString(params.DateMin, true, false)
+	params.DateMax = ToISOTimeString(params.DateMax, false, true)
 	resp, err := s.httpClient.R().
-		SetQueryParamsFromValues(toValues(parmas)).
+		SetQueryParamsFromValues(toValues(params)).
 		Get("/reports/top_sellers")
 	if err != nil {
 		return
