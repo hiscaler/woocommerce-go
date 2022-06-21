@@ -7,6 +7,7 @@ type SettingOption struct {
 	Description string            `json:"description"`
 	Value       string            `json:"value"`
 	Default     string            `json:"default"`
+	Tip         string            `json:"tip"`
 	PlaceHolder string            `json:"place_holder"`
 	Type        string            `json:"type"`
 	Options     map[string]string `json:"options"`
