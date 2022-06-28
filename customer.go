@@ -64,14 +64,14 @@ func (s customerService) One(id int) (item entity.Customer, err error) {
 
 // CreateCustomerRequest Create customer request
 type CreateCustomerRequest struct {
-	Email     string            `json:"email,omitempty"`
-	FirstName string            `json:"first_name,omitempty"`
-	LastName  string            `json:"last_name,omitempty"`
-	Username  string            `json:"username,omitempty"`
-	Password  string            `json:"password,omitempty"`
-	Billing   *entity.Billing   `json:"billing,omitempty"`
-	Shipping  *entity.Shipping  `json:"shipping,omitempty"`
-	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
+	Email     string           `json:"email,omitempty"`
+	FirstName string           `json:"first_name,omitempty"`
+	LastName  string           `json:"last_name,omitempty"`
+	Username  string           `json:"username,omitempty"`
+	Password  string           `json:"password,omitempty"`
+	Billing   *entity.Billing  `json:"billing,omitempty"`
+	Shipping  *entity.Shipping `json:"shipping,omitempty"`
+	MetaData  []entity.Meta    `json:"meta_data,omitempty"`
 }
 
 func (m CreateCustomerRequest) Validate() error {
@@ -108,12 +108,12 @@ func (s customerService) Create(req CreateCustomerRequest) (item entity.Customer
 // Update customer
 
 type UpdateCustomerRequest struct {
-	Email     string            `json:"email,omitempty"`
-	FirstName string            `json:"first_name,omitempty"`
-	LastName  string            `json:"last_name,omitempty"`
-	Billing   *entity.Billing   `json:"billing,omitempty"`
-	Shipping  *entity.Shipping  `json:"shipping,omitempty"`
-	MetaData  []entity.MetaData `json:"meta_data,omitempty"`
+	Email     string           `json:"email,omitempty"`
+	FirstName string           `json:"first_name,omitempty"`
+	LastName  string           `json:"last_name,omitempty"`
+	Billing   *entity.Billing  `json:"billing,omitempty"`
+	Shipping  *entity.Shipping `json:"shipping,omitempty"`
+	MetaData  []entity.Meta    `json:"meta_data,omitempty"`
 }
 
 func (m UpdateCustomerRequest) Validate() error {

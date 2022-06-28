@@ -111,7 +111,7 @@ type CreateOrderRequest struct {
 	PaymentMethod      string                `json:"payment_method,omitempty"`
 	PaymentMethodTitle string                `json:"payment_method_title,omitempty"`
 	TransactionId      string                `json:"transaction_id,omitempty"`
-	MetaData           []entity.MetaData     `json:"meta_data,omitempty"`
+	MetaData           []entity.Meta         `json:"meta_data,omitempty"`
 	LineItems          []entity.LineItem     `json:"line_items,omitempty"`
 	TaxLines           []entity.TaxLine      `json:"tax_lines,omitempty"`
 	ShippingLines      []entity.ShippingLine `json:"shipping_lines,omitempty"`

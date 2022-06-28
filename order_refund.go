@@ -65,7 +65,7 @@ type CreateOrderRefundRequest struct {
 	Amount     float64                      `json:"amount,string"`
 	Reason     string                       `json:"reason,omitempty"`
 	RefundedBy int                          `json:"refunded_by,omitempty"`
-	MetaData   []entity.MetaData            `json:"meta_data,omitempty"`
+	MetaData   []entity.Meta                `json:"meta_data,omitempty"`
 	LineItems  []entity.OrderRefundLineItem `json:"line_items,omitempty"`
 }
 

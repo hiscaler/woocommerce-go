@@ -1,40 +1,40 @@
 package entity
 
 type LineItem struct {
-	ID          int        `json:"id"`
-	Name        string     `json:"name"`
-	ProductId   int        `json:"product_id"`
-	VariationId int        `json:"variation_id"`
-	Quantity    int        `json:"quantity"`
-	TaxClass    string     `json:"tax_class"`
-	SubTotal    float64    `json:"subtotal"`
-	SubTotalTax float64    `json:"subtotal_tax"`
-	Total       float64    `json:"total"`
-	TotalTax    float64    `json:"total_tax"`
-	Taxes       []Taxes    `json:"taxes"`
-	MetaData    []MetaData `json:"meta_data"`
-	SKU         string     `json:"sku"`
-	Price       float64    `json:"price"`
-	ParentName  string     `json:"parent_name"`
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	ProductId   int     `json:"product_id"`
+	VariationId int     `json:"variation_id"`
+	Quantity    int     `json:"quantity"`
+	TaxClass    string  `json:"tax_class"`
+	SubTotal    float64 `json:"subtotal"`
+	SubTotalTax float64 `json:"subtotal_tax"`
+	Total       float64 `json:"total"`
+	TotalTax    float64 `json:"total_tax"`
+	Taxes       []Tax   `json:"taxes"`
+	MetaData    []Meta  `json:"meta_data"`
+	SKU         string  `json:"sku"`
+	Price       float64 `json:"price"`
+	ParentName  string  `json:"parent_name"`
 }
 
 type FeeLine struct {
-	ID        int        `json:"id"`
-	Name      string     `json:"name"`
-	TaxClass  string     `json:"tax_class"`
-	TaxStatus string     `json:"tax_status"`
-	Total     float64    `json:"total"`
-	TotalTax  float64    `json:"total_tax"`
-	Taxes     []Taxes    `json:"taxes"`
-	MetaData  []MetaData `json:"meta_data"`
+	ID        int     `json:"id"`
+	Name      string  `json:"name"`
+	TaxClass  string  `json:"tax_class"`
+	TaxStatus string  `json:"tax_status"`
+	Total     float64 `json:"total"`
+	TotalTax  float64 `json:"total_tax"`
+	Taxes     []Tax   `json:"taxes"`
+	MetaData  []Meta  `json:"meta_data"`
 }
 
 type CouponLine struct {
-	ID          int        `json:"id"`
-	Code        string     `json:"code"`
-	Discount    float64    `json:"discount"`
-	DiscountTax float64    `json:"discount_tax"`
-	MetaData    []MetaData `json:"meta_data"`
+	ID          int     `json:"id"`
+	Code        string  `json:"code"`
+	Discount    float64 `json:"discount"`
+	DiscountTax float64 `json:"discount_tax"`
+	MetaData    []Meta  `json:"meta_data"`
 }
 
 type Refund struct {
@@ -80,7 +80,7 @@ type Order struct {
 	DateCompleted      string         `json:"date_completed"`
 	DateCompletedGMT   string         `json:"date_completed_gmt"`
 	CartHash           string         `json:"cart_hash"`
-	MetaData           []MetaData     `json:"meta_data"`
+	MetaData           []Meta         `json:"meta_data"`
 	LineItems          []LineItem     `json:"line_items"`
 	TaxLines           []TaxLine      `json:"tax_lines"`
 	ShippingLines      []ShippingLine `json:"shipping_lines"`
