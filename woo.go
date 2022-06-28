@@ -34,10 +34,11 @@ const (
 
 // https://woocommerce.github.io/woocommerce-rest-api-docs/?php#request-response-format
 const (
-	BadRequestError     = 400 // 错误的请求
-	UnauthorizedError   = 401 // 身份验证或权限错误
-	NotFoundError       = 404 // 访问资源不存在
-	InternalServerError = 500 // 服务器内部错误
+	BadRequestError         = 400 // 错误的请求
+	UnauthorizedError       = 401 // 身份验证或权限错误
+	NotFoundError           = 404 // 访问资源不存在
+	InternalServerError     = 500 // 服务器内部错误
+	MethodNotImplementedErr = 501 // 方法未实现
 )
 
 var ErrNotFound = errors.New("WooCommerce: not found")
@@ -120,7 +121,7 @@ func NewClient(config config.Config) *WooCommerce {
 		config.Version = "v3"
 	} else {
 		config.Version = strings.ToLower(config.Version)
-		if !inx.StringIn(config.Version, "v1", "v1", "v3") {
+		if !inx.StringIn(config.Version, "v1", "v2", "v3") {
 			config.Version = "v3"
 		}
 	}
@@ -289,6 +290,8 @@ func ErrorWrap(code int, message string) error {
 			message = "访问资源不存在"
 		case InternalServerError:
 			message = "服务器内部错误"
+		case MethodNotImplementedErr:
+			message = "方法未实现"
 		default:
 			message = "未知错误"
 		}

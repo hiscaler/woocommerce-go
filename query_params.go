@@ -58,6 +58,7 @@ func (q *queryParams) TidyVars() *queryParams {
 	return q
 }
 
+// change to url.values
 func toValues(i interface{}) (values url.Values) {
 	values, _ = query.Values(i)
 	return
