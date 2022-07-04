@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	Version       = "1.0.0"
+	Version       = "1.0.3"
 	UserAgent     = "WooCommerce API Client-Golang/" + Version
 	HashAlgorithm = "HMAC-SHA256"
 )
