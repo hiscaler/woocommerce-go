@@ -20,6 +20,19 @@ func TestOrderService_All(t *testing.T) {
 	assert.Equal(t, true, isLastPage, "check isLastPage")
 }
 
+func TestOrderService_AllByArrayParams(t *testing.T) {
+	params := OrdersQueryParams{
+		Status:  []string{"completed"},
+		Include: []int{914, 849},
+	}
+	params.PerPage = 300
+	_, _, _, isLastPage, err := wooClient.Services.Order.All(params)
+	if err != nil {
+		t.Fatalf("wooClient.Services.Order.All By Array Params error: %s", err.Error())
+	}
+	assert.Equal(t, true, isLastPage, "check isLastPage")
+}
+
 func TestOrderService_One(t *testing.T) {
 	item, err := wooClient.Services.Order.One(orderId)
 	if err != nil {

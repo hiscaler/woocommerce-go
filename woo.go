@@ -147,6 +147,19 @@ func NewClient(config config.Config) *WooCommerce {
 		}).
 		OnBeforeRequest(func(client *resty.Client, request *resty.Request) error {
 			params := url.Values{}
+			for k, vs := range request.QueryParam {
+				var v string
+				switch len(vs) {
+				case 0:
+					continue
+				case 1:
+					v = vs[0]
+				default:
+					// if is array params, must convert to string, example: status=1&status=2 replace to status=1,2
+					v = strings.Join(vs, ",")
+				}
+				params.Set(k, v)
+			}
 			if strings.HasPrefix(config.URL, "https") {
 				// basicAuth
 				if config.AddAuthenticationToURL {
@@ -166,11 +179,8 @@ func NewClient(config config.Config) *WooCommerce {
 				sha1Nonce := fmt.Sprintf("%x", sha1.Sum(nonce))
 				params.Add("oauth_nonce", sha1Nonce)
 				params.Add("oauth_signature_method", HashAlgorithm)
-				for k, vs := range request.QueryParam {
-					for _, v := range vs {
-						params.Add(k, v)
-					}
-				}
+
+				fmt.Println(params.Encode())
 				params.Add("oauth_signature", oauthSignature(config, request.Method, client.BaseURL+request.URL, params))
 			}
 			request.QueryParam = params

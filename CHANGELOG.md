@@ -3,6 +3,8 @@ WooCommerce for golang Change Log
 
 ## 1.0.4 under development
 
+-Bug: #1 Fixed signature error if query params include array value
+
 ## 1.0.3
 
 - Bug: Fixed date type params validation

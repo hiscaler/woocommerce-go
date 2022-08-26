@@ -19,7 +19,7 @@ type OrdersQueryParams struct {
 	Include       []int    `url:"include,omitempty"`
 	Parent        []int    `url:"parent,omitempty"`
 	ParentExclude []int    `url:"parent_exclude,omitempty"`
-	Status        []string `url:"status,omitempty,omitempty"`
+	Status        []string `url:"status,omitempty"`
 	Customer      int      `url:"customer,omitempty"`
 	Product       int      `url:"product,omitempty"`
 	DecimalPoint  int      `url:"dp,omitempty"`
