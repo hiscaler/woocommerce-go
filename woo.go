@@ -179,8 +179,6 @@ func NewClient(config config.Config) *WooCommerce {
 				sha1Nonce := fmt.Sprintf("%x", sha1.Sum(nonce))
 				params.Add("oauth_nonce", sha1Nonce)
 				params.Add("oauth_signature_method", HashAlgorithm)
-
-				fmt.Println(params.Encode())
 				params.Add("oauth_signature", oauthSignature(config, request.Method, client.BaseURL+request.URL, params))
 			}
 			request.QueryParam = params
