@@ -54,7 +54,7 @@ if err != nil {
     panic(fmt.Sprintf("Read config error: %s", err.Error()))
 }
 var c config.Config
-err = jsoniter.Unmarshal(b, &c)
+err = json.Unmarshal(b, &c)
 if err != nil {
     panic(fmt.Sprintf("Parse config file error: %s", err.Error()))
 }
@@ -62,7 +62,7 @@ if err != nil {
 wooClient := NewClient(c)
 ```
 
-Now you get a wooCommerce client object, If you want operate data, please refer second step.
+Now you get a wooCommerce client object, If you want to operate data, please refer second step.
 
 ### Step 2. Call special service method
 
