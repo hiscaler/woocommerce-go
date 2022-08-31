@@ -93,6 +93,17 @@ product, err := wooClient.Services.Product.One(1)
 
 ## Services
 
+Service method name description:
+
+| Method Name | Description        |
+|-------------|--------------------|
+| Create()    | Create a new data  |
+| All()       | Get a data list    |
+| One()       | Get one data       |
+| Delete()    | Delete a data      |
+| Update()    | Update a data      |
+| Batch()     | Batch operate data |
+
 ### Coupons
 
 Service Name: wooClient.Service.Coupon
