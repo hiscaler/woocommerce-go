@@ -89,7 +89,7 @@ type services struct {
 	Data                 dataService
 }
 
-// OAuth 签名
+// OAuth signature
 func oauthSignature(config config.Config, method, endpoint string, params url.Values) string {
 	sb := strings.Builder{}
 	sb.WriteString(config.ConsumerSecret)
@@ -110,6 +110,10 @@ func oauthSignature(config config.Config, method, endpoint string, params url.Va
 	return base64.StdEncoding.EncodeToString(signatureBytes)
 }
 
+// NewClient Creates a new WooCommerce client
+//
+// You must give a config with NewClient method params.
+// After you can operate data use this client.
 func NewClient(config config.Config) *WooCommerce {
 	logger := log.New(os.Stdout, "[ WooCommerce ] ", log.LstdFlags|log.Llongfile)
 	wooClient := &WooCommerce{
@@ -291,17 +295,17 @@ func ErrorWrap(code int, message string) error {
 	if message == "" {
 		switch code {
 		case BadRequestError:
-			message = "错误的请求"
+			message = "Bad request"
 		case UnauthorizedError:
-			message = "身份验证或权限错误"
+			message = "Unauthorized operation, please confirm whether you have permission"
 		case NotFoundError:
-			message = "访问资源不存在"
+			message = "Resource not found"
 		case InternalServerError:
-			message = "服务器内部错误"
+			message = "Server internal error"
 		case MethodNotImplementedError:
-			message = "方法未实现"
+			message = "method not implemented"
 		default:
-			message = "未知错误"
+			message = "Unknown error"
 		}
 	}
 	return fmt.Errorf("%d: %s", code, message)
