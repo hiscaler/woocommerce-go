@@ -1,6 +1,6 @@
 package entity
 
-// TaxRate tax rate properites
+// TaxRate tax rate properties
 type TaxRate struct {
 	ID        int      `json:"id"`
 	Country   string   `json:"country"`
