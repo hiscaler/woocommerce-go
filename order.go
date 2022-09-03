@@ -10,6 +10,7 @@ import (
 
 type orderService service
 
+// OrdersQueryParams orders query params
 type OrdersQueryParams struct {
 	queryParams
 	Search        string   `url:"search,omitempty"`
@@ -60,6 +61,27 @@ func (m OrdersQueryParams) Validate() error {
 }
 
 // All list all orders
+//
+// Usage:
+// 	params := OrdersQueryParams{
+//		After: "2022-06-10",
+//	}
+//	params.PerPage = 100
+//	for {
+//		orders, total, totalPages, isLastPage, err := wooClient.Services.Order.All(params)
+//		if err != nil {
+//			break
+//		}
+//		fmt.Println(fmt.Sprintf("Page %d/%d", total, totalPages))
+//		// read orders
+//		for _, order := range orders {
+//			_ = order
+//		}
+//		if err != nil || isLastPage {
+//			break
+//		}
+//		params.Page++
+//	}
 func (s orderService) All(params OrdersQueryParams) (items []entity.Order, total, totalPages int, isLastPage bool, err error) {
 	if err = params.Validate(); err != nil {
 		return

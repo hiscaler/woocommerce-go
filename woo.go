@@ -1,3 +1,24 @@
+// Package woocommerce is a Woo Commerce lib.
+//
+// Quick start:
+//	b, err := os.ReadFile("./config/config_test.json")
+//	if err != nil {
+//	   panic(fmt.Sprintf("Read config error: %s", err.Error()))
+//	}
+//	var c config.Config
+//	err = jsoniter.Unmarshal(b, &c)
+//	if err != nil {
+//	   panic(fmt.Sprintf("Parse config file error: %s", err.Error()))
+//	}
+//
+//	wooClient = NewClient(c)
+//	// Query an order
+//	order, err := wooClient.Services.Order.One(1)
+//	if err != nil {
+//	   fmt.Println(err)
+//	} else {
+//	   fmt.Println(fmt.Sprintf("%#v", order))
+//	}
 package woocommerce
 
 import (
@@ -281,7 +302,7 @@ func parseResponseTotal(currentPage int, resp *resty.Response) (total, totalPage
 	return
 }
 
-// ErrorWrap 错误包装
+// ErrorWrap wrap an error, if status code is 200, return nil, otherwise return an error
 func ErrorWrap(code int, message string) error {
 	if code == http.StatusOK {
 		return nil
