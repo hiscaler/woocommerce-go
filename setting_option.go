@@ -12,8 +12,8 @@ import (
 type settingOptionService service
 
 // All list all setting options
-func (s settingOptionService) All(settingId int) (items []entity.SettingOption, err error) {
-	resp, err := s.httpClient.R().Get(fmt.Sprintf("/settings/%d", settingId))
+func (s settingOptionService) All(settingId string) (items []entity.SettingOption, err error) {
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/settings/%s", settingId))
 	if err != nil {
 		return
 	}
@@ -25,8 +25,8 @@ func (s settingOptionService) All(settingId int) (items []entity.SettingOption, 
 }
 
 // One retrieve a setting option
-func (s settingOptionService) One(groupId, optionId int) (item entity.SettingOption, err error) {
-	resp, err := s.httpClient.R().Get(fmt.Sprintf("/settings/%d/%d", groupId, optionId))
+func (s settingOptionService) One(groupId, optionId string) (item entity.SettingOption, err error) {
+	resp, err := s.httpClient.R().Get(fmt.Sprintf("/settings/%s/%s", groupId, optionId))
 	if err != nil {
 		return
 	}
@@ -49,13 +49,13 @@ func (m UpdateSettingOptionRequest) Validate() error {
 	)
 }
 
-func (s settingOptionService) Update(groupId, optionId int, req UpdateSettingOptionRequest) (item entity.SettingOption, err error) {
+func (s settingOptionService) Update(groupId, optionId string, req UpdateSettingOptionRequest) (item entity.SettingOption, err error) {
 	if err = req.Validate(); err != nil {
 		return
 	}
 	resp, err := s.httpClient.R().
 		SetBody(req).
-		Put(fmt.Sprintf("/settings/%d/%d", groupId, optionId))
+		Put(fmt.Sprintf("/settings/%s/%s", groupId, optionId))
 	if err != nil {
 		return
 	}
