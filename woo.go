@@ -194,9 +194,13 @@ func NewClient(config config.Config) *WooCommerce {
 					params.Add("consumer_secret", config.ConsumerSecret)
 				} else {
 					// Set to header
-					client.SetAuthScheme("Basic").
-						SetAuthToken(fmt.Sprintf("%s %s", config.ConsumerKey, config.ConsumerSecret))
+					// client.SetAuthScheme("Basic").
+					// 	SetAuthToken(fmt.Sprintf("%s %s", config.ConsumerKey, config.ConsumerSecret))
+
+					// Set to header: Authorization: Basic <Base64-encoded ConsumerKey:ConsumerSecret>
+					client.SetBasicAuth(config.ConsumerKey, config.ConsumerSecret)
 				}
+
 			} else {
 				// oAuth
 				params.Add("oauth_consumer_key", config.ConsumerKey)
