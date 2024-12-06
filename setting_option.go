@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -45,7 +46,7 @@ type UpdateSettingOptionRequest struct {
 
 func (m UpdateSettingOptionRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Value, validation.Required.Error("设置值不能为空")),
+		validation.Field(&m.Value, validation.Required.Error("settings value cannot be empty")),
 	)
 }
 

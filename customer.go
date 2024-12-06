@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/hiscaler/woocommerce-go/entity"
@@ -24,9 +25,9 @@ type CustomersQueryParams struct {
 
 func (m CustomersQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "registered_date").Error("无效的排序字段"))),
-		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("无效的邮箱"))),
-		validation.Field(&m.Role, validation.When(m.Role != "", validation.In("all", "administrator", "editor", "author", "contributor", "subscriber", "shop_manager").Error("无效的角色"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "registered_date").Error("invalid sort field"))),
+		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("invalid email"))),
+		validation.Field(&m.Role, validation.When(m.Role != "", validation.In("all", "administrator", "editor", "author", "contributor", "subscriber", "shop_manager").Error("invalid role"))),
 	)
 }
 
@@ -77,13 +78,13 @@ type CreateCustomerRequest struct {
 func (m CreateCustomerRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Email,
-			validation.Required.Error("邮箱不能为空"),
-			is.EmailFormat.Error("无效的邮箱"),
+			validation.Required.Error("email cannot be empty"),
+			is.EmailFormat.Error("invalid email"),
 		),
-		validation.Field(&m.FirstName, validation.Required.Error("姓不能为空")),
-		validation.Field(&m.LastName, validation.Required.Error("名不能为空")),
-		validation.Field(&m.Username, validation.Required.Error("登录帐号不能为空")),
-		validation.Field(&m.Password, validation.Required.Error("登录密码不能为空")),
+		validation.Field(&m.FirstName, validation.Required.Error("first name cannot be empty")),
+		validation.Field(&m.LastName, validation.Required.Error("last name cannot be empty")),
+		validation.Field(&m.Username, validation.Required.Error("username cannot be empty")),
+		validation.Field(&m.Password, validation.Required.Error("password cannot be empty")),
 		validation.Field(&m.Billing),
 	)
 }
@@ -118,7 +119,7 @@ type UpdateCustomerRequest struct {
 
 func (m UpdateCustomerRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("无效的邮箱"))),
+		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("invalid email"))),
 		validation.Field(&m.Billing),
 	)
 }
@@ -176,7 +177,7 @@ type BatchCustomerRequest struct {
 
 func (m BatchCustomerRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

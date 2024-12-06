@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -23,7 +24,7 @@ type ProductCategoriesQueryParams struct {
 
 func (m ProductCategoriesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("无效的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "name", "slug", "term_group", "description", "count").Error("invalid sort field"))),
 	)
 }
 
@@ -60,8 +61,6 @@ func (s productCategoryService) One(id int) (item entity.ProductCategory, err er
 	return
 }
 
-// 新增商品标签
-
 type UpsertProductCategoryRequest struct {
 	Name        string               `json:"name"`
 	Slug        string               `json:"slug,omitempty"`
@@ -78,7 +77,7 @@ type UpdateProductCategoryRequest = UpsertProductCategoryRequest
 func (m UpsertProductCategoryRequest) Validate() error {
 	return validation.ValidateStruct(&m,
 		validation.Field(&m.Name,
-			validation.Required.Error("分类名称不能为空"),
+			validation.Required.Error("category name cannot be empty"),
 		),
 	)
 }
@@ -144,7 +143,7 @@ type BatchProductCategoriesRequest struct {
 
 func (m BatchProductCategoriesRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

@@ -2,10 +2,11 @@ package woocommerce
 
 import (
 	"fmt"
-	"github.com/araddon/dateparse"
-	"github.com/hiscaler/woocommerce-go/constant"
 	"strings"
 	"time"
+
+	"github.com/araddon/dateparse"
+	"github.com/hiscaler/woocommerce-go/constant"
 )
 
 // ToISOTimeString Convert to iso time string
@@ -46,6 +47,6 @@ func IsValidateTime(dateStr string) error {
 	case constant.DateFormat, constant.DatetimeFormat, constant.WooDatetimeFormat:
 		return nil
 	default:
-		return fmt.Errorf("%s 日期格式无效", dateStr)
+		return fmt.Errorf("%s invalid date format", dateStr)
 	}
 }

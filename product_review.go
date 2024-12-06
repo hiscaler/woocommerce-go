@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -34,7 +35,7 @@ func (m ProductReviewsQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "date_gmt", "slug", "include", "product").Error("无效的排序方式"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "date_gmt", "slug", "include", "product").Error("invalid sort method"))),
 	)
 }
 
@@ -86,10 +87,10 @@ type CreateProductReviewRequest struct {
 
 func (m CreateProductReviewRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("approved", "hold", "spam", "unspam", "trash", "untrash").Error("无效的状态"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("approved", "hold", "spam", "unspam", "trash", "untrash").Error("invalid status"))),
 		validation.Field(&m.Rating,
-			validation.Min(0).Error("评级最小为 {{threshold}}"),
-			validation.Min(5).Error("评级最大为 {{threshold}}"),
+			validation.Min(0).Error("rating minimum is {{threshold}}"),
+			validation.Min(5).Error("rating maximum is {{threshold}}"),
 		),
 	)
 }
@@ -162,7 +163,7 @@ type BatchProductReviewsRequest struct {
 
 func (m BatchProductReviewsRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

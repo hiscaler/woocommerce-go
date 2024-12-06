@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -32,7 +33,7 @@ func (m CouponsQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "date", "title", "slug").Error("无效的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "date", "title", "slug").Error("invalid sort field"))),
 	)
 }
 
@@ -83,12 +84,12 @@ type CreateCouponRequest struct {
 
 func (m CreateCouponRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.DiscountType, validation.In("percent", "fixed_cart", "fixed_product").Error("无效的折扣类型")),
+		validation.Field(&m.DiscountType, validation.In("percent", "fixed_cart", "fixed_product").Error("invalid discount type")),
 		validation.Field(&m.Amount,
-			validation.Min(0.0).Error("金额不能小于 {{.threshold}}"),
-			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("折扣比例不能大于 {{.threshold}}")),
+			validation.Min(0.0).Error("amount cannot be less than {{.threshold}}"),
+			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("discount rate cannot be greater than {{.threshold}}")),
 		),
-		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("最小金额不能小于 {{.threshold}}")),
+		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("minimum amount cannot be less than {{.threshold}}")),
 	)
 }
 
@@ -120,12 +121,12 @@ type UpdateCouponRequest struct {
 
 func (m UpdateCouponRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.DiscountType, validation.When(m.DiscountType != "", validation.In("percent", "fixed_cart", "fixed_product").Error("无效的折扣类型"))),
+		validation.Field(&m.DiscountType, validation.When(m.DiscountType != "", validation.In("percent", "fixed_cart", "fixed_product").Error("invalid discount type"))),
 		validation.Field(&m.Amount,
-			validation.Min(0.0).Error("金额不能小于 {{.threshold}}"),
-			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("折扣比例不能大于 {{.threshold}}")),
+			validation.Min(0.0).Error("amount cannot be less than {{.threshold}}"),
+			validation.When(m.DiscountType == "percent", validation.Max(100.0).Error("discount rate cannot be greater than {{.threshold}}")),
 		),
-		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("最小金额不能小于 {{.threshold}}")),
+		validation.Field(&m.MinimumAmount, validation.Min(0.0).Error("minimum amount cannot be less than {{.threshold}}")),
 	)
 }
 
@@ -178,7 +179,7 @@ type BatchCouponsRequest struct {
 
 func (m BatchCouponsRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

@@ -3,10 +3,11 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
-	"strings"
 )
 
 type taxClassService service
@@ -32,7 +33,7 @@ type CreateTaxClassRequest struct {
 
 func (m CreateTaxClassRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Name, validation.Required.Error("名称不能为空")),
+		validation.Field(&m.Name, validation.Required.Error("name cannot be empty")),
 	)
 }
 
@@ -57,7 +58,7 @@ func (s taxClassService) Create(req CreateTaxClassRequest) (item entity.TaxClass
 func (s taxClassService) Delete(slug string, force bool) (item entity.TaxClass, err error) {
 	slug = strings.TrimSpace(slug)
 	if slug == "" {
-		err = errors.New("slug 参数不能为空")
+		err = errors.New("slug parameter cannot be empty")
 		return
 	}
 

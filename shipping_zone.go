@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -44,8 +45,8 @@ type CreateShippingZoneRequest struct {
 
 func (m CreateShippingZoneRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Name, validation.Required.Error("名称不能为空")),
-		validation.Field(&m.Order, validation.Min(0).Error("排序值不能小于 {{.threshold}}")),
+		validation.Field(&m.Name, validation.Required.Error("name cannot be empty")),
+		validation.Field(&m.Order, validation.Min(0).Error("sort value cannot be less than {{.threshold}}")),
 	)
 }
 

@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/hiscaler/woocommerce-go/entity"
@@ -80,8 +81,8 @@ type CreateWebhookRequest struct {
 
 func (m CreateWebhookRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.DeliveryURL, validation.When(m.DeliveryURL != "", is.URL.Error("投递 URL 格式错误"))),
-		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("active", "paused", "disabled").Error("无效的状态值"))),
+		validation.Field(&m.DeliveryURL, validation.When(m.DeliveryURL != "", is.URL.Error("invalid delivery URL format"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("active", "paused", "disabled").Error("invalid status value"))),
 	)
 }
 
@@ -153,7 +154,7 @@ type BatchWebhooksRequest struct {
 
 func (m BatchWebhooksRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

@@ -1,6 +1,7 @@
 // Package woocommerce is a Woo Commerce lib.
 //
 // Quick start:
+//
 //	b, err := os.ReadFile("./config/config_test.json")
 //	if err != nil {
 //	   panic(fmt.Sprintf("Read config error: %s", err.Error()))
@@ -30,12 +31,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/go-resty/resty/v2"
-	"github.com/hiscaler/gox/inx"
-	"github.com/hiscaler/gox/stringx"
-	"github.com/hiscaler/woocommerce-go/config"
-	jsoniter "github.com/json-iterator/go"
-	"github.com/json-iterator/go/extra"
 	"log"
 	"net"
 	"net/http"
@@ -45,6 +40,13 @@ import (
 	"strings"
 	"time"
 	"unsafe"
+
+	"github.com/go-resty/resty/v2"
+	"github.com/hiscaler/gox/inx"
+	"github.com/hiscaler/gox/stringx"
+	"github.com/hiscaler/woocommerce-go/config"
+	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go/extra"
 )
 
 const (
@@ -55,11 +57,11 @@ const (
 
 // https://woocommerce.github.io/woocommerce-rest-api-docs/?php#request-response-format
 const (
-	BadRequestError           = 400 // 错误的请求
-	UnauthorizedError         = 401 // 身份验证或权限错误
-	NotFoundError             = 404 // 访问资源不存在
-	InternalServerError       = 500 // 服务器内部错误
-	MethodNotImplementedError = 501 // 方法未实现
+	BadRequestError           = 400
+	UnauthorizedError         = 401
+	NotFoundError             = 404
+	InternalServerError       = 500
+	MethodNotImplementedError = 501
 )
 
 var ErrNotFound = errors.New("WooCommerce: not found")

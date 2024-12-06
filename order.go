@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -36,11 +37,11 @@ func (m OrdersQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("invalid sort field"))),
 		validation.Field(&m.Status, validation.When(len(m.Status) > 0, validation.By(func(value interface{}) error {
 			statuses, ok := value.([]string)
 			if !ok {
-				return errors.New("无效的状态值")
+				return errors.New("invalid status value")
 			}
 			validStatuses := []string{"any", "pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed ", "trash"}
 			for _, status := range statuses {
@@ -52,7 +53,7 @@ func (m OrdersQueryParams) Validate() error {
 					}
 				}
 				if !valid {
-					return fmt.Errorf("无效的状态值：%s", status)
+					return fmt.Errorf("invalid status value：%s", status)
 				}
 			}
 			return nil
@@ -63,7 +64,8 @@ func (m OrdersQueryParams) Validate() error {
 // All list all orders
 //
 // Usage:
-// 	params := OrdersQueryParams{
+//
+//	params := OrdersQueryParams{
 //		After: "2022-06-10",
 //	}
 //	params.PerPage = 100
@@ -144,7 +146,7 @@ type CreateOrderRequest struct {
 
 func (m CreateOrderRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed", "trash").Error("无效的状态"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("pending", "processing", "on-hold", "completed", "cancelled", "refunded", "failed", "trash").Error("invalid status"))),
 	)
 }
 

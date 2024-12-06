@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -33,7 +34,7 @@ func (m OrderRefundsQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("无效的排序值"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "date", "include", "title", "slug").Error("invalid sort value"))),
 	)
 }
 

@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -43,7 +44,7 @@ type ShippingZoneMethodIncludeRequest struct {
 
 func (m ShippingZoneMethodIncludeRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.MethodId, validation.Required.Error("配送方式不能为空")),
+		validation.Field(&m.MethodId, validation.Required.Error("shipping method cannot be empty")),
 	)
 }
 

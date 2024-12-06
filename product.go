@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -47,9 +48,9 @@ func (m ProductsQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "title", "slug", "price", "popularity", "rating").Error("无效的排序字段"))),
-		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("无效的状态"))),
-		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("simple", "grouped", "external", "variable").Error("无效的类型"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "include", "title", "slug", "price", "popularity", "rating").Error("invalid sort field"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("invalid status"))),
+		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("simple", "grouped", "external", "variable").Error("invalid type"))),
 	)
 }
 
@@ -142,13 +143,13 @@ type CreateProductRequest struct {
 
 func (m CreateProductRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Name, validation.Required.Error("商品名称不能为空")),
-		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("simple", "grouped", "external ", "variable").Error("无效的类型"))),
-		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("draft", "pending", "private", "publish").Error("无效的状态"))),
-		validation.Field(&m.CatalogVisibility, validation.When(m.CatalogVisibility != "", validation.In("visible", "catalog", "search", "hidden").Error("无效的目录可见性"))),
-		validation.Field(&m.TaxStatus, validation.When(m.TaxStatus != "", validation.In("taxable", "shipping ", "none").Error("无效的税务状态"))),
-		validation.Field(&m.StockStatus, validation.When(m.StockStatus != "", validation.In("instock", "outofstock ", "onbackorder").Error("无效的库存状态"))),
-		validation.Field(&m.Backorders, validation.When(m.Backorders != "", validation.In("yes", "no ", "notify").Error("无效的缺货订单状态"))),
+		validation.Field(&m.Name, validation.Required.Error("product name cannot be empty")),
+		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("simple", "grouped", "external ", "variable").Error("invalid type"))),
+		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("draft", "pending", "private", "publish").Error("invalid status"))),
+		validation.Field(&m.CatalogVisibility, validation.When(m.CatalogVisibility != "", validation.In("visible", "catalog", "search", "hidden").Error("invalid catalog visibility"))),
+		validation.Field(&m.TaxStatus, validation.When(m.TaxStatus != "", validation.In("taxable", "shipping ", "none").Error("invalid tax status"))),
+		validation.Field(&m.StockStatus, validation.When(m.StockStatus != "", validation.In("instock", "outofstock ", "onbackorder").Error("invalid stock status"))),
+		validation.Field(&m.Backorders, validation.When(m.Backorders != "", validation.In("yes", "no ", "notify").Error("invalid backorder status"))),
 	)
 }
 

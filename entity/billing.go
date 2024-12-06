@@ -22,8 +22,8 @@ type Billing struct {
 
 func (m Billing) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("无效的邮箱"))),
-		validation.Field(&m.FirstName, validation.Required.Error("姓不能为空")),
-		validation.Field(&m.LastName, validation.Required.Error("名不能为空")),
+		validation.Field(&m.Email, validation.When(m.Email != "", is.EmailFormat.Error("invalid email"))),
+		validation.Field(&m.FirstName, validation.Required.Error("first name cannot be empty")),
+		validation.Field(&m.LastName, validation.Required.Error("last name cannot be empty")),
 	)
 }

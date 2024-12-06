@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	"github.com/araddon/dateparse"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
@@ -19,16 +20,16 @@ type ReportsQueryParams struct {
 
 func (m ReportsQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Period, validation.When(m.Period != "", validation.In("week", "month", "last_month", "year").Error("无效的报表周期"))),
+		validation.Field(&m.Period, validation.When(m.Period != "", validation.In("week", "month", "last_month", "year").Error("invalid report period"))),
 		validation.Field(&m.DateMin,
-			validation.Required.Error("报表开始时间不能为空"),
+			validation.Required.Error("report start date cannot be empty"),
 			validation.By(func(value interface{}) error {
 				dateStr, _ := value.(string)
 				return IsValidateTime(dateStr)
 			}),
 		),
 		validation.Field(&m.DateMax,
-			validation.Required.Error("报表结束时间不能为空"),
+			validation.Required.Error("report end date cannot be empty"),
 			validation.By(func(value interface{}) (err error) {
 				dateStr, _ := value.(string)
 				err = IsValidateTime(dateStr)
@@ -44,7 +45,7 @@ func (m ReportsQueryParams) Validate() error {
 					return
 				}
 				if dateMax.Before(dateMin) {
-					return fmt.Errorf("结束时间不能小于 %s", m.DateMin)
+					return fmt.Errorf("report date cannot be earlier than %s", m.DateMin)
 				}
 				return nil
 			}),

@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -41,7 +42,7 @@ func (m ProductVariationsQueryParams) Validate() error {
 			dateStr, _ := value.(string)
 			return IsValidateTime(dateStr)
 		}))),
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "title", "include", "date", "slug").Error("无效的排序字段"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("id", "title", "include", "date", "slug").Error("invalid sort field"))),
 		validation.Field(&m.Status, validation.When(m.Status != "", validation.In("any", "draft", "pending", "private", "publish").Error("Invalid status value"))),
 		validation.Field(&m.TaxClass, validation.When(m.TaxClass != "", validation.In("standard", "reduced-rate", "zero-rate").Error("Invalid tax class"))),
 		validation.Field(&m.StockStatus, validation.When(m.StockStatus != "", validation.In("instock", "outofstock", "onbackorder").Error("Invalid stock status"))),
@@ -198,7 +199,7 @@ type BatchProductVariationsRequest struct {
 
 func (m BatchProductVariationsRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }

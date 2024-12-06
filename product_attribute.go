@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -62,7 +63,7 @@ type CreateProductAttributeRequest struct {
 
 func (m CreateProductAttributeRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("menu_order", "name", "name_num", "id").Error("无效的排序方式"))),
+		validation.Field(&m.OrderBy, validation.When(m.OrderBy != "", validation.In("menu_order", "name", "name_num", "id").Error("invalid sort method"))),
 	)
 }
 
@@ -134,7 +135,7 @@ type BatchProductAttributesRequest struct {
 
 func (m BatchProductAttributesRequest) Validate() error {
 	if len(m.Create) == 0 && len(m.Update) == 0 && len(m.Delete) == 0 {
-		return errors.New("无效的请求数据")
+		return errors.New("invalid request data")
 	}
 	return nil
 }
