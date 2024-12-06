@@ -41,10 +41,10 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/dashboard-bg/woocommerce-go/config"
 	"github.com/go-resty/resty/v2"
 	"github.com/hiscaler/gox/inx"
 	"github.com/hiscaler/gox/stringx"
-	"github.com/hiscaler/woocommerce-go/config"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/json-iterator/go/extra"
 )

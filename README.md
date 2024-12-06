@@ -20,12 +20,12 @@ If you use ModSecurity and see 501 Method Not Implemented errors, see [this issu
 
 ## Notices
 
-Only tested in API v3, if you are use v1 or v2, please [Report an issue](https://github.com/hiscaler/woocommerce-go/issues/new).
+Only tested in API v3, if you are use v1 or v2, please [Report an issue](https://github.com/dashboard-bg/woocommerce-go/issues/new).
 
 ## Install
 
 ```go
-go get github.com/hiscaler/woocommerce-go
+go get github.com/dashboard-bg/woocommerce-go
 ```
 
 ## Config
@@ -422,7 +422,7 @@ Methods:
 
 If you have any questions or suggestions, you can:
 
-1. [Report an issue](https://github.com/hiscaler/woocommerce-go/issues/new)
+1. [Report an issue](https://github.com/dashboard-bg/woocommerce-go/issues/new)
 2. Fork it and pull a request
 
 Thanks.

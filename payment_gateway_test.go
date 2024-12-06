@@ -1,10 +1,11 @@
 package woocommerce
 
 import (
-	"github.com/brianvoe/gofakeit/v6"
-	"github.com/hiscaler/woocommerce-go/entity"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/dashboard-bg/woocommerce-go/entity"
+	"github.com/stretchr/testify/assert"
 )
 
 var paymentGatewayId string
