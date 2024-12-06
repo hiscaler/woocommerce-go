@@ -10,6 +10,7 @@ type Shipping struct {
 	State     string `json:"state,omitempty"`
 	Postcode  string `json:"postcode,omitempty"`
 	Country   string `json:"country,omitempty"`
+	Phone     string `json:"phone,omitempty"`
 }
 
 type ShippingLine struct {
