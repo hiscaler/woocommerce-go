@@ -160,9 +160,10 @@ func NewClient(config config.Config) *WooCommerce {
 		SetDebug(config.Debug).
 		SetBaseURL(strings.TrimRight(config.URL, "/") + "/wp-json/wc/" + config.Version).
 		SetHeaders(map[string]string{
-			"Content-Type": "application/json",
-			"Accept":       "application/json",
-			"User-Agent":   UserAgent,
+			"Cache-Control": "private", // Resolve the "401: Sorry, you cannot list resources."
+			"Content-Type":  "application/json",
+			"Accept":        "application/json",
+			"User-Agent":    UserAgent,
 		}).
 		SetAllowGetMethodPayload(true).
 		SetTimeout(config.Timeout * time.Second).
