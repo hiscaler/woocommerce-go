@@ -2,6 +2,7 @@ package woocommerce
 
 import (
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/google/go-querystring/query"
 	"github.com/hiscaler/woocommerce-go/entity"
@@ -17,7 +18,7 @@ type OrderNotesQueryParams struct {
 
 func (m OrderNotesQueryParams) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("any", "customer", "internal").Error("无效的类型"))),
+		validation.Field(&m.Type, validation.When(m.Type != "", validation.In("any", "customer", "internal").Error("Invalid type"))),
 	)
 }
 
@@ -54,12 +55,17 @@ func (s orderNoteService) One(orderId, noteId int) (item entity.OrderNote, err e
 // Create order note
 
 type CreateOrderNoteRequest struct {
-	Note string `json:"note"`
+	Note           string `json:"note"`
+	Author         string `json:"author"`
+	DateCreated    string `json:"date_created"`
+	DateCreatedGMT string `json:"date_created_gmt"`
+	CustomerNote   bool   `json:"customer_note"`
+	AddedByUser    bool   `json:"added_by_user"`
 }
 
 func (m CreateOrderNoteRequest) Validate() error {
 	return validation.ValidateStruct(&m,
-		validation.Field(&m.Note, validation.Required.Error("内容不能为空")),
+		validation.Field(&m.Note, validation.Required.Error("content cannot be empty.")),
 	)
 }
 
