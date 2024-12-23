@@ -46,6 +46,7 @@ type Product struct {
 	ManageStock       bool                      `json:"manage_stock"`
 	StockQuantity     int                       `json:"stock_quantity"`
 	StockStatus       string                    `json:"stock_status"`
+	GlobalUniqueId    string                    `json:"global_unique_id"`
 	Backorders        string                    `json:"backorders"`
 	BackordersAllowed bool                      `json:"backorders_allowed"`
 	Backordered       bool                      `json:"backordered"`
