@@ -2,9 +2,10 @@ package woocommerce
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestProductService_All(t *testing.T) {
@@ -53,6 +54,45 @@ func TestProductService_CreateUpdateDelete(t *testing.T) {
 		t.Fatalf("wooClient.Services.Product.One error: %s", err.Error())
 	}
 	assert.Equal(t, name, item.Name, "product name")
+
+	// Delete
+	_, err = wooClient.Services.Product.Delete(productId, true)
+	if err != nil {
+		t.Fatalf("wooClient.Services.Product.Delete error: %s", err.Error())
+	}
+	_, err = wooClient.Services.Product.One(productId)
+	if !errors.Is(err, ErrNotFound) {
+		t.Fatalf("wooClient.Services.Product.Delete(%d) failed", productId)
+	}
+}
+
+func TestProductService_All_Filter(t *testing.T) {
+	name := gofakeit.Word()
+	sku := "SKU WITH SPACES"
+
+	req := CreateProductRequest{
+		Name: name,
+		SKU:  sku,
+	}
+	item, err := wooClient.Services.Product.Create(req)
+	if err != nil {
+		t.Fatalf("wooClient.Services.Product.Create error: %s", err.Error())
+	}
+	productId := item.ID
+	assert.Equal(t, name, item.Name, "product name")
+	name = gofakeit.Word()
+
+	params := ProductsQueryParams{
+		SKU: sku,
+	}
+	items, _, _, _, err := wooClient.Services.Product.All(params)
+	if err != nil {
+		t.Errorf("wooClient.Services.Product.All: %s", err.Error())
+	} else {
+		if len(items) == 0 {
+			t.Fatalf("wooClient.Services.Product.All error")
+		}
+	}
 
 	// Delete
 	_, err = wooClient.Services.Product.Delete(productId, true)
