@@ -2,10 +2,11 @@ package woocommerce
 
 import (
 	"fmt"
-	"github.com/hiscaler/woocommerce-go/config"
-	jsoniter "github.com/json-iterator/go"
 	"os"
 	"testing"
+
+	"github.com/hiscaler/woocommerce-go/config"
+	jsoniter "github.com/json-iterator/go"
 )
 
 var wooClient *WooCommerce
@@ -27,33 +28,33 @@ func Example() {
 
 	wooClient = NewClient(c)
 	// Query an order
-	order, err := wooClient.Services.Order.One(1)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(fmt.Sprintf("%#v", order))
-	}
+	// order, err := wooClient.Services.Order.One(1)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// } else {
+	// 	fmt.Println(fmt.Sprintf("%#v", order))
+	// }
 
-	// Query orders
-	params := OrdersQueryParams{
-		After: "2022-06-10",
-	}
-	params.PerPage = 100
-	for {
-		orders, total, totalPages, isLastPage, err := wooClient.Services.Order.All(params)
-		if err != nil {
-			break
-		}
-		fmt.Println(fmt.Sprintf("Page %d/%d", total, totalPages))
-		// read orders
-		for _, order := range orders {
-			_ = order
-		}
-		if err != nil || isLastPage {
-			break
-		}
-		params.Page++
-	}
+	// // Query orders
+	// params := OrdersQueryParams{
+	// 	After: "2022-06-10",
+	// }
+	// params.PerPage = 100
+	// for {
+	// 	orders, total, totalPages, isLastPage, err := wooClient.Services.Order.All(params)
+	// 	if err != nil {
+	// 		break
+	// 	}
+	// 	fmt.Println(fmt.Sprintf("Page %d/%d", total, totalPages))
+	// 	// read orders
+	// 	for _, order := range orders {
+	// 		_ = order
+	// 	}
+	// 	if err != nil || isLastPage {
+	// 		break
+	// 	}
+	// 	params.Page++
+	// }
 }
 
 func ExampleErrorWrap() {
