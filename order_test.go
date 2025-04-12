@@ -1,33 +1,34 @@
 package woocommerce
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // Query orders
-// func ExampleAll() {
-// 	params := OrdersQueryParams{
-// 		After: "2022-06-10",
-// 	}
-// 	params.PerPage = 100
-// 	for {
-// 		orders, total, totalPages, isLastPage, err := wooClient.Services.Order.All(params)
-// 		if err != nil {
-// 			break
-// 		}
-// 		fmt.Println(fmt.Sprintf("Page %d/%d", total, totalPages))
-// 		// read orders
-// 		for _, order := range orders {
-// 			_ = order
-// 		}
-// 		if err != nil || isLastPage {
-// 			break
-// 		}
-// 		params.Page++
-// 	}
-// }
+func ExampleAll() {
+	params := OrdersQueryParams{
+		After: "2022-06-10",
+	}
+	params.PerPage = 100
+	for {
+		orders, total, totalPages, isLastPage, err := wooClient.Services.Order.All(params)
+		if err != nil {
+			break
+		}
+		fmt.Println(fmt.Sprintf("Page %d/%d", total, totalPages))
+		// read orders
+		for _, order := range orders {
+			_ = order
+		}
+		if err != nil || isLastPage {
+			break
+		}
+		params.Page++
+	}
+}
 
 func TestOrderService_All(t *testing.T) {
 	params := OrdersQueryParams{
