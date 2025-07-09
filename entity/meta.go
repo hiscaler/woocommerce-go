@@ -3,9 +3,9 @@ package entity
 import "encoding/json"
 
 type Meta struct {
-	ID    int    `json:"id"`
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	ID    int             `json:"id"`
+	Key   string          `json:"key"`
+	Value json.RawMessage `json:"value"`
 }
 
 func (m *Meta) UnmarshalJSON(data []byte) error {
