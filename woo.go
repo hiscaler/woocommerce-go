@@ -71,9 +71,10 @@ func init() {
 }
 
 type WooCommerce struct {
-	Debug    bool        // Is debug mode
-	Logger   *log.Logger // Log
-	Services services    // WooCommerce API services
+	Debug      bool          // Is debug mode
+	Logger     *log.Logger   // Log
+	Services   services      // WooCommerce API services
+	HttpClient *resty.Client // HTTP client
 }
 
 type service struct {
@@ -287,6 +288,8 @@ func NewClient(config config.Config) *WooCommerce {
 		SystemStatusTool:     (systemStatusToolService)(xService),
 		Data:                 (dataService)(xService),
 	}
+	// Expose the HttpClient variable so that users can request API interfaces not yet covered by the SDK.
+	wooClient.HttpClient = httpClient
 	return wooClient
 }
 
