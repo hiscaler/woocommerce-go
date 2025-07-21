@@ -23,10 +23,15 @@ func (m *Meta) UnmarshalJSON(data []byte) error {
 
 	var str string
 	if err := json.Unmarshal(aux.Value, &str); err == nil {
-		m.Value = str
+		var b []byte
+		b, err = json.Marshal(str)
+		if err != nil {
+			return err
+		}
+		m.Value = b
 		return nil
 	}
 
-	m.Value = string(aux.Value)
+	m.Value = aux.Value
 	return nil
 }
