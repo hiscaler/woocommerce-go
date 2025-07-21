@@ -1,8 +1,9 @@
 package woocommerce
 
 import (
-	"github.com/hiscaler/gox/jsonx"
 	"testing"
+
+	"github.com/hiscaler/gox/jsonx"
 )
 
 func TestProductVariationService_All(t *testing.T) {

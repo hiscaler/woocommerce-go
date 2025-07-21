@@ -2,10 +2,11 @@ package woocommerce
 
 import (
 	"fmt"
-	"github.com/araddon/dateparse"
-	"github.com/hiscaler/woocommerce-go/constant"
 	"strings"
 	"time"
+
+	"github.com/araddon/dateparse"
+	"github.com/hiscaler/woocommerce-go/constant"
 )
 
 // ToISOTimeString Convert to iso time string

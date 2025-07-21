@@ -3,6 +3,7 @@ package woocommerce
 import (
 	"errors"
 	"fmt"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/hiscaler/woocommerce-go/entity"
 	jsoniter "github.com/json-iterator/go"
@@ -63,7 +64,8 @@ func (m OrdersQueryParams) Validate() error {
 // All list all orders
 //
 // Usage:
-// 	params := OrdersQueryParams{
+//
+//	params := OrdersQueryParams{
 //		After: "2022-06-10",
 //	}
 //	params.PerPage = 100

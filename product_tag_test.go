@@ -2,10 +2,11 @@ package woocommerce
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/hiscaler/gox/jsonx"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestProductTagService_All(t *testing.T) {

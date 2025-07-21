@@ -1,8 +1,9 @@
 package woocommerce
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDataService_All(t *testing.T) {

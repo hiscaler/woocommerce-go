@@ -2,9 +2,10 @@ package woocommerce
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/hiscaler/gox/jsonx"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestOrderRefundService_All(t *testing.T) {

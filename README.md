@@ -16,11 +16,13 @@ To use the latest version of the REST API you must be using:
 
 Pretty permalinks in Settings > Permalinks so that the custom endpoints are supported. Default permalinks will not work.
 You may access the API over either HTTP or HTTPS, but HTTPS is recommended where possible.
-If you use ModSecurity and see 501 Method Not Implemented errors, see [this issue](https://github.com/woocommerce/woocommerce/issues/9838) for details.
+If you use ModSecurity and see 501 Method Not Implemented errors,
+see [this issue](https://github.com/woocommerce/woocommerce/issues/9838) for details.
 
 ## Notices
 
-Only tested in API v3, if you are use v1 or v2, please [Report an issue](https://github.com/hiscaler/woocommerce-go/issues/new).
+Only tested in API v3, if you are use v1 or v2,
+please [Report an issue](https://github.com/hiscaler/woocommerce-go/issues/new).
 
 ## Install
 
@@ -89,7 +91,8 @@ And you can retrieve one data use One() method.
 product, err := wooClient.Services.Product.One(1)
 ```
 
-**Note**: If the error type is ErrNotFound, it indicates that the corresponding data is not found. If the error type is other error, an error may occur in the call. So you should judge the results to further process your business logic.
+**Note**: If the error type is ErrNotFound, it indicates that the corresponding data is not found. If the error type is
+other error, an error may occur in the call. So you should judge the results to further process your business logic.
 
 ## Services
 

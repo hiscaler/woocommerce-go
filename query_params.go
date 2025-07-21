@@ -1,9 +1,10 @@
 package woocommerce
 
 import (
-	"github.com/google/go-querystring/query"
 	"net/url"
 	"strings"
+
+	"github.com/google/go-querystring/query"
 )
 
 const (
